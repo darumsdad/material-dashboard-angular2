@@ -2,8 +2,13 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
+            <button mat-raised-button class="btn btn-info" [routerLink]="['/contact-detail']">Add New</button>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header-info">
                         <h4 class="card-title ">Contacts</h4>
                     </div>
                     <div class="card-body">
@@ -17,79 +22,23 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr>
+                                  <tr *ngFor="let contact of contacts">
                                     <td>
                                       <div class="d-flex align-items-center">
                                         <div class="ms-1">
-                                          <p class="fw-bold mb-1">John Doe</p>
-                                          <p class="text-muted mb-0">john.doe@gmail.com</p>
+                                          <p class="fw-bold mb-1">{{contact.firstName}} {{contact.lastName}}</p>
+                                          <p class="text-muted mb-0">{{contact.email}}</p>
+                                          <p class="text-muted mb-0">{{contact.phone}}</p>
                                         </div>
                                       </div>
                                     </td>
                                     <td>
-                                      <p class="fw-normal mb-1">109 Ayrmont Lane</p>
-                                      <p class="text-muted mb-0">Aberdeen NJ, 07621</p>
+                                      <p class="fw-normal mb-1">{{contact.addressLine1}} {{contact.addressLine2}}</p>
+                                      <p class="text-muted mb-0">{{contact.city}} {{contact.state}}, {{contact.zip}}</p>
                                     </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" class="btn btn-info">
-                                            <i class="material-icons">person</i>
-                                        </button>
-                                        <button type="button" rel="tooltip" class="btn btn-success">
+                                    <td class="td-actions">
+                                        <button type="button" rel="tooltip" class="btn btn-info" [routerLink]="['/contact-detail', contact.id]">
                                             <i class="material-icons">edit</i>
-                                        </button>
-                                        <button type="button" rel="tooltip" class="btn btn-danger">
-                                            <i class="material-icons">close</i>
-                                        </button>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>
-                                      <div class="d-flex align-items-center">
-                                        
-                                        <div class="ms-10">
-                                          <p class="fw-bold mb-1">Alex Ray</p>
-                                          <p class="text-muted mb-0">alex.ray@gmail.com</p>
-                                        </div>
-                                      </div>
-                                    </td>
-                                    <td>
-                                        <p class="fw-normal mb-1">109 Ayrmont Lane</p>
-                                        <p class="text-muted mb-0">Aberdeen NJ, 07621</p>
-                                    </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" class="btn btn-info">
-                                            <i class="material-icons">person</i>
-                                        </button>
-                                        <button type="button" rel="tooltip" class="btn btn-success">
-                                            <i class="material-icons">edit</i>
-                                        </button>
-                                        <button type="button" rel="tooltip" class="btn btn-danger">
-                                            <i class="material-icons">close</i>
-                                        </button>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>
-                                      <div class="d-flex align-items-center">
-                                        <div class="ms-3">
-                                          <p class="fw-bold mb-1">Kate Hunington</p>
-                                          <p class="text-muted mb-0">kate.hunington@gmail.com</p>
-                                        </div>
-                                      </div>
-                                    </td>
-                                    <td>
-                                        <p class="fw-normal mb-1">109 Ayrmont Lane</p>
-                                        <p class="text-muted mb-0">Aberdeen NJ, 07621</p>
-                                    </td>
-                                    <td class="td-actions text-right">
-                                        <button type="button" rel="tooltip" class="btn btn-info">
-                                            <i class="material-icons">person</i>
-                                        </button>
-                                        <button type="button" rel="tooltip" class="btn btn-success">
-                                            <i class="material-icons">edit</i>
-                                        </button>
-                                        <button type="button" rel="tooltip" class="btn btn-danger">
-                                            <i class="material-icons">close</i>
                                         </button>
                                     </td>
                                   </tr>

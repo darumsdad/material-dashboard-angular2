@@ -56,6 +56,7 @@ export const AdminLayoutRoutes: Routes = [
     // }
     { path: 'dashboard',      component: DashboardComponent },
     { path: 'user-profile',   component: UserProfileComponent },
+    { path: 'contact-detail/:id', component: ContactDetailComponent },
     { path: 'contact-detail', component: ContactDetailComponent },
     { path: 'table-list',     component: TableListComponent },
     { path: 'contact-list',   component: ContactListComponent },
