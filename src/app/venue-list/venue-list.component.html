@@ -2,14 +2,14 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-            <button mat-raised-button class="btn btn-info" [routerLink]="['/contact-detail']">Add New</button>
+            <button mat-raised-button class="btn btn-info" [routerLink]="['/venue-detail']">Add New</button>
           </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header-info">
-                        <h4 class="card-title ">Contacts</h4>
+                        <h4 class="card-title ">Venues</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -22,22 +22,21 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr *ngFor="let contact of contacts">
+                                  <tr *ngFor="let venue of venues">
                                     <td>
                                       <div class="d-flex align-items-center">
                                         <div class="ms-1">
-                                          <p class="fw-bold mb-1"><b>{{contact.firstName}} {{contact.lastName}}</b></p>
-                                          <p class="text-muted mb-0">{{contact.email}}</p>
-                                          <p class="text-muted mb-0">{{contact.phone}}</p>
+                                          <p class="font-weight-bolder"><b>{{venue.name}}</b></p>
+                                          <p class="text-muted mb-0">{{venue.phone}}</p>
                                         </div>
                                       </div>
                                     </td>
                                     <td>
-                                      <p class="fw-normal mb-1">{{contact.addressLine1}} {{contact.addressLine2}}</p>
-                                      <p class="text-muted mb-0">{{contact.city}} {{contact.state}}, {{contact.zip}}</p>
+                                      <p class="fw-normal mb-1">{{venue.addressLine1}} {{venue.addressLine2}}</p>
+                                      <p class="text-muted mb-0">{{venue.city}} {{venue.state}}, {{venue.zip}}</p>
                                     </td>
                                     <td class="td-actions">
-                                        <button type="button" rel="tooltip" class="btn btn-info" [routerLink]="['/contact-detail', contact.id]">
+                                        <button type="button" rel="tooltip" class="btn btn-info" [routerLink]="['/venue-detail', venue.id]">
                                             <i class="material-icons">edit</i>
                                         </button>
                                     </td>
@@ -48,7 +47,6 @@
                     </div>
                 </div>
             </div>
-          
         </div>
     </div>
   </div>

@@ -9,6 +9,8 @@ import { ContactDetailComponent } from '../../contact-detail/contact-detail.comp
 import { TableListComponent } from '../../table-list/table-list.component';
 import { ContactListComponent } from '../../contact-list/contact-list.component';
 import { TypographyComponent } from '../../typography/typography.component';
+import { VenueListComponent } from '../../venue-list/venue-list.component';
+import { VenueDetailComponent } from '../../venue-detail/venue-detail.component';
 import { IconsComponent } from '../../icons/icons.component';
 import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
@@ -37,8 +39,10 @@ import {MatSelectModule} from '@angular/material/select';
     DashboardComponent,
     UserProfileComponent,
     ContactDetailComponent,
-    TableListComponent,
     ContactListComponent,
+    TableListComponent,
+    VenueListComponent,
+    VenueDetailComponent,
     TypographyComponent,
     IconsComponent,
     MapsComponent,

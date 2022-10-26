@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
 import { UserProfileComponent } from '../../user-profile/user-profile.component';
 import { TableListComponent } from '../../table-list/table-list.component';
+import { VenueListComponent } from '../../venue-list/venue-list.component';
 import { ContactListComponent } from '../../contact-list/contact-list.component';
 import { ContactDetailComponent } from '../../contact-detail/contact-detail.component';
 import { TypographyComponent } from '../../typography/typography.component';
@@ -10,6 +11,7 @@ import { IconsComponent } from '../../icons/icons.component';
 import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
+import { VenueDetailComponent } from 'app/venue-detail/venue-detail.component';
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -58,8 +60,11 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'user-profile',   component: UserProfileComponent },
     { path: 'contact-detail/:id', component: ContactDetailComponent },
     { path: 'contact-detail', component: ContactDetailComponent },
+    { path: 'venue-detail/:id', component: VenueDetailComponent },
+    { path: 'venue-detail', component: VenueDetailComponent },
     { path: 'table-list',     component: TableListComponent },
     { path: 'contact-list',   component: ContactListComponent },
+    { path: 'venue-list',     component: VenueListComponent },
     { path: 'typography',     component: TypographyComponent },
     { path: 'icons',          component: IconsComponent },
     { path: 'maps',           component: MapsComponent },
