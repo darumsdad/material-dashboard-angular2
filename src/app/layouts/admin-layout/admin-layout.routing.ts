@@ -13,6 +13,7 @@ import { NotificationsComponent } from '../../notifications/notifications.compon
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { VenueDetailComponent } from 'app/venue-detail/venue-detail.component';
 import { GigListComponent } from 'app/gig-list/gig-list.component';
+import { GigDetailComponent } from 'app/gig-detail/gig-detail.component';
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -63,6 +64,8 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'contact-detail', component: ContactDetailComponent },
     { path: 'venue-detail/:id', component: VenueDetailComponent },
     { path: 'venue-detail', component: VenueDetailComponent },
+    { path: 'gig-detail/:id', component: GigDetailComponent },
+    { path: 'gig-detail', component: GigDetailComponent },
     { path: 'table-list',     component: TableListComponent },
     { path: 'contact-list',   component: ContactListComponent },
     { path: 'gig-list',   component: GigListComponent },

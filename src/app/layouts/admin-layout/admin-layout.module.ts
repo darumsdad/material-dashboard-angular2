@@ -12,6 +12,7 @@ import { TypographyComponent } from '../../typography/typography.component';
 import { VenueListComponent } from '../../venue-list/venue-list.component';
 import { VenueDetailComponent } from '../../venue-detail/venue-detail.component';
 import { GigListComponent } from '../../gig-list/gig-list.component';
+import { GigDetailComponent } from '../../gig-detail/gig-detail.component';
 import { IconsComponent } from '../../icons/icons.component';
 import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
@@ -22,6 +23,8 @@ import {MatRippleModule} from '@angular/material/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   imports: [
@@ -35,6 +38,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatInputModule,
     MatSelectModule,
     MatTooltipModule,
+    Ng2SearchPipeModule,
+    MatAutocompleteModule
   ],
   declarations: [
     DashboardComponent,
@@ -45,6 +50,7 @@ import {MatSelectModule} from '@angular/material/select';
     VenueListComponent,
     VenueDetailComponent,
     GigListComponent,
+    GigDetailComponent,
     TypographyComponent,
     IconsComponent,
     MapsComponent,

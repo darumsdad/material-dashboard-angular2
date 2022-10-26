@@ -28,7 +28,7 @@ export class VenueDetailComponent implements OnInit {
     this.isAddMode = !this.id;
     
     this.form = new FormGroup({
-        name: new FormControl('',Validators.required),
+        name: new FormControl(),
         addressLine1: new FormControl(),
         addressLine2: new FormControl(),
         city: new FormControl(),
