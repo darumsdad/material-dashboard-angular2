@@ -11,6 +11,7 @@ import { ContactListComponent } from '../../contact-list/contact-list.component'
 import { TypographyComponent } from '../../typography/typography.component';
 import { VenueListComponent } from '../../venue-list/venue-list.component';
 import { VenueDetailComponent } from '../../venue-detail/venue-detail.component';
+import { GigListComponent } from '../../gig-list/gig-list.component';
 import { IconsComponent } from '../../icons/icons.component';
 import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
@@ -43,6 +44,7 @@ import {MatSelectModule} from '@angular/material/select';
     TableListComponent,
     VenueListComponent,
     VenueDetailComponent,
+    GigListComponent,
     TypographyComponent,
     IconsComponent,
     MapsComponent,

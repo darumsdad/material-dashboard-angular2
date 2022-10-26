@@ -1,0 +1,108 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+            <button mat-raised-button class="btn btn-info" [routerLink]="['/gig-detail']">Add New</button>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header-info">
+                        <h4 class="card-title ">Gigs</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0 bg-white">
+                                <thead class="bg-light">
+                                  <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Details</th>
+                                    <th>Staff</th>
+                                    <th>Venue</th>
+                                    <th></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let gig of gigs">
+                                    <!-- <td>
+                                      <div class="d-flex align-items-center">
+                                        <div class="ms-1">
+                                          <p class="fw-bold mb-1"><b>{{gig.description}}</b></p>
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <i class="material-icons">celebration</i><p class="fw-bold mb-1">Wedding</p>
+                                        </div>
+                                      </td>
+                                    <td class="td-actions">
+                                        <button type="button" rel="tooltip" class="btn btn-info" [routerLink]="['/gig-detail', gig.id]">
+                                            <i class="material-icons">edit</i>
+                                        </button>
+                                    </td> -->
+
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="col-md-9">
+                                                <b>Date:</b> 1/1/2022 <br />
+                                                <b>Start:</b> 5:30 PM <br />
+                                         </div>
+                                        </div> 
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="ms-1">
+                                              <p class="fw-bold mb-1"><b>{{gig.description}}</b></p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            
+                                            <div class="col-md-10">
+                                                <b>Bride:</b> Some Chick <b>|</b> chick@her.com  <b>|</b> (909) 555-1212<br />
+                                                <b>Groom:</b> Some Dude <b>|</b> dude@her.com  <b>|</b> (909) 555-1212<br />
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            
+                                            <div class="col-md-10">
+                                                <b>Kyle Demillner</b> | 9 AM - 10P<br />
+                                                <b>Amir Goldstien</b> | 5:30 PM - 10P<br />
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="ms-1">
+                                                <div class="col-md-12"><a [routerLink]="['/venue-detail', 2]">Grand Ballroom</a></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="td-actions">
+                                        <button type="button" rel="tooltip" class="btn btn-info" [routerLink]="['/gig-detail', gig.id]">
+                                            <i class="material-icons">edit</i>
+                                        </button>
+                                    </td> 
+
+                                  </tr>
+                                </tbody>
+                              </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+        </div>
+    </div>
+  </div>
+  

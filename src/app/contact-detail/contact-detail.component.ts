@@ -25,25 +25,25 @@ export class ContactDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-        this.isAddMode = !this.id;
-       
-        this.form = new FormGroup({
-            firstName: new FormControl('',Validators.required),
-            lastName: new FormControl(),
-            addressLine1: new FormControl(),
-            addressLine2: new FormControl(),
-            city: new FormControl(),
-            state: new FormControl(),
-            zip: new FormControl(),
-            email: new FormControl(),
-            phone: new FormControl(),
-        });
+    this.isAddMode = !this.id;
+    
+    this.form = new FormGroup({
+        firstName: new FormControl('',Validators.required),
+        lastName: new FormControl(),
+        addressLine1: new FormControl(),
+        addressLine2: new FormControl(),
+        city: new FormControl(),
+        state: new FormControl(),
+        zip: new FormControl(),
+        email: new FormControl(),
+        phone: new FormControl(),
+    });
 
-        if (!this.isAddMode) {
-            this.contactService.get(this.id)
-                .pipe(first())
-                .subscribe(x => this.form.patchValue(x));
-        }
+    if (!this.isAddMode) {
+        this.contactService.get(this.id)
+            .pipe(first())
+            .subscribe(x => this.form.patchValue(x));
+    }
   }
 
   get f() { return this.form.controls; }

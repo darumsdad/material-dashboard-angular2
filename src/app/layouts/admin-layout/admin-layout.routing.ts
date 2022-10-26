@@ -12,6 +12,7 @@ import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { VenueDetailComponent } from 'app/venue-detail/venue-detail.component';
+import { GigListComponent } from 'app/gig-list/gig-list.component';
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -64,6 +65,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'venue-detail', component: VenueDetailComponent },
     { path: 'table-list',     component: TableListComponent },
     { path: 'contact-list',   component: ContactListComponent },
+    { path: 'gig-list',   component: GigListComponent },
     { path: 'venue-list',     component: VenueListComponent },
     { path: 'typography',     component: TypographyComponent },
     { path: 'icons',          component: IconsComponent },
