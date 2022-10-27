@@ -16,6 +16,8 @@
                             <table class="table align-middle mb-0 bg-white">
                                 <thead class="bg-light">
                                   <tr>
+                                    <th></th>
+                                    <th>Type</th>
                                     <th>Date</th>
                                     <th>Description</th>
                                     <th>Details</th>
@@ -46,7 +48,25 @@
 
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <div class="col-md-9">
+                                            <div class="col-ms-1">
+                                                <i class="material-icons" *ngIf="gig.id === 3">celebration</i><br/>
+                                                <i class="material-icons" *ngIf="gig.id === 4">star</i><br/>
+                                                <i class="material-icons" *ngIf="gig.id === 5">other_houses</i><br/>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="col-md-11">
+                                                <span *ngIf="gig.id === 3">Wedding</span>
+                                                <span *ngIf="gig.id === 4">Mitzvah</span>
+                                                <span *ngIf="gig.id === 5">Other</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="col-md-11">
                                                 <b>Date:</b> 1/1/2022 <br />
                                                 <b>Start:</b> 5:30 PM <br />
                                          </div>
@@ -84,7 +104,7 @@
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <div class="ms-1">
-                                                <div class="col-md-12"><a [routerLink]="['/venue-detail', 2]">Grand Ballroom</a></div>
+                                                <div class="col-md-12"><a [routerLink]="['/venue-detail', 2]">Temple Emanu-El of Closter</a></div>
                                             </div>
                                         </div>
                                     </td>
