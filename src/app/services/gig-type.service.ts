@@ -1,35 +1,29 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Gig } from '../models/gig';
+import { GigType } from '../models/gig-type';
 import { environment } from 'environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class GigService {
+export class GigTypeService {
 
-  baseUrl = environment.baseUrl + '/gigs';
+  baseUrl = environment.baseUrl + '/gig_type';
 
   constructor(private http: HttpClient) { }
 
-  getAll(): Observable<Gig[]> {
-    return this.http.get<Gig[]>(this.baseUrl);
+  getAll(): Observable<GigType[]> {
+    return this.http.get<GigType[]>(this.baseUrl);
   }
 
-  get(id: any): Observable<Gig> {
-    return this.http.get<Gig>(`${this.baseUrl}/${id}`);
+  get(id: any): Observable<GigType> {
+    return this.http.get<GigType>(`${this.baseUrl}/${id}`);
   }
 
   create(data: any): Observable<any> {
     return this.http.post(this.baseUrl, data);
-  }
-
-  updateVenue(id: any, data: any): Observable<any> {
-    console.log(data)
-    console.log('0000')
-    return this.http.put(`${this.baseUrl}/${id}/venue`, data);
   }
 
   update(id: any, data: any): Observable<any> {
@@ -39,4 +33,6 @@ export class GigService {
   delete(id: any): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
+
+
 }

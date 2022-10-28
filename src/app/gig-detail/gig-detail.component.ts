@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
 import { GigService } from 'app/services/gig.service';
+import { GigTypeService } from 'app/services/gig-type.service';
 import { first } from 'rxjs/operators';
 import { Contact } from 'app/models/contact';
 import { Venue } from 'app/models/venue';
@@ -17,6 +18,7 @@ import { Venue } from 'app/models/venue';
 export class GigDetailComponent implements OnInit {
 
   gigForm: FormGroup;
+  venueUpdateForm: FormGroup;
   updateContactForm: FormGroup;
   linkContactFormControl = new FormControl('');
   venueFormControl = new FormControl('');
@@ -33,14 +35,9 @@ export class GigDetailComponent implements OnInit {
         name: "Groom"
     }];
 
-    gigTypes: any[] = [
-        { id: 1,
-            name: "Wedding"
-        },{ id: 2,
-            name: "Mitzvah"
-        }];
+  gigTypes: any[];
 
- venues: Venue[] =[{"id":3,"name":"Temple Emanu-El of Closter","phone":"(201) 750-9997","addressLine1":"180 Piermont Rd","addressLine2":null,"city":"Closter","state":"NJ ","zip":"07624"},{"id":4,"name":"The Legacy Castle","phone":"(973) 907-7750","addressLine1":"141 NJ-23","addressLine2":"","city":"Pompton Plains","state":"NJ ","zip":"07444"}];
+  venues: Venue[] =[{"id":3,"name":"Temple Emanu-El of Closter","phone":"(201) 750-9997","addressLine1":"180 Piermont Rd","addressLine2":null,"city":"Closter","state":"NJ ","zip":"07624"},{"id":4,"name":"The Legacy Castle","phone":"(973) 907-7750","addressLine1":"141 NJ-23","addressLine2":"","city":"Pompton Plains","state":"NJ ","zip":"07444"}];
 
   contacts: Contact[] = [{"id":1,"firstName":"David","lastName":"Goldstein","email":"darumsdad@gmail.com","phone":"(201) 688-6234","addressLine1":"377 Windsor Road","addressLine2":"","city":"Bergenfield","state":"NJ","zip":"07621"},{"id":13,"firstName":"Amir","lastName":"Goldstein","email":"amirgold1@yahoo.com","phone":null,"addressLine1":"9 Curtis Ave","addressLine2":null,"city":"West Orange","state":"NJ","zip":"07888"}];
   
@@ -50,7 +47,8 @@ export class GigDetailComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private gigService: GigService) { }
+    private gigService: GigService,
+    private gigTypeService: GigTypeService) { }
 
     ngOnInit(): void {
       this.id = this.route.snapshot.params['id'];
@@ -58,12 +56,16 @@ export class GigDetailComponent implements OnInit {
       
       this.gigForm = new FormGroup({
         description: new FormControl(),
-        venueId : this.venueFormControl
+        typeId: new FormControl(),
       });
 
       this.updateContactForm = new FormGroup({
         contact: this.linkContactFormControl,
         type: new FormControl()
+      })
+
+      this.venueUpdateForm = new FormGroup({
+        venueId : this.venueFormControl,
       })
   
       if (!this.isAddMode) {
@@ -71,10 +73,20 @@ export class GigDetailComponent implements OnInit {
               .pipe(first())
               .subscribe(x => {
                 this.gigForm.patchValue(x)
+                this.venueUpdateForm.patchValue({
+                    venueId : x.venueId
+                })
               });
       }
 
+      
+      this.gigTypeService.getAll().pipe(first())
+      .subscribe(x => { 
+        this.gigTypes = x  });
+    
+
       console.log(this.gigForm)
+      console.log(this.venueUpdateForm)
 
       this.filteredOptions = this.linkContactFormControl.valueChanges.pipe(
         startWith(''),
@@ -141,9 +153,23 @@ export class GigDetailComponent implements OnInit {
         
     }
 
+    onUpdateVenue() {
+        console.log(this.venueUpdateForm.value)  
+        this.gigService.updateVenue(this.id,this.venueUpdateForm.value)
+        .pipe(first())
+        .subscribe({
+            next: () => {
+                //this.router.navigate(['gig-list']);
+            },
+            error: error => {
+            }
+        });
+    }
+
     onSubmit() {
       this.submitted = true;
   
+      console.log(this.gigForm.value)     
       // stop here if form is invalid
       if (this.gigForm.invalid) {
           return;
@@ -164,10 +190,12 @@ export class GigDetailComponent implements OnInit {
     private create() {
       this.gigService.create(this.gigForm.value)
           .pipe(first())
-          .subscribe({
-              next: () => {
+          .subscribe( {
+              next: (data) => {
                   //this.alertService.success('User added', { keepAfterRouteChange: true });
-                  this.router.navigate(['gig-list']);
+                  this.router.navigate(["gig-detail", data.id ]);
+                  
+                  
               },
               error: error => {
                   //this.alertService.error(error);
@@ -182,7 +210,7 @@ export class GigDetailComponent implements OnInit {
           .subscribe({
               next: () => {
                   //this.alertService.success('User updated', { keepAfterRouteChange: true });
-                  this.router.navigate(['gig-list']);
+                  this.router.navigate(["gig-detail", this.id]);
               },
               error: error => {
                   //this.alertService.error(error);
