@@ -13,41 +13,20 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <label>Gig Description</label>
+                                    
                                     <mat-form-field class="example-full-width">
                                         <input matInput  class="form-control" formControlName="description"  type="text">
                                     </mat-form-field>
 
                                     <mat-label>Type</mat-label>
                                     <mat-form-field >
-
-                                        <!-- <input matInput class="form-control" placeholder="Choose Type" type="text"> -->
-                                        
-                                        
-                                        <mat-select  formControlName="gigType" type="text">
+                                        <mat-select  formControlName="typeId" type="text">
                                             <mat-option *ngFor="let gigType of gigTypes" [value]="gigType.id">
                                             {{gigType.name}}
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field> 
 
-
-                                    <label>Venue</label><br>
-                                    <mat-form-field class="example-full-width" appearance="fill">
-                                        
-                                        
-                                        <input matInput placeholder="Search (name)" [matAutocomplete]="auto1" [formControl]="venueFormControl"/>
-
-                                        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayVenue.bind(this)">
-                                            <mat-option *ngFor="let venue of filteredVenues | async" [value]="venue">
-                                            <span>{{venue.name}}</span><br>
-                                            <small>{{venue.addressLine1}} {{venue.addressLine2}}</small><br>
-                                            <small>{{venue.city}} {{venue.state}} {{venue.zip}}</small><br>
-                                            </mat-option>
-                                        </mat-autocomplete>
-
-                                        
-                                        
-                                    </mat-form-field>
 
 
                                     <button mat-raised-button type="submit" *ngIf="isAddMode" class="btn btn-info pull-right">Add New Gig</button>
@@ -65,7 +44,38 @@
             </div>
            
         </div>
-        <div class="row">
+        <div class="row" *ngIf="!isAddMode">
+            <div class="col-lg-6 col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-tabs card-header-info">
+                        <h4 class="card-title">Venue</h4>
+                        <button mat-raised-button  class="btn btn-info pull-right">Add New Venue</button>
+                    </div>
+                    <div class="card-body">
+                        <form  [formGroup]="venueUpdateForm" (ngSubmit)="onUpdateVenue()">
+                            <label>Venue</label><br>
+                                <mat-form-field class="example-full-width" appearance="fill">
+                                    
+                                    
+                                    <input matInput placeholder="Search (name)" [matAutocomplete]="auto3" [formControl]="venueFormControl"/>
+
+                                    <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displayVenue.bind(this)">
+                                        <mat-option *ngFor="let venue of filteredVenues | async" [value]="venue.id">
+                                        <span>{{venue.name}}</span><br>
+                                        <small>{{venue.addressLine1}} {{venue.addressLine2}}</small><br>
+                                        <small>{{venue.city}} {{venue.state}} {{venue.zip}}</small><br>
+                                        </mat-option>
+                                    </mat-autocomplete>
+
+                                </mat-form-field>
+                                <button mat-raised-button type="submit" class="btn btn-info pull-right">Update Venue</button>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="!isAddMode">
             <div class="col-lg-6 col-md-12">
                 <div class="card">
                     <div class="card-header card-header-tabs card-header-primary">
@@ -251,7 +261,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header card-header-info">
@@ -329,7 +339,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
       
         
