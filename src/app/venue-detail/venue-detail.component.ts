@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { VenueService } from 'app/services/venue.service';
 import { first } from 'rxjs/operators';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-venue-detail',
@@ -20,7 +21,8 @@ export class VenueDetailComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private venueService: VenueService) { }
+    private venueService: VenueService
+    ) { }
 
 
   ngOnInit(): void {

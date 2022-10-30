@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {Observable} from 'rxjs';
@@ -6,15 +6,22 @@ import {map, startWith} from 'rxjs/operators';
 
 import { GigService } from 'app/services/gig.service';
 import { GigTypeService } from 'app/services/gig-type.service';
+import { VenueService } from 'app/services/venue.service';
 import { first } from 'rxjs/operators';
 import { Contact } from 'app/models/contact';
 import { Venue } from 'app/models/venue';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { VenueAddComponent } from 'app/venue-add/venue-add.component';
+
 
 @Component({
   selector: 'app-gig-detail',
   templateUrl: './gig-detail.component.html',
   styleUrls: ['./gig-detail.component.scss']
 })
+
+
+
 export class GigDetailComponent implements OnInit {
 
   gigForm: FormGroup;
@@ -22,6 +29,9 @@ export class GigDetailComponent implements OnInit {
   updateContactForm: FormGroup;
   linkContactFormControl = new FormControl('');
   venueFormControl = new FormControl('');
+
+  newVenue: Venue;
+
   id: string;
   isAddMode: boolean;
   loading = false;
@@ -36,10 +46,9 @@ export class GigDetailComponent implements OnInit {
     }];
 
   gigTypes: any[];
-
-  venues: Venue[] =[{"id":3,"name":"Temple Emanu-El of Closter","phone":"(201) 750-9997","addressLine1":"180 Piermont Rd","addressLine2":null,"city":"Closter","state":"NJ ","zip":"07624"},{"id":4,"name":"The Legacy Castle","phone":"(973) 907-7750","addressLine1":"141 NJ-23","addressLine2":"","city":"Pompton Plains","state":"NJ ","zip":"07444"}];
-
+  venues: Venue[];
   contacts: Contact[] = [{"id":1,"firstName":"David","lastName":"Goldstein","email":"darumsdad@gmail.com","phone":"(201) 688-6234","addressLine1":"377 Windsor Road","addressLine2":"","city":"Bergenfield","state":"NJ","zip":"07621"},{"id":13,"firstName":"Amir","lastName":"Goldstein","email":"amirgold1@yahoo.com","phone":null,"addressLine1":"9 Curtis Ave","addressLine2":null,"city":"West Orange","state":"NJ","zip":"07888"}];
+
   
   filteredOptions: Observable<Contact[]>;
   filteredVenues: Observable<Venue[]>;
@@ -48,8 +57,12 @@ export class GigDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private gigService: GigService,
-    private gigTypeService: GigTypeService) { }
+    private venueService: VenueService,
+    private gigTypeService: GigTypeService,
+    public dialog: MatDialog
+    ) { }
 
+    
     ngOnInit(): void {
       this.id = this.route.snapshot.params['id'];
       this.isAddMode = !this.id;
@@ -68,37 +81,45 @@ export class GigDetailComponent implements OnInit {
         venueId : this.venueFormControl,
       })
   
-      if (!this.isAddMode) {
-          this.gigService.get(this.id)
-              .pipe(first())
-              .subscribe(x => {
-                this.gigForm.patchValue(x)
-                this.venueUpdateForm.patchValue({
-                    venueId : x.venueId
-                })
-              });
-      }
-
+     
       
       this.gigTypeService.getAll().pipe(first())
       .subscribe(x => { 
         this.gigTypes = x  });
-    
 
-      console.log(this.gigForm)
-      console.log(this.venueUpdateForm)
+      this.venueService.getAll().pipe(first())
+      .subscribe(x => { 
+           this.venues = x  
+
+            this.filteredVenues = this.venueFormControl.valueChanges.pipe(
+                startWith(''),
+                map(venue => venue ? this._filterVenue(venue || '') : this.venues.slice()),
+              );
+
+              if (!this.isAddMode) {
+                this.gigService.get(this.id)
+                    .pipe(first())
+                    .subscribe(x => {
+                      this.gigForm.patchValue(x)
+                      this.venueUpdateForm.patchValue({
+                          venueId : x.venueId
+                      })
+                    });
+            }
+
+        });
+     
+
+      //console.log(this.gigForm)
+      console.log(this.venues)
 
       this.filteredOptions = this.linkContactFormControl.valueChanges.pipe(
         startWith(''),
         map(contact => contact ? this._filterContact(contact || '') : this.contacts.slice()),
       );
-
-      this.filteredVenues = this.venueFormControl.valueChanges.pipe(
-        startWith(''),
-        map(venue => venue ? this._filterVenue(venue || '') : this.venues.slice()),
-      );
-
+     
     }
+
 
     displayFn(contact: Contact): string {
         return contact ? contact.firstName + ' ' + contact.lastName : '';
@@ -107,24 +128,22 @@ export class GigDetailComponent implements OnInit {
     displayVenue(venue: Venue): string {
         console.log("--dv");
         console.log(venue);
+
         
-        if (typeof venue === 'string' || venue instanceof String)
+        if (!this.venues)
         {
-            return venue ? venue.name : '';
+            console.log("bompb");
+            return ''
+           
         }
+      
         else if (typeof venue === 'number' || venue instanceof Number)
         {
             return this.venues.filter(v => v.id === venue).length === 1 ? this.venues.find(v => v.id === venue).name : '';
         }
-        else {
-            return this.venues.filter(v => v.id === venue.id).length === 1 ? this.venues.find(v => v.id === venue.id).name : '';
-        }
-            // console.log(typeof venue);
-            // console.log(this.venues);
-            // console.log(this.venues.find(v => v.id === venue));
-            // this.venues.find(v => v.id === venue)
-            
-         
+        
+        return ''
+          
     }
 
     private _filterContact(value: any): Contact[] {
@@ -144,7 +163,7 @@ export class GigDetailComponent implements OnInit {
         if (typeof value === 'string' || value instanceof String)
         {
             const filterValue =  value.toLowerCase()
-            return this.venues.filter(venue => venue.name.toLowerCase().indexOf(filterValue) === 0 || venue.id.toString() === value );
+            return this.venues.filter(venue => venue.name.toLowerCase().includes(filterValue) || venue.id.toString() === value );
         }
         else
         {
@@ -165,6 +184,20 @@ export class GigDetailComponent implements OnInit {
             }
         });
     }
+
+    // addNewVenue()  {
+    //     const dialogRef = this.dialog.open(VenueDetailComponent, {
+    //         width: '250px',
+    //         // data: {name: this.name, animal: this.animal},
+    //       });
+      
+    //       dialogRef.afterClosed().subscribe(result => {
+    //         console.log('The dialog was closed');
+    //         //this.animal = result;
+    //       });
+
+    // }
+
 
     onSubmit() {
       this.submitted = true;
@@ -219,4 +252,24 @@ export class GigDetailComponent implements OnInit {
           });
     }
 
+    openDialog(): void {
+      const dialogRef = this.dialog.open(VenueAddComponent, {
+        width: '750px',
+        data: {newVenue: this.newVenue},
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        console.log(result);
+       
+        this.venues.push(result)
+        this.venueUpdateForm.patchValue({
+          venueId : result.id
+        })
+        this.onUpdateVenue()
+      });
+    }
+
 }
+
+ 

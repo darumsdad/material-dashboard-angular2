@@ -27,8 +27,6 @@
                                         </mat-select>
                                     </mat-form-field> 
 
-
-
                                     <button mat-raised-button type="submit" *ngIf="isAddMode" class="btn btn-info pull-right">Add New Gig</button>
                                     <button mat-raised-button type="submit" *ngIf="!isAddMode" class="btn btn-info pull-right">Update Gig</button>
                                     <div class="clearfix"></div>
@@ -49,9 +47,17 @@
                 <div class="card">
                     <div class="card-header card-header-tabs card-header-info">
                         <h4 class="card-title">Venue</h4>
-                        <button mat-raised-button  class="btn btn-info pull-right">Add New Venue</button>
+                        
+                   
+
+                        
                     </div>
                     <div class="card-body">
+                        
+                            <button mat-button (click)="openDialog()"  class="btn btn-info pull-right" >
+                                <i class="material-icons">add</i> Add
+                            </button>
+                      
                         <form  [formGroup]="venueUpdateForm" (ngSubmit)="onUpdateVenue()">
                             <label>Venue</label><br>
                                 <mat-form-field class="example-full-width" appearance="fill">
@@ -70,8 +76,11 @@
                                 </mat-form-field>
                                 <button mat-raised-button type="submit" class="btn btn-info pull-right">Update Venue</button>
                         </form>
-                        
+                        <div class="col-md-12">
+                           
+                        </div>
                     </div>
+                    
                 </div>
             </div>
         </div>

@@ -25,6 +25,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { VenueAddComponent } from '../../venue-add/venue-add.component';
+import { AutocompleteComponent  } from '../../google-places-autocomplete/google-places-autocomplete.component';
 
 @NgModule({
   imports: [
@@ -39,7 +42,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatSelectModule,
     MatTooltipModule,
     Ng2SearchPipeModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatDialogModule
   ],
   declarations: [
     DashboardComponent,
@@ -56,6 +60,9 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MapsComponent,
     NotificationsComponent,
     UpgradeComponent,
+    VenueAddComponent,
+    AutocompleteComponent 
+    
   ]
 })
 
