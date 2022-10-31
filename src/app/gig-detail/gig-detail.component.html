@@ -1,7 +1,20 @@
 <div class="main-content">
     <div class="container-fluid">
+
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-lg-5 col-md-12"> 
+            <button mat-raised-button type="submit" *ngIf="!isAddMode" class="btn btn-warning pull-left"
+                (click)="onSubmit()"><i class="material-icons">save</i> Save
+            </button>
+            <button mat-raised-button (click)="onSubmit()" *ngIf="isAddMode" class="btn btn-alert pull-left"><i
+                    class="material-icons">add</i> Click to continue
+            </button>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-5 col-md-12">
                 <div class="card">
                     <div class="card-header card-header-info">
                         <h4 class="card-title">Gig</h4>
@@ -27,23 +40,81 @@
                                         </mat-select>
                                     </mat-form-field>
 
-                                    <button mat-raised-button type="submit" *ngIf="isAddMode"
-                                        class="btn btn-info pull-right">Add New Gig</button>
-                                    <button mat-raised-button type="submit" *ngIf="!isAddMode"
-                                        class="btn btn-info pull-right">Update Gig</button>
-                                    <div class="clearfix"></div>
-
-
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
+            <div class="col-lg-4 col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Status</h4>
+                    </div>
+                    <div class="card-body">
+                        <form [formGroup]="gigForm">
 
+
+                            <mat-label>Status</mat-label>
+                            <mat-form-field>
+                                <mat-select formControlName="statusId" type="text">
+                                    <mat-option *ngFor="let gigStatus of gigStatuses" [value]="gigStatus.id">
+                                        {{gigStatus.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-lg-2 col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Quote</h4>
+                    </div>
+                    <div class="card-body">
+                        <form [formGroup]="gigForm">
+
+
+                            <mat-label>Quote</mat-label>
+                            <mat-form-field class="example-full-width">
+                                <input matInput class="form-control" formControlName="quote" type="text">
+                            </mat-form-field>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
         </div>
+
+
         <div class="row" *ngIf="!isAddMode">
-            <div class="col-lg-12 col-md-12">
+            <div class="col-lg-5 col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Notes</h4>
+                    </div>
+                    <div class="card-body">
+                        <form [formGroup]="gigForm">
+                            <editor formControlName="note" apiKey="p9ejaukcdifecl6fhwowyud2bjuqzwbyfiyhtktmxtvbx0nq"
+                                [init]="{
+                                    height : '200',
+                    
+                            toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | help'
+
+                        }"></editor>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-lg-5 col-md-12">
                 <div class="card">
                     <div class="card-header card-header-tabs card-header-info">
                         <h4 class="card-title">Venue</h4>
@@ -54,39 +125,36 @@
                             <i class="material-icons">add</i> Add
                         </button>
 
-                        <form [formGroup]="venueUpdateForm" (ngSubmit)="onUpdateVenue()">
+                        <form [formGroup]="gigForm">
                             <label>Venue</label><br>
                             <mat-form-field class="example-full-width" appearance="fill">
 
                                 <input matInput placeholder="Search (name)" [matAutocomplete]="auto3"
-                                    [formControl]="venueFormControl" />
+                                    formControlName="venueId" />
 
                                 <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displayVenue.bind(this)">
                                     <mat-option *ngFor="let venue of filteredVenues | async" [value]="venue.id">
-                                        <span>{{venue.name}}</span><br>
+                                        <span>{{venue.id}} {{venue.name}}</span><br>
                                         <small>{{venue.addressLine1}} {{venue.addressLine2}}</small><br>
                                         <small>{{venue.city}} {{venue.state}} {{venue.zip}}</small><br>
                                     </mat-option>
                                 </mat-autocomplete>
 
                             </mat-form-field>
-                            <button mat-raised-button type="submit" class="btn btn-info pull-right">Update
-                                Venue</button>
-                        </form>
-                        <div class="col-md-12">
 
-                        </div>
+                        </form>
+
                     </div>
 
                 </div>
+
             </div>
         </div>
-
         <div class="row" *ngIf="!isAddMode">
             <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="card-header card-header-tabs card-header-info">
-                        <h4 class="card-title">Venue</h4>
+                        <h4 class="card-title">Contacts</h4>
                     </div>
                     <div class="card-body">
 
@@ -157,7 +225,10 @@
     </div>
 
 
-  
+
+
+
+
 
 
 

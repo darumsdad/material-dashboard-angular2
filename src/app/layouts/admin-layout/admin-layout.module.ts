@@ -30,6 +30,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { VenueAddComponent } from '../../venue-add/venue-add.component';
 import { AutocompleteComponent  } from '../../google-places-autocomplete/google-places-autocomplete.component';
 import { GigContactComponent } from 'app/gig-contact/gig-contact.component';
+import { EditorModule } from '@tinymce/tinymce-angular';
 
 @NgModule({
   imports: [
@@ -46,7 +47,8 @@ import { GigContactComponent } from 'app/gig-contact/gig-contact.component';
     Ng2SearchPipeModule,
     MatAutocompleteModule,
     MatDialogModule,
-    MatIconModule
+    MatIconModule,
+    EditorModule
     
   ],
   declarations: [
