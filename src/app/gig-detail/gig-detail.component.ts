@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import {Observable} from 'rxjs';
+import {forkJoin, Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
 import { GigService } from 'app/services/gig.service';
@@ -12,6 +12,10 @@ import { Contact } from 'app/models/contact';
 import { Venue } from 'app/models/venue';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { VenueAddComponent } from 'app/venue-add/venue-add.component';
+import { GigContactService } from 'app/services/gig-contact.service';
+import { GigContact } from 'app/models/gig-contact';
+import { GigContactComponent } from 'app/gig-contact/gig-contact.component';
+import { ContactService } from 'app/services/contact.service';
 
 
 @Component({
@@ -38,17 +42,12 @@ export class GigDetailComponent implements OnInit {
   submitted = false;
 
    
-  contactTypes: any[] = [
-    { id: 1,
-        name: "Bride"
-    },{ id: 2,
-        name: "Groom"
-    }];
+  contactTypes: any[];
 
-  gigTypes: any[];
-  venues: Venue[];
-  contacts: Contact[] = [{"id":1,"firstName":"David","lastName":"Goldstein","email":"darumsdad@gmail.com","phone":"(201) 688-6234","addressLine1":"377 Windsor Road","addressLine2":"","city":"Bergenfield","state":"NJ","zip":"07621"},{"id":13,"firstName":"Amir","lastName":"Goldstein","email":"amirgold1@yahoo.com","phone":null,"addressLine1":"9 Curtis Ave","addressLine2":null,"city":"West Orange","state":"NJ","zip":"07888"}];
-
+  gigTypes: any[] = [];
+  venues: Venue[] = [];
+  contacts: Contact[] = []
+  gigContacts : GigContact[] = [];
   
   filteredOptions: Observable<Contact[]>;
   filteredVenues: Observable<Venue[]>;
@@ -59,6 +58,8 @@ export class GigDetailComponent implements OnInit {
     private gigService: GigService,
     private venueService: VenueService,
     private gigTypeService: GigTypeService,
+    private gigContactService: GigContactService,
+    private contactService: ContactService,
     public dialog: MatDialog
     ) { }
 
@@ -66,7 +67,7 @@ export class GigDetailComponent implements OnInit {
     ngOnInit(): void {
       this.id = this.route.snapshot.params['id'];
       this.isAddMode = !this.id;
-      
+
       this.gigForm = new FormGroup({
         description: new FormControl(),
         typeId: new FormControl(),
@@ -80,16 +81,15 @@ export class GigDetailComponent implements OnInit {
       this.venueUpdateForm = new FormGroup({
         venueId : this.venueFormControl,
       })
-  
-     
       
       this.gigTypeService.getAll().pipe(first())
-      .subscribe(x => { 
-        this.gigTypes = x  });
+      .subscribe(x => { this.gigTypes = x  });
 
       this.venueService.getAll().pipe(first())
       .subscribe(x => { 
-           this.venues = x  
+        
+        console.log(this.venues)
+        this.venues = x  
 
             this.filteredVenues = this.venueFormControl.valueChanges.pipe(
                 startWith(''),
@@ -97,20 +97,24 @@ export class GigDetailComponent implements OnInit {
               );
 
               if (!this.isAddMode) {
-                this.gigService.get(this.id)
-                    .pipe(first())
-                    .subscribe(x => {
-                      this.gigForm.patchValue(x)
-                      this.venueUpdateForm.patchValue({
-                          venueId : x.venueId
-                      })
-                    });
-            }
+                this.gigContactService.getByGigId(!this.id ? 0 :this.id).pipe(first())
+                .subscribe(x => { 
+                  this.gigContacts = x  
 
+                  this.gigService.get(this.id)
+                  .pipe(first())
+                  .subscribe(x => {
+                    this.gigForm.patchValue(x)
+                    this.venueUpdateForm.patchValue({
+                        venueId : x.venueId
+                    })
+                  });
+
+                });
+              }
         });
-     
+       
 
-      //console.log(this.gigForm)
       console.log(this.venues)
 
       this.filteredOptions = this.linkContactFormControl.valueChanges.pipe(
@@ -120,23 +124,21 @@ export class GigDetailComponent implements OnInit {
      
     }
 
+    loadContacts()
+    {}
 
     displayFn(contact: Contact): string {
         return contact ? contact.firstName + ' ' + contact.lastName : '';
     }
 
     displayVenue(venue: Venue): string {
-        console.log("--dv");
-        console.log(venue);
+        console.log('Venue: displayVenue' + venue);
 
         
         if (!this.venues)
         {
-            console.log("bompb");
             return ''
-           
         }
-      
         else if (typeof venue === 'number' || venue instanceof Number)
         {
             return this.venues.filter(v => v.id === venue).length === 1 ? this.venues.find(v => v.id === venue).name : '';
@@ -155,10 +157,7 @@ export class GigDetailComponent implements OnInit {
     }
 
     private _filterVenue(value: any): Venue[] {
-        console.log("--V");
-        console.log(value)
-        
-      
+        console.log('_filterVenue ' + value)
 
         if (typeof value === 'string' || value instanceof String)
         {
@@ -172,32 +171,24 @@ export class GigDetailComponent implements OnInit {
         
     }
 
-    onUpdateVenue() {
-        console.log(this.venueUpdateForm.value)  
-        this.gigService.updateVenue(this.id,this.venueUpdateForm.value)
-        .pipe(first())
-        .subscribe({
-            next: () => {
-                //this.router.navigate(['gig-list']);
-            },
-            error: error => {
-            }
-        });
+    onUpdateContacts() {
+      this.gigContactService.getByGigId(!this.id ? 0 :this.id).pipe(first())
+      .subscribe(x => { 
+        this.gigContacts = x  })
+
     }
 
-    // addNewVenue()  {
-    //     const dialogRef = this.dialog.open(VenueDetailComponent, {
-    //         width: '250px',
-    //         // data: {name: this.name, animal: this.animal},
-    //       });
-      
-    //       dialogRef.afterClosed().subscribe(result => {
-    //         console.log('The dialog was closed');
-    //         //this.animal = result;
-    //       });
-
-    // }
-
+    onUpdateVenue() {
+      console.log(this.venueUpdateForm.value)  
+      this.gigService.updateVenue(this.id,this.venueUpdateForm.value)
+      .pipe(first())
+      .subscribe({
+          next: () => {
+          },
+          error: error => {
+          }
+      });
+  }
 
     onSubmit() {
       this.submitted = true;
@@ -225,14 +216,9 @@ export class GigDetailComponent implements OnInit {
           .pipe(first())
           .subscribe( {
               next: (data) => {
-                  //this.alertService.success('User added', { keepAfterRouteChange: true });
                   this.router.navigate(["gig-detail", data.id ]);
-                  
-                  
               },
               error: error => {
-                  //this.alertService.error(error);
-                  //this.loading = false;
               }
           });
     }
@@ -242,11 +228,9 @@ export class GigDetailComponent implements OnInit {
           .pipe(first())
           .subscribe({
               next: () => {
-                  //this.alertService.success('User updated', { keepAfterRouteChange: true });
                   this.router.navigate(["gig-detail", this.id]);
               },
               error: error => {
-                  //this.alertService.error(error);
                   this.loading = false;
               }
           });
@@ -262,12 +246,72 @@ export class GigDetailComponent implements OnInit {
         console.log('The dialog was closed');
         console.log(result);
        
-        this.venues.push(result)
+        if (this.venues)
+        {
+          this.venues.push(result)
+        }
+        else
+        {
+          this.venues = [result];
+        }
         this.venueUpdateForm.patchValue({
           venueId : result.id
         })
         this.onUpdateVenue()
       });
+    }
+
+    addNewContact(): void {
+      const dialogRef = this.dialog.open(GigContactComponent, {
+        width: '750px',
+        data: {gigId: this.id},
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        console.log(result);
+       
+        
+        this.onUpdateContacts()
+      });
+    }
+
+    editContact(data: any): void {
+      const dialogRef = this.dialog.open(GigContactComponent, {
+        width: '750px',
+        data: {gigId: this.id, gigContact: data},
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        console.log(result);
+       
+        
+        this.onUpdateContacts()
+      });
+    }
+
+    deleteContact(data: any): void {
+      console.log(data);
+      //this.gigContactService.delete(data.)
+      if(confirm("Are you sure to delete "+ data.contact.firstName + ' ' + data.contact.lastName)) {
+        console.log("Implement delete functionality here");
+        this.gigContactService.delete(data.id).subscribe({
+          next: () => {
+              this.contactService.delete(data.contact.id).subscribe({
+                next: () => {
+                  this.onUpdateContacts()
+                }
+              })
+              
+          },
+          error: error => {
+               
+          }
+      });
+      }
+        
+      
     }
 
 }

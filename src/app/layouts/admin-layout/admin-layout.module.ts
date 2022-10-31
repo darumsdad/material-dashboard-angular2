@@ -26,8 +26,10 @@ import {MatSelectModule} from '@angular/material/select';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { VenueAddComponent } from '../../venue-add/venue-add.component';
 import { AutocompleteComponent  } from '../../google-places-autocomplete/google-places-autocomplete.component';
+import { GigContactComponent } from 'app/gig-contact/gig-contact.component';
 
 @NgModule({
   imports: [
@@ -43,7 +45,9 @@ import { AutocompleteComponent  } from '../../google-places-autocomplete/google-
     MatTooltipModule,
     Ng2SearchPipeModule,
     MatAutocompleteModule,
-    MatDialogModule
+    MatDialogModule,
+    MatIconModule
+    
   ],
   declarations: [
     DashboardComponent,
@@ -61,7 +65,8 @@ import { AutocompleteComponent  } from '../../google-places-autocomplete/google-
     NotificationsComponent,
     UpgradeComponent,
     VenueAddComponent,
-    AutocompleteComponent 
+    AutocompleteComponent,
+    GigContactComponent,
     
   ]
 })

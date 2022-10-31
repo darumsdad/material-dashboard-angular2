@@ -18,17 +18,6 @@ export class VenueAddComponent  implements OnInit {
   
   form: FormGroup;
 
-  // address: Object;
-  // establishmentAddress: Object;
-
-  // formattedAddress: string;
-  // formattedEstablishmentAddress: string;
-
-  
-  // phone: string;
-
-   
-
   constructor(public zone: NgZone,
     private formBuilder: FormBuilder,
     private venueService: VenueService,
@@ -58,24 +47,16 @@ export class VenueAddComponent  implements OnInit {
         return;
     }
 
-    firstValueFrom(this.venueService.create(this.form.value)).then(v => {
-      console.log(v)
-      this.dialogRef.close(v);
-    })
+    this.venueService.create(this.form.value).subscribe({
+          next: (data) => {
+              console.log(data.id)
+              this.newVenue = data
+              this.dialogRef.close(data);
+          },
+          error: error => {
+          }
+      });
 
-    
-        
-        // .subscribe({
-        //     next: (data) => {
-               
-        //         console.log(data.id)
-        //         this.newVenue = data
-        //         //this.router.navigate(['venue-list']);
-        //     },
-        //     error: error => {
-                
-        //     }
-        // });
   }
 
 
@@ -101,7 +82,6 @@ export class VenueAddComponent  implements OnInit {
         zip : this.getPostCode(place),
         phone : place['formatted_phone_number']
       })
-
 
     });
    

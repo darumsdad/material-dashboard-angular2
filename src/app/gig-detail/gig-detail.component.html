@@ -7,351 +7,159 @@
                         <h4 class="card-title">Gig</h4>
                     </div>
                     <div class="card-body">
-                        <form  [formGroup]="gigForm" (ngSubmit)="onSubmit()">
+                        <form [formGroup]="gigForm" (ngSubmit)="onSubmit()">
 
-                           
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <label>Gig Description</label>
-                                    
+
                                     <mat-form-field class="example-full-width">
-                                        <input matInput  class="form-control" formControlName="description"  type="text">
+                                        <input matInput class="form-control" formControlName="description" type="text">
                                     </mat-form-field>
 
                                     <mat-label>Type</mat-label>
-                                    <mat-form-field >
-                                        <mat-select  formControlName="typeId" type="text">
+                                    <mat-form-field>
+                                        <mat-select formControlName="typeId" type="text">
                                             <mat-option *ngFor="let gigType of gigTypes" [value]="gigType.id">
-                                            {{gigType.name}}
+                                                {{gigType.name}}
                                             </mat-option>
                                         </mat-select>
-                                    </mat-form-field> 
+                                    </mat-form-field>
 
-                                    <button mat-raised-button type="submit" *ngIf="isAddMode" class="btn btn-info pull-right">Add New Gig</button>
-                                    <button mat-raised-button type="submit" *ngIf="!isAddMode" class="btn btn-info pull-right">Update Gig</button>
+                                    <button mat-raised-button type="submit" *ngIf="isAddMode"
+                                        class="btn btn-info pull-right">Add New Gig</button>
+                                    <button mat-raised-button type="submit" *ngIf="!isAddMode"
+                                        class="btn btn-info pull-right">Update Gig</button>
                                     <div class="clearfix"></div>
 
 
                                 </div>
                             </div>
-
-                           
                         </form>
                     </div>
                 </div>
             </div>
-           
+
         </div>
         <div class="row" *ngIf="!isAddMode">
-            <div class="col-lg-6 col-md-12">
+            <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="card-header card-header-tabs card-header-info">
                         <h4 class="card-title">Venue</h4>
-                        
-                   
-
-                        
                     </div>
                     <div class="card-body">
-                        
-                            <button mat-button (click)="openDialog()"  class="btn btn-info pull-right" >
-                                <i class="material-icons">add</i> Add
-                            </button>
-                      
-                        <form  [formGroup]="venueUpdateForm" (ngSubmit)="onUpdateVenue()">
-                            <label>Venue</label><br>
-                                <mat-form-field class="example-full-width" appearance="fill">
-                                    
-                                    
-                                    <input matInput placeholder="Search (name)" [matAutocomplete]="auto3" [formControl]="venueFormControl"/>
 
-                                    <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displayVenue.bind(this)">
-                                        <mat-option *ngFor="let venue of filteredVenues | async" [value]="venue.id">
+                        <button mat-button (click)="openDialog()" class="btn btn-info pull-right">
+                            <i class="material-icons">add</i> Add
+                        </button>
+
+                        <form [formGroup]="venueUpdateForm" (ngSubmit)="onUpdateVenue()">
+                            <label>Venue</label><br>
+                            <mat-form-field class="example-full-width" appearance="fill">
+
+                                <input matInput placeholder="Search (name)" [matAutocomplete]="auto3"
+                                    [formControl]="venueFormControl" />
+
+                                <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displayVenue.bind(this)">
+                                    <mat-option *ngFor="let venue of filteredVenues | async" [value]="venue.id">
                                         <span>{{venue.name}}</span><br>
                                         <small>{{venue.addressLine1}} {{venue.addressLine2}}</small><br>
                                         <small>{{venue.city}} {{venue.state}} {{venue.zip}}</small><br>
-                                        </mat-option>
-                                    </mat-autocomplete>
+                                    </mat-option>
+                                </mat-autocomplete>
 
-                                </mat-form-field>
-                                <button mat-raised-button type="submit" class="btn btn-info pull-right">Update Venue</button>
+                            </mat-form-field>
+                            <button mat-raised-button type="submit" class="btn btn-info pull-right">Update
+                                Venue</button>
                         </form>
                         <div class="col-md-12">
-                           
+
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
+
         <div class="row" *ngIf="!isAddMode">
-            <div class="col-lg-6 col-md-12">
+            <div class="col-lg-12 col-md-12">
                 <div class="card">
-                    <div class="card-header card-header-tabs card-header-primary">
-                        <div class="nav-tabs-navigation">
-                            <div class="nav-tabs-wrapper">
-                                <span class="nav-tabs-title">Contacts:</span>
-                                <ul class="nav nav-tabs" data-tabs="tabs">
-                                    <li class="nav-item">
-                                        <a mat-button class="nav-link active" href="#contact-view" data-toggle="tab">
-                                            <i class="material-icons">person</i> View
-                                            <div class="ripple-container"></div>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a mat-button class="nav-link" href="#contact-edit" data-toggle="tab">
-                                            <i class="material-icons">edit</i> Edit
-                                            <div class="ripple-container"></div>
-                                        </a>
-                                    </li>
-                                    
-                                </ul>
-                            </div>
-                        </div>
+                    <div class="card-header card-header-tabs card-header-info">
+                        <h4 class="card-title">Venue</h4>
                     </div>
                     <div class="card-body">
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="contact-view">
-                                <table class="table">
-                                    <tbody>
 
+                        <button mat-button (click)="addNewContact()" class="btn btn-info pull-right">
+                            <i class="material-icons">add</i> Add
+                        </button>
+
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0 bg-white">
+                                <thead class="bg-light">
                                     <tr>
+                                        <th></th>
+                                        <th>Name</th>
+                                        <th>Address</th>
+                                        <th>Type</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let gigContact of gigContacts">
 
                                         <td>
-                                        <i class="material-icons">face</i>
+                                            <i class="material-icons">{{gigContact.type.icon}}</i>
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                              <div class="ms-1">
-                                                <p class="fw-bold mb-1"><b>Joe Shmo</b></p>
-                                                <p class="text-muted mb-0">joe@shmo.com</p>
-                                                <p class="text-muted mb-0">222-333-1212</p>
-                                              </div>
+                                                <div class="ms-1">
+                                                    <p class="fw-bold mb-1"><b>{{gigContact.contact.firstName}}
+                                                            {{gigContact.contact.lastName}}</b></p>
+                                                    <p class="text-muted mb-0">{{gigContact.contact.email}}</p>
+                                                    <p class="text-muted mb-0">{{gigContact.contact.phone}}</p>
+                                                </div>
                                             </div>
-                                          </td>
-                                          <td>
-                                            <p class="fw-normal mb-1">333 Someplace Road</p>
-                                            <p class="text-muted mb-0"> There, NY 09987</p>
-                                          </td>
-                                          <td>
-                                            <p class="fw-normal mb-1">Groom</p>
-                                          </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <i class="material-icons">face_2</i>
                                         </td>
                                         <td>
-                                            <div class="d-flex align-items-center">
-                                              <div class="ms-1">
-                                                <p class="fw-bold mb-1"><b>Joe Shmo</b></p>
-                                                <p class="text-muted mb-0">joe@shmo.com</p>
-                                                <p class="text-muted mb-0">222-333-1212</p>
-                                              </div>
-                                            </div>
-                                          </td>
-                                          <td>
-                                            <p class="fw-normal mb-1">333 Someplace Road</p>
-                                            <p class="text-muted mb-0"> There, NY 09987</p>
-                                          </td>
-                                          <td>
-                                            <p class="fw-normal mb-1">Bride</p>
-                                          </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <i class="material-icons">fact_check</i>
+                                            <p class="fw-normal mb-1">{{gigContact.contact.addressLine1}}
+                                                {{gigContact.contact.addressLine2}}</p>
+                                            <p class="text-muted mb-0"> {{gigContact.contact.city}}
+                                                {{gigContact.contact.state}}, {{gigContact.contact.zip}}</p>
                                         </td>
                                         <td>
-                                            <div class="d-flex align-items-center">
-                                              <div class="ms-1">
-                                                <p class="fw-bold mb-1"><b>Joe Shmo</b></p>
-                                                <p class="text-muted mb-0">joe@shmo.com</p>
-                                                <p class="text-muted mb-0">222-333-1212</p>
-                                              </div>
-                                            </div>
-                                          </td>
-                                          <td>
-                                            <p class="fw-normal mb-1">333 Someplace Road</p>
-                                            <p class="text-muted mb-0"> There, NY 09987</p>
-                                          </td>
-                                          <td>
-                                            <p class="fw-normal mb-1">Planner</p>
-                                          </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <i class="material-icons">family_restroom</i>
+                                            <p class="fw-normal mb-1">{{gigContact.type.name}}</p>
                                         </td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                              <div class="ms-1">
-                                                <p class="fw-bold mb-1"><b>Joe Shmo</b></p>
-                                                <p class="text-muted mb-0">joe@shmo.com</p>
-                                                <p class="text-muted mb-0">222-333-1212</p>
-                                              </div>
-                                            </div>
-                                          </td>
-                                          <td>
-                                            <p class="fw-normal mb-1">333 Someplace Road</p>
-                                            <p class="text-muted mb-0"> There, NY 09987</p>
-                                          </td>
-                                          <td>
-                                            <p class="fw-normal mb-1">Family (Bride)</p>
-                                          </td>
+
+
+                                        <td class="td-actions">
+                                            <button type="button" rel="tooltip" class="btn btn-info"
+                                                (click)="editContact(gigContact)">
+                                                <i class="material-icons">edit</i>
+                                            </button>
+                                            <p></p>
+                                            <button type="button" rel="tooltip" class="btn btn-warning"
+                                                (click)="deleteContact(gigContact)">
+                                                <i class="material-icons">delete</i>
+                                            </button>
+                                        </td>
+
                                     </tr>
-                                       
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div class="tab-pane" id="contact-edit">
-                                <div class="container-fluid">
-                                    <form [formGroup]="updateContactForm" (ngSubmit)="onLinkContact()">
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                
-                                                <label>Contact</label>
-                                                <mat-form-field class="example-full-width" appearance="fill">
-                                                    
-                                                    
-                                                    <input matInput placeholder="Search (last name)" [matAutocomplete]="auto2" [formControl]="linkContactFormControl"/>
-
-                                                    <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayFn.bind(this)">
-                                                        <mat-option *ngFor="let contact of filteredOptions | async" [value]="contact">
-                                                        <span>{{contact.firstName}} {{contact.lastName}}</span><br>
-                                                        
-                                                        <small>{{contact.addressLine1}} {{contact.addressLine2}}</small><br>
-                                                        <small>{{contact.city}} {{contact.state}} {{contact.zip}}</small><br>
-                                                        <small>{{contact.email}}</small><br>
-                                                        </mat-option>
-                                                    </mat-autocomplete>
-                                            
-                                                    
-                                                    
-                                                </mat-form-field>
-
-                                                    
-                                                <br>    
-
-                                                <mat-form-field >
-
-                                                    <!-- <input matInput class="form-control" placeholder="Choose Type" type="text"> -->
-                                                    
-                                                    <mat-label>Contact Type</mat-label>
-                                                    <mat-select  formControlName="type" placeholder="Choose Type" type="text">
-                                                        <mat-option *ngFor="let contactType of contactTypes" [value]="contactType.id">
-                                                        {{contactType.name}}
-                                                        </mat-option>
-                                                    </mat-select>
-                                                </mat-form-field> 
-
-                                                
-
-                                                <button mat-raised-button type="submit" class="btn btn-info pull-right">Link</button>
-                                            </div>
-                                                
-                                        </div>
-                                    </form>
-                                   
-                            
-                                </div>
-                            </div>
-
-                               
-                             
-                            
+                                </tbody>
+                            </table>
                         </div>
+
                     </div>
                 </div>
+
             </div>
         </div>
-
-        <!-- <div class="row">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header card-header-info">
-                        <h4 class="card-title">Disgital Assets</h4>
-                    </div>
-                    <div class="card-body">
-                        <table class="table">
-                            <tbody>
-
-                            <tr>
-
-                                <td>
-                                <i class="material-icons">live_tv</i>
-                                </td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                      <div class="ms-1">
-                                        <p class="fw-bold mb-1"><b>Highlight</b></p>
-                                      </div>
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <p class="fw-normal mb-1">https://vimeo.com/678900194/1142720d48</p>
-                                    <img src="https://i.vimeocdn.com/video/1375764997-ac535f4d660990042f632423ab8d0d021cc6d6a7741b44bdce5ef0e8085cd4a9-d_200x150?r=pad">
-                                  </td>
-                                  <td>
-                                    <input
-                                    mdbCheckbox
-                                    class="big-checkbox"
-                                    type="checkbox"
-                                    value=""
-                                    id="flexCheckChecked"
-                                    [checked]="true"
-                                  />
-                                  </td>
-                                  <td>
-                                    
-                                  </td>
-                            </tr>
-
-                            <tr>
-
-                                <td>
-                                <i class="material-icons">live_tv</i>
-                                </td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                      <div class="ms-1">
-                                        <p class="fw-bold mb-1"><b>Full Edit</b></p>
-                                      </div>
-                                    </div>
-                                  </td>
-                                  <td>
-                                  </td>
-                                  <td>
-                                    <input
-                                    mdbCheckbox
-                                    class="big-checkbox"
-                                    type="checkbox"
-                                    value=""
-                                    id="flexCheckChecked"
-                                    [checked]="false"
-                                  />
-                                  </td>
-                                  <td>
-                                    
-                                  </td>
-                            </tr>
-                             
-
-                            
-                               
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
-      
-        
     </div>
 
+
   
+
+
+
+
+</div>

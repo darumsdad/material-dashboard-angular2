@@ -27,8 +27,6 @@ export class GigService {
   }
 
   updateVenue(id: any, data: any): Observable<any> {
-    console.log(data)
-    console.log('0000')
     return this.http.put(`${this.baseUrl}/${id}/venue`, data);
   }
 
