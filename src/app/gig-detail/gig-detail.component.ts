@@ -16,6 +16,7 @@ import { GigContactService } from 'app/services/gig-contact.service';
 import { GigContact } from 'app/models/gig-contact';
 import { GigContactComponent } from 'app/gig-contact/gig-contact.component';
 import { ContactService } from 'app/services/contact.service';
+import { GigStatusService } from 'app/services/gig-status.service';
 
 
 @Component({
@@ -45,6 +46,7 @@ export class GigDetailComponent implements OnInit {
   contactTypes: any[];
 
   gigTypes: any[] = [];
+  gigStatuses: any[] = [];
   venues: Venue[] = [];
   contacts: Contact[] = []
   gigContacts : GigContact[] = [];
@@ -58,6 +60,7 @@ export class GigDetailComponent implements OnInit {
     private gigService: GigService,
     private venueService: VenueService,
     private gigTypeService: GigTypeService,
+    private gigStatusService: GigStatusService,
     private gigContactService: GigContactService,
     private contactService: ContactService,
     public dialog: MatDialog
@@ -71,19 +74,17 @@ export class GigDetailComponent implements OnInit {
       this.gigForm = new FormGroup({
         description: new FormControl(),
         typeId: new FormControl(),
+        note: new FormControl(),
+        quote: new FormControl(),
+        venueId : new FormControl(),
+        statusId : new FormControl()
       });
-
-      this.updateContactForm = new FormGroup({
-        contact: this.linkContactFormControl,
-        type: new FormControl()
-      })
-
-      this.venueUpdateForm = new FormGroup({
-        venueId : this.venueFormControl,
-      })
       
       this.gigTypeService.getAll().pipe(first())
       .subscribe(x => { this.gigTypes = x  });
+
+      this.gigStatusService.getAll().pipe(first())
+      .subscribe(x => { this.gigStatuses = x  });
 
       this.venueService.getAll().pipe(first())
       .subscribe(x => { 
@@ -104,10 +105,10 @@ export class GigDetailComponent implements OnInit {
                   this.gigService.get(this.id)
                   .pipe(first())
                   .subscribe(x => {
+                    console.log(x)
                     this.gigForm.patchValue(x)
-                    this.venueUpdateForm.patchValue({
-                        venueId : x.venueId
-                    })
+                    console.log(this.gigForm)
+                   
                   });
 
                 });
@@ -179,15 +180,7 @@ export class GigDetailComponent implements OnInit {
     }
 
     onUpdateVenue() {
-      console.log(this.venueUpdateForm.value)  
-      this.gigService.updateVenue(this.id,this.venueUpdateForm.value)
-      .pipe(first())
-      .subscribe({
-          next: () => {
-          },
-          error: error => {
-          }
-      });
+     
   }
 
     onSubmit() {
@@ -205,10 +198,6 @@ export class GigDetailComponent implements OnInit {
       } else {
           this.update();
       }
-    }
-
-    onLinkContact() {
-        console.log(this.updateContactForm.value)     
     }
 
     private create() {
@@ -254,10 +243,11 @@ export class GigDetailComponent implements OnInit {
         {
           this.venues = [result];
         }
-        this.venueUpdateForm.patchValue({
+        
+        this.gigForm.patchValue({
           venueId : result.id
         })
-        this.onUpdateVenue()
+       
       });
     }
 
