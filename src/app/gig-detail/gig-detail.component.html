@@ -134,7 +134,7 @@
 
                                 <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displayVenue.bind(this)">
                                     <mat-option *ngFor="let venue of filteredVenues | async" [value]="venue.id">
-                                        <span>{{venue.id}} {{venue.name}}</span><br>
+                                        <span>{{venue.name}}</span><br>
                                         <small>{{venue.addressLine1}} {{venue.addressLine2}}</small><br>
                                         <small>{{venue.city}} {{venue.state}} {{venue.zip}}</small><br>
                                     </mat-option>
