@@ -1,3 +1,5 @@
+import { Moment } from "moment"
+
 export class Gig {
     id?: any
     description: string
@@ -6,4 +8,5 @@ export class Gig {
     venueId: number
     statusId: number
     typeId: number
+    dateTime: Moment
 }

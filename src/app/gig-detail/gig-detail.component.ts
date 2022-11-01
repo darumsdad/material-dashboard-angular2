@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {forkJoin, Observable} from 'rxjs';
@@ -17,6 +17,7 @@ import { GigContact } from 'app/models/gig-contact';
 import { GigContactComponent } from 'app/gig-contact/gig-contact.component';
 import { ContactService } from 'app/services/contact.service';
 import { GigStatusService } from 'app/services/gig-status.service';
+import * as moment from 'moment';
 
 
 @Component({
@@ -66,6 +67,7 @@ export class GigDetailComponent implements OnInit {
     public dialog: MatDialog
     ) { }
 
+    @ViewChild('picker') picker: any;
     
     ngOnInit(): void {
       this.id = this.route.snapshot.params['id'];
@@ -77,7 +79,8 @@ export class GigDetailComponent implements OnInit {
         note: new FormControl(),
         quote: new FormControl(),
         venueId : new FormControl(),
-        statusId : new FormControl()
+        statusId : new FormControl(),
+        dateTime : new FormControl()
       });
       
       this.gigTypeService.getAll().pipe(first())
@@ -106,9 +109,9 @@ export class GigDetailComponent implements OnInit {
                   .pipe(first())
                   .subscribe(x => {
                     console.log(x)
+                    x.dateTime = moment(x.dateTime, "x")
                     this.gigForm.patchValue(x)
                     console.log(this.gigForm)
-                   
                   });
 
                 });

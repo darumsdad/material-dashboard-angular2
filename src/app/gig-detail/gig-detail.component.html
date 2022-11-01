@@ -40,6 +40,17 @@
                                         </mat-select>
                                     </mat-form-field>
 
+                                    <mat-label>Date</mat-label>
+                                    <mat-form-field>
+                                        <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date" formControlName="dateTime">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="false"
+                                           [stepHour]="true" [stepMinute]="30" [stepSecond]="false" [defaultTime]="[00,00,00]"
+                                           [touchUi]="true"  
+                                           [disableMinute]="false" [hideTime]="false" enableMeridian="true">
+                                        </ngx-mat-datetime-picker>
+                                     </mat-form-field>
+
                                 </div>
                             </div>
                         </form>

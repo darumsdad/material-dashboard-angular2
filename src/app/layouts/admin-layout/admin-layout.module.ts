@@ -19,7 +19,7 @@ import { NotificationsComponent } from '../../notifications/notifications.compon
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
-import {MatRippleModule} from '@angular/material/core';
+import {MatRippleModule, MAT_DATE_FORMATS} from '@angular/material/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
@@ -31,7 +31,11 @@ import { VenueAddComponent } from '../../venue-add/venue-add.component';
 import { AutocompleteComponent  } from '../../google-places-autocomplete/google-places-autocomplete.component';
 import { GigContactComponent } from 'app/gig-contact/gig-contact.component';
 import { EditorModule } from '@tinymce/tinymce-angular';
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 
+ 
 @NgModule({
   imports: [
     CommonModule,
@@ -48,8 +52,30 @@ import { EditorModule } from '@tinymce/tinymce-angular';
     MatAutocompleteModule,
     MatDialogModule,
     MatIconModule,
-    EditorModule
+    EditorModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    MatDatepickerModule,
+    NgxMatMomentModule 
     
+    
+  ],
+  providers: [
+    {
+      provide: NGX_MAT_DATE_FORMATS,
+      useValue: {
+        parse: {
+          dateInput: ['x'],
+        },
+        display: {
+          dateInput: 'LL hh:mm A',
+          monthYearLabel: 'MMM YYYY',
+          dateA11yLabel: 'LL',
+          monthYearA11yLabel: 'MMMM YYYY',
+
+        },
+      },
+    },
   ],
   declarations: [
     DashboardComponent,
