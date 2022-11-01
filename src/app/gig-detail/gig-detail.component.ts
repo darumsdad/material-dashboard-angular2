@@ -79,12 +79,13 @@ export class GigDetailComponent implements OnInit {
 
       this.link =  'https://docs.google.com/forms/d/e/1FAIpQLSejSbhUjnl2OY2fNn7PrhXdRq7JYqJE0nzlUo_g6h1WyqELEA/viewform?usp=pp_url&entry.2108714546=GID:' + this.id
 
+      
       this.gigForm = new FormGroup({
         description: new FormControl(),
         typeId: new FormControl(),
         note: new FormControl(),
         quote: new FormControl(),
-        venueId : new FormControl(),
+        venueId : this.venueFormControl,
         statusId : new FormControl(),
         dateTime : new FormControl()
       });

@@ -142,7 +142,7 @@
                             <mat-form-field class="example-full-width" appearance="fill">
 
                                 <input matInput placeholder="Search (name)" [matAutocomplete]="auto3"
-                                    formControlName="venueId" />
+                                [formControl]="venueFormControl"  />
 
                                 <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displayVenue.bind(this)">
                                     <mat-option *ngFor="let venue of filteredVenues | async" [value]="venue.id">
