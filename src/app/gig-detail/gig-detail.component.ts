@@ -18,6 +18,7 @@ import { GigContactComponent } from 'app/gig-contact/gig-contact.component';
 import { ContactService } from 'app/services/contact.service';
 import { GigStatusService } from 'app/services/gig-status.service';
 import * as moment from 'moment';
+import { FormResponseService } from 'app/services/form-response.service';
 
 
 @Component({
@@ -42,7 +43,7 @@ export class GigDetailComponent implements OnInit {
   isAddMode: boolean;
   loading = false;
   submitted = false;
-
+  link: string;
    
   contactTypes: any[];
 
@@ -51,6 +52,7 @@ export class GigDetailComponent implements OnInit {
   venues: Venue[] = [];
   contacts: Contact[] = []
   gigContacts : GigContact[] = [];
+  formResponses: any;
   
   filteredOptions: Observable<Contact[]>;
   filteredVenues: Observable<Venue[]>;
@@ -63,15 +65,19 @@ export class GigDetailComponent implements OnInit {
     private gigTypeService: GigTypeService,
     private gigStatusService: GigStatusService,
     private gigContactService: GigContactService,
+    private formResponseService: FormResponseService,
     private contactService: ContactService,
     public dialog: MatDialog
     ) { }
 
     @ViewChild('picker') picker: any;
     
+    
     ngOnInit(): void {
       this.id = this.route.snapshot.params['id'];
       this.isAddMode = !this.id;
+
+      this.link =  'https://docs.google.com/forms/d/e/1FAIpQLSejSbhUjnl2OY2fNn7PrhXdRq7JYqJE0nzlUo_g6h1WyqELEA/viewform?usp=pp_url&entry.2108714546=GID:' + this.id
 
       this.gigForm = new FormGroup({
         description: new FormControl(),
@@ -109,7 +115,8 @@ export class GigDetailComponent implements OnInit {
                   .pipe(first())
                   .subscribe(x => {
                     console.log(x)
-                    x.dateTime = moment(x.dateTime, "x")
+                    if (x.dateTime)
+                      x.dateTime = moment(x.dateTime, "x")
                     this.gigForm.patchValue(x)
                     console.log(this.gigForm)
                   });
@@ -117,6 +124,15 @@ export class GigDetailComponent implements OnInit {
                 });
               }
         });
+
+      if (!this.isAddMode) {
+        this.formResponseService.get(this.id).pipe(first())
+        .subscribe(x => {
+          this.formResponses = x;
+          console.log(x);
+        })
+
+      }
        
 
       console.log(this.venues)
@@ -190,6 +206,7 @@ export class GigDetailComponent implements OnInit {
       this.submitted = true;
   
       console.log(this.gigForm.value)     
+      console.log(this.gigForm.invalid)     
       // stop here if form is invalid
       if (this.gigForm.invalid) {
           return;
