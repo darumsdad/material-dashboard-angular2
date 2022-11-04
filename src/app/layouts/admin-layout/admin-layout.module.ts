@@ -41,6 +41,8 @@ import { ProjectTypeComponent } from 'app/project/project-type/project-type.comp
 import { ProjectViewComponent } from '../../project/project-view.component';
 import { NewProjectComponent } from '../../project/new-project.component';
 import { WeddingDetailComponent } from '../../wedding/wedding-detail/wedding-detail.component';
+import { EventContactListComponent } from '../../event-contact/event-contact-list.component';
+import { EventContactListItemComponent } from '../../event-contact/event-contact-list-item.component';
 
 
  
@@ -110,7 +112,9 @@ import { WeddingDetailComponent } from '../../wedding/wedding-detail/wedding-det
     ProjectTypeComponent,
     ProjectViewComponent,
     NewProjectComponent,
-    WeddingDetailComponent
+    WeddingDetailComponent,
+    EventContactListComponent,
+    EventContactListItemComponent
     
   ]
 })

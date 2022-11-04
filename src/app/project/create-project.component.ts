@@ -88,22 +88,6 @@ export class CreateProjectComponent implements OnInit {
       this.s.setDescription(c);
     });
 
-    // this.s.listenForSaving().subscribe(c => {
-    //   console.log('got event')
-    //   console.log(c)
-    //   this.isSaving = c;
-    //   this.saving.emit(c);
-
-    // })
-
-    // this.s.listenForSaveComplete().subscribe(c => {
-      
-    //     this.saveComplete.emit(c);
-    //     this.newProject.emit(this.project)
-
-      
-    // })
-
     console.log('PROJECT YPE   event')
     console.log(this.projectTypeSelected)
   }
@@ -111,9 +95,11 @@ export class CreateProjectComponent implements OnInit {
   create()
   {
     this.saving.emit(true);
+    this.isSaving = true;
     this.s.saveProject().subscribe(x => {
       this.saveComplete.emit(true);
       this.newProject.emit(x);
+      this.isSaving = false;
     })
 
   }

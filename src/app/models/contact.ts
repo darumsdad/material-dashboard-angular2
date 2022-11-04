@@ -1,13 +1,20 @@
 export class Contact {
-    id?: any
-    firstName: string
-    lastName: string
-    email: string
-    phone: string
-    addressLine1: string
-    addressLine2: string
-    city: string
-    state: string
-    zip: string
+
+   
+    public gid: any;
+        public id: any;
+        public firstName: string;
+        public lastName: string;
+        public email: string;
+        public phone: string
+        public address: string
+     
+        public city: string
+        public state: string
+        public zip: string
+   
+
+    
+
 
 }

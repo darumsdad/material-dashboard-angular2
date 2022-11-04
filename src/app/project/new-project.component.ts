@@ -40,17 +40,17 @@ export class NewProjectComponent implements OnInit {
   newProject(value: Project)  
   {
 
-    if (!value.id)
-    return;
+    //if (!value.id)
+    //r//eturn;
 
-    {
+    //{//
       console.log('saveComplete')
       console.log(value)
       if (value.projectType.id === 1)
       {
         this.router.navigate(["wedding-detail", value.id ]);
       }
-    }
+    //}
    
     
   }
