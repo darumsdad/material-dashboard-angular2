@@ -10,7 +10,7 @@ import { Contact } from 'app/models/contact';
         <div class="row">
             <div class="col">
                 <span>
-                    <h3>{{contact.firstName}} {{contact.lastName}}</h3>
+                <i *ngIf="isPrimary" class="material-icons">star</i> <h3>{{contact.firstName}} {{contact.lastName}}</h3>
                 </span>
             </div>
 
@@ -60,6 +60,9 @@ export class EventContactListItemComponent implements OnInit {
 
   @Input() 
   contact: Contact
+
+  @Input() 
+  isPrimary: boolean
   
   ngOnInit(): void {
   }

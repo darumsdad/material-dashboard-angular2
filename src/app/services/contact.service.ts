@@ -7,6 +7,7 @@ import { environment } from 'environments/environment';
 import { EStore } from '@fireflysemantics/slice';
 import { EventContact } from 'app/models/event-contact';
 import { Decorator } from 'app/models/decorator';
+import { EventContactDecorator } from 'app/models/event-contact-decorator';
 
 
 @Injectable({
@@ -43,7 +44,7 @@ export class ContactService {
     const contact2: Contact = {
       gid: null,
       id: 3,
-      firstName: 'David',
+      firstName: 'Amir',
       lastName: 'Goldstein',
       address: '109 Ayrmont Lane',
       city: 'Bergenfield',
@@ -60,22 +61,95 @@ export class ContactService {
       id: 1
     };
 
-    const eventContact: EventContact = {
+    const groom: Decorator = {
       id: 1,
-      event: event,
-      contact: contact,
-      decorators: []
+      code: 'GROOM',
+      decoratorString: 'Groom',
+      icon: 'groom'
     }
 
-    const eventContact2: EventContact = {
-      id: 1,
-      event: event,
-      contact: contact2,
-      decorators: []
+    const bride: Decorator = {
+      id: 2,
+      code: 'BRIDE',
+      decoratorString: 'Bride',
+      icon: 'bride'
     }
+
+    const planner: Decorator = {
+      id: 3,
+      code: 'PLANNER',
+      decoratorString: 'Planner',
+      icon: 'planner'
+    }
+
+    const primary: Decorator = {
+      id: 4,
+      code: 'PRIMARY',
+      decoratorString: 'Primary',
+      icon: 'primary'
+    }
+
+    const eventContectDecoratorGroom: EventContactDecorator = {
+      id: 2,
+      eventContact: null,
+      decorator: groom,
+       type: 'contact-type',
+      
+    }
+
+    const eventContectDecoratorBride: EventContactDecorator = {
+      id: 1,
+      eventContact: null,
+      decorator: bride,
+      type: 'contact-type',
+      
+    }
+
+    const eventContectDecoratorPlanner: EventContactDecorator = {
+      id: 3,
+      eventContact: null,
+      decorator: planner,
+      type: 'contact-type',
+      
+    }
+
+    const eventContectDecoratorPrimary: EventContactDecorator = {
+      id: 4,
+      eventContact: null,
+      decorator: primary,
+      type: 'primary-contact-indicator',
+      
+    }
+
+    const eventContact: EventContact = new EventContact() ;
+
+    eventContact.id = 1;
+    eventContact.event = event;
+    eventContact.contact = contact;
+    
+    eventContact.decorators = [eventContectDecoratorGroom]
+      
+     
+    const eventContact2: EventContact = new EventContact() ;
+
+    eventContact2.id = 2;
+    eventContact2.event = event;
+    eventContact2.contact = contact2;
+    
+    eventContact2.decorators = [eventContectDecoratorBride]
+
+    const eventContact3: EventContact = new EventContact() ;
+
+    eventContact3.id = 3;
+    eventContact3.event = event;
+    eventContact3.contact = contact2;
+    
+    eventContact3.decorators = [eventContectDecoratorPlanner,eventContectDecoratorPrimary]
+       
 
     this.eventContactStore.addActive(eventContact)
     this.eventContactStore.addActive(eventContact2)
+    this.eventContactStore.addActive(eventContact3)
   }
 
   getAll(): Observable<Contact[]> {

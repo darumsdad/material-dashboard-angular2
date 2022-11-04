@@ -19,11 +19,11 @@ import { ContactService } from 'app/services/contact.service';
       <tbody>
         <tr *ngFor="let ec of eventContacts">
           <td>
-          <app-event-contact-list-item [contact]=ec.contact >
+          <app-event-contact-list-item [contact]=ec.contact [isPrimary]=ec.isPrimary()>
           </app-event-contact-list-item>
         </td>
         <td>
-        
+          {{ec.getType()}} 
         </td> 
         <td>
         
