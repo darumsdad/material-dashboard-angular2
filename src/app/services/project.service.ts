@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -6,15 +6,18 @@ import { GigType } from '../models/gig-type';
 import { environment } from 'environments/environment';
 import { ProjectType } from 'app/models/project-type';
 import { KeyObsValueReset, ObsValueReset, OStore } from '@fireflysemantics/slice';
+import { ProjectTypeService } from './project-type.service';
 
 export interface Project {
+  id: number
   projectType: ProjectType
   description: string
 }
 
 interface ProjectStore extends KeyObsValueReset {
   project: ObsValueReset;
-  saving: ObsValueReset;
+  // saving: ObsValueReset;
+  // saveComplete: ObsValueReset;
 
 
 }
@@ -23,7 +26,7 @@ interface ProjectStore extends KeyObsValueReset {
   providedIn: 'root'
 })
 
-export class ProjectService {
+export class ProjectService    {
   
   description: string;
   baseUrl = environment.baseUrl + '/projects';
@@ -39,49 +42,61 @@ export class ProjectService {
           name: ''
         },
         description: null
+      },
+      reset: {
+        projectType: {
+          name: ''
+        },
+        description: null
       }
     },
-    saving: {
-      value: false
-    }
+    // saving: {
+    //   value: false
+    // },
+    // saveComplete: {
+    //   value: false
+    // }
 
 
   });
 
-  constructor(private http: HttpClient) {
-    this.projectTypes = [{
-      id: 1,
-      name: 'Wedding',
-      icon: 'person'
-    },
-    {
-      id: 2,
-      name: 'Other',
-      icon: 'person'
-    }]
+  constructor(private http: HttpClient, private projectTypeService: ProjectTypeService) {
 
-    this.OS.S.project.obs.subscribe(x => {
-      console.log(x)
-    })
+   
 
   }
 
-  saveProject() {
+
+  loadTypes(): Observable<ProjectType[]> {
+    console.log("ddddddddd")
+    return this.projectTypeService.getAll();
+   
+  }
+
+  saveProject() : Observable<Project> {
     console.log('saving')
-    this.OS.put(this.OS.S.saving, true);
+    //this.OS.put(this.OS.S.saveComplete, false);
+    //this.OS.put(this.OS.S.saving, true);
     let project = this.OS.snapshot(this.OS.S.project)
     console.log(project);
-    this.http.post(this.baseUrl, {
+    return this.http.post<Project>(this.baseUrl, {
       id: null,
       description: project.description,
       typeId: project.projectType.id
-    }).subscribe( savedProject => {
-      this.OS.put(this.OS.S.project, savedProject);
-      console.log('done saving')
-      this.OS.put(this.OS.S.saving, false);
     })
+    //.subscribe( savedProject => {
+     // this.OS.put(this.OS.S.project, savedProject);
+     // console.log('done saving')
+     // this.OS.put(this.OS.S.saving, false);
+     // this.OS.put(this.OS.S.saveComplete, true);
+   // })
   }
 
+  reset()
+  {
+    this.OS.reset();
+    
+  }
   setProjectType(t: ProjectType) {
     console.log('PUTTING')
     let _project = this.OS.snapshot(this.OS.S.project);
@@ -106,9 +121,13 @@ export class ProjectService {
     return this.OS.S.project.obs;
   }
 
-  listenForSaving(): Observable<boolean> {
-    return this.OS.S.saving.obs;
-  }
+  // listenForSaving(): Observable<boolean> {
+  //   return this.OS.S.saving.obs;
+  // }
+
+  // listenForSaveComplete(): Observable<boolean> {
+  //   return this.OS.S.saveComplete.obs;
+  // }
 
 
 }

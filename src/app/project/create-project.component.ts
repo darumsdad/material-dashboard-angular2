@@ -7,10 +7,10 @@ import { Project, ProjectService } from 'app/services/project.service';
   template: `
  
 
-  <div class="row"  *ngIf="isSaving">
-    <mat-spinner></mat-spinner>
+  <div class="row" *ngIf="isSaving" >
+    <mat-spinner style="margin:0 auto;" mode="indeterminate" ></mat-spinner>
     </div>
-<mat-stepper [linear]="true" #stepper>
+<mat-stepper [linear]="true" *ngIf="!isSaving" #stepper>
   <mat-step label="Select a Type" [completed]="projectTypeSelected">
 
     <app-project-type>
@@ -52,12 +52,16 @@ import { Project, ProjectService } from 'app/services/project.service';
   </mat-step>
 </mat-stepper>
   `,
-  styleUrls: ['./create-project.component.scss']
+  styles: [
+  ]
 })
 export class CreateProjectComponent implements OnInit {
 
   @Input() projectId: number;
   @Output() saving = new EventEmitter<boolean>();
+  @Output() saveComplete = new EventEmitter<boolean>();
+  @Output() newProject = new EventEmitter<Project>();
+
 
   isAdd: boolean;
   isSaving: boolean;
@@ -70,6 +74,7 @@ export class CreateProjectComponent implements OnInit {
   control: FormControl;
 
   ngOnInit(): void {
+    this.s.reset() 
     this.isAdd = !this.projectId
     this.control = new FormControl('', Validators.required);
     this.s.OS.S.project.obs.subscribe(x => {
@@ -83,13 +88,21 @@ export class CreateProjectComponent implements OnInit {
       this.s.setDescription(c);
     });
 
-    this.s.listenForSaving().subscribe(c => {
-      console.log('got event')
-      console.log(c)
-      this.isSaving = c;
-      this.saving.emit(c);
+    // this.s.listenForSaving().subscribe(c => {
+    //   console.log('got event')
+    //   console.log(c)
+    //   this.isSaving = c;
+    //   this.saving.emit(c);
 
-    })
+    // })
+
+    // this.s.listenForSaveComplete().subscribe(c => {
+      
+    //     this.saveComplete.emit(c);
+    //     this.newProject.emit(this.project)
+
+      
+    // })
 
     console.log('PROJECT YPE   event')
     console.log(this.projectTypeSelected)
@@ -97,7 +110,12 @@ export class CreateProjectComponent implements OnInit {
 
   create()
   {
-    this.s.saveProject();
+    this.saving.emit(true);
+    this.s.saveProject().subscribe(x => {
+      this.saveComplete.emit(true);
+      this.newProject.emit(x);
+    })
+
   }
 
 }

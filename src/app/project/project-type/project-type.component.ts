@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ProjectType } from 'app/models/project-type';
 import { ProjectService } from 'app/services/project.service';
 
 
@@ -28,10 +29,6 @@ import { ProjectService } from 'app/services/project.service';
     </mat-select>
   </mat-form-field>
 
-
-
-
-
 <ng-template #projectTypeTemplate let-projectType="projectType">
 <table>
   <td><i class="material-icons">{{projectType.icon}}</i></td>
@@ -53,7 +50,7 @@ export class ProjectTypeComponent implements OnInit {
   }
 
   control: FormControl;
-  projectTypeValues = this.s.projectTypes;
+  projectTypeValues: ProjectType[]
 
 
   ngOnInit(): void {
@@ -61,6 +58,10 @@ export class ProjectTypeComponent implements OnInit {
     this.control.valueChanges.pipe().subscribe((c) => {
       this.s.setProjectType(c);
     });
+
+    this.s.loadTypes().subscribe(pt => {
+      this.projectTypeValues = pt;
+    })
   }
 
 }

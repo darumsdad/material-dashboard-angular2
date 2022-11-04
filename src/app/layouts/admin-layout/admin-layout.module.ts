@@ -34,12 +34,13 @@ import { EditorModule } from '@tinymce/tinymce-angular';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
-import { CreateProjectComponent } from '../../create-project/create-project.component';
+import { CreateProjectComponent } from '../../project/create-project.component';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatProgressSpinner, MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import { ProjectTypeComponent } from 'app/create-project/project-type/project-type.component';
-import { ProjectViewComponent } from '../../create-project/project-view.component';
-import { NewProjectComponent } from '../../project/new-project/new-project.component';
+import { ProjectTypeComponent } from 'app/project/project-type/project-type.component';
+import { ProjectViewComponent } from '../../project/project-view.component';
+import { NewProjectComponent } from '../../project/new-project.component';
+import { WeddingDetailComponent } from '../../wedding/wedding-detail/wedding-detail.component';
 
 
  
@@ -108,7 +109,8 @@ import { NewProjectComponent } from '../../project/new-project/new-project.compo
     CreateProjectComponent,
     ProjectTypeComponent,
     ProjectViewComponent,
-    NewProjectComponent
+    NewProjectComponent,
+    WeddingDetailComponent
     
   ]
 })

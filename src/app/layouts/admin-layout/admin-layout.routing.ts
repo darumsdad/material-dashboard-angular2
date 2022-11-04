@@ -14,7 +14,8 @@ import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { VenueDetailComponent } from 'app/venue-detail/venue-detail.component';
 import { GigListComponent } from 'app/gig-list/gig-list.component';
 import { GigDetailComponent } from 'app/gig-detail/gig-detail.component';
-import { NewProjectComponent } from 'app/project/new-project/new-project.component';
+import { NewProjectComponent } from 'app/project/new-project.component';
+import { WeddingDetailComponent } from 'app/wedding/wedding-detail/wedding-detail.component';
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -71,6 +72,8 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'contact-list',   component: ContactListComponent },
     { path: 'gig-list',   component: GigListComponent },
     { path: 'new-project',   component: NewProjectComponent },
+    { path: 'wedding-detail/:id',   component: WeddingDetailComponent },
+    
     { path: 'venue-list',     component: VenueListComponent },
     { path: 'typography',     component: TypographyComponent },
     { path: 'icons',          component: IconsComponent },
