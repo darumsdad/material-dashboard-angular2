@@ -27,7 +27,7 @@ import { FormResponseService } from 'app/services/form-response.service';
   styleUrls: ['./gig-detail.component.scss']
 })
 
-
+  
 
 export class GigDetailComponent implements OnInit {
 

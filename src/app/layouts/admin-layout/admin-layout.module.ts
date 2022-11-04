@@ -34,6 +34,13 @@ import { EditorModule } from '@tinymce/tinymce-angular';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
+import { CreateProjectComponent } from '../../create-project/create-project.component';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatProgressSpinner, MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { ProjectTypeComponent } from 'app/create-project/project-type/project-type.component';
+import { ProjectViewComponent } from '../../create-project/project-view.component';
+import { NewProjectComponent } from '../../project/new-project/new-project.component';
+
 
  
 @NgModule({
@@ -56,7 +63,10 @@ import { NgxMatMomentModule } from '@angular-material-components/moment-adapter'
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     MatDatepickerModule,
-    NgxMatMomentModule 
+    NgxMatMomentModule,
+    MatStepperModule,
+    MatProgressSpinnerModule,
+    
     
     
   ],
@@ -95,6 +105,10 @@ import { NgxMatMomentModule } from '@angular-material-components/moment-adapter'
     VenueAddComponent,
     AutocompleteComponent,
     GigContactComponent,
+    CreateProjectComponent,
+    ProjectTypeComponent,
+    ProjectViewComponent,
+    NewProjectComponent
     
   ]
 })
