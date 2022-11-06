@@ -10,166 +10,244 @@ import { Decorator } from 'app/models/decorator';
 import { EventContactDecorator } from 'app/models/event-contact-decorator';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class ContactService {
 
-  baseUrl = environment.baseUrl + '/contacts';
+
+  contactUrl = environment.baseUrl + '/contacts';
+  eventContactUrl = environment.baseUrl + '/event_contact';
+  eventContactDecoratorUrl = environment.baseUrl + '/event_contact_decorator';
+  decoratorUrl = environment.baseUrl + '/decorators';
 
   eventContactStore: EStore<EventContact> = new EStore<EventContact>();
+
+  tree: EStore<EventContact> = new EStore<EventContact>();
+
+
+
+
   decoratorStore: EStore<Decorator> = new EStore<Decorator>();
   contactStore: EStore<Contact> = new EStore<Contact>();
+  eventStore: EStore<Event> = new EStore<Event>();
+
+
+  eventContactDecoratorStore: EStore<EventContactDecorator> = new EStore<EventContactDecorator>();
   eventContacts$: Observable<Map<string, EventContact>> = this.eventContactStore.observeActive();
   contacts$: Observable<Map<string, Contact>> = this.contactStore.observeActive();
+  eventContactDecorators$: Observable<Map<string, EventContactDecorator>> = this.eventContactDecoratorStore.observeActive();
+  event$: Observable<Map<string, Event>> = this.eventStore.observeActive();
+  tree$: Observable<Map<string, EventContact>> = this.tree.observeActive();
 
-  constructor(private http: HttpClient) { 
+  eventContacts: EventContact[]
+
+  constructor(private http: HttpClient) {
+
+    this.eventContactDecoratorStore.observeDelta().subscribe(ecds => {
+      console.log("delta");
+      console.log(ecds)
+    })
 
   }
 
-  load() {
-    const contact: Contact = {
-      gid: null,
-      id: 1,
-      firstName: 'David',
-      lastName: 'Goldstein',
-      address: '109 Ayrmont Lane',
-      city: 'Bergenfield',
-      state: 'NJ',
-      zip: '07747',
-      phone: '201-555-1111',
-      email: 'daveg@yahoo.com'
-    }
+  // groom: Decorator = {
+  //   id: 1,
+  //   code: 'GROOM',
+  //   decoratorString: 'Groom',
+  //   icon: 'groom'
+  // }
 
-    const contact2: Contact = {
-      gid: null,
-      id: 3,
-      firstName: 'Amir',
-      lastName: 'Goldstein',
-      address: '109 Ayrmont Lane',
-      city: 'Bergenfield',
-      state: 'NJ',
-      zip: '07747',
-      phone: '201-555-1111',
-      email: 'daveg@yahoo.com'
-    }
+  // bride: Decorator = {
+  //   id: 2,
+  //   code: 'BRIDE',
+  //   decoratorString: 'Bride',
+  //   icon: 'bride'
+  // }
 
-    this.contactStore.addActive(contact)  
-    this.contactStore.addActive(contact2)
+  // planner: Decorator = {
+  //   id: 3,
+  //   code: 'PLANNER',
+  //   decoratorString: 'Planner',
+  //   icon: 'planner'
+  // }
 
-    const event: Event = {
-      id: 1
-    };
+  // primary: Decorator = {
+  //   id: 4,
+  //   code: 'PRIMARY',
+  //   decoratorString: 'Primary',
+  //   icon: 'primary'
+  // }
 
-    const groom: Decorator = {
-      id: 1,
-      code: 'GROOM',
-      decoratorString: 'Groom',
-      icon: 'groom'
-    }
+  load(eventContactId: any) {
 
-    const bride: Decorator = {
-      id: 2,
-      code: 'BRIDE',
-      decoratorString: 'Bride',
-      icon: 'bride'
-    }
 
-    const planner: Decorator = {
-      id: 3,
-      code: 'PLANNER',
-      decoratorString: 'Planner',
-      icon: 'planner'
-    }
+    this.http.get<any[]>(`${this.eventContactUrl}/${eventContactId}`).subscribe(eventContacts => {
 
-    const primary: Decorator = {
-      id: 4,
-      code: 'PRIMARY',
-      decoratorString: 'Primary',
-      icon: 'primary'
-    }
+      eventContacts.forEach(eventContact => {
+        this.eventContactStore.addActive(eventContact)
+      })
 
-    const eventContectDecoratorGroom: EventContactDecorator = {
-      id: 2,
-      eventContact: null,
-      decorator: groom,
-       type: 'contact-type',
-      
-    }
+      this.http.get<any[]>(`${this.contactUrl}/forEvent/${eventContactId}`).subscribe(contacts => {
 
-    const eventContectDecoratorBride: EventContactDecorator = {
-      id: 1,
-      eventContact: null,
-      decorator: bride,
-      type: 'contact-type',
-      
-    }
 
-    const eventContectDecoratorPlanner: EventContactDecorator = {
-      id: 3,
-      eventContact: null,
-      decorator: planner,
-      type: 'contact-type',
-      
-    }
+        contacts.forEach(contact => {
 
-    const eventContectDecoratorPrimary: EventContactDecorator = {
-      id: 4,
-      eventContact: null,
-      decorator: primary,
+          this.contactStore.addActive(contact)
+        })
+
+        this.http.get<any[]>(`${this.eventContactDecoratorUrl}/byEventContact/${eventContactId}`).subscribe(ecds => {
+
+          ecds.forEach(ecd => {
+
+            this.eventContactDecoratorStore.addActive(ecd)
+          })
+
+          this.http.get<any[]>(`${this.decoratorUrl}`).subscribe(ds => {
+
+            ds.forEach(d => {
+              this.decoratorStore.addActive(d);
+
+            });
+
+            this.buildTree();
+
+
+
+          })
+
+
+
+
+        })
+
+
+      })
+
+
+
+
+      // console.log('all')
+      // console.log(this.eventContactStore.allSnapshot())
+      // console.log(eventContact)
+      // let first = this.eventContactStore.select(x => x.id === eventContact.id)[0]
+      // first.decorators = [eventContectDecoratorGroom]
+      // this.eventContactStore.put(first)
+
+      // first = this.eventContactStore.select(x => x.id === eventContact2.id)[0]
+      // first.decorators = [eventContectDecoratorBride]
+      // this.eventContactStore.put(first)
+
+      // first = this.eventContactStore.select(x => x.id === eventContact3.id)[0]
+      // first.decorators = [eventContectDecoratorPlanner, eventContectDecoratorPrimary]
+      // this.eventContactStore.put(first)
+
+
+
+      // this.eventContactDecoratorStore.addActive(eventContectDecoratorGroom)
+      // this.eventContactDecoratorStore.addActive(eventContectDecoratorBride)
+      // this.eventContactDecoratorStore.addActive(eventContectDecoratorPlanner)
+      // this.eventContactDecoratorStore.addActive(eventContectDecoratorPrimary)
+
+
+
+    })
+  }
+
+
+  buildTree(): void {
+
+    this.eventContacts = this.eventContactStore.activeSnapshot()
+    this.eventContacts.forEach(ec => {
+
+      let contact = this.contactStore.select(contact => contact.id === ec.contactId)[0]
+      ec.contact = contact
+
+      let ecds = this.eventContactDecoratorStore.activeSnapshot()
+
+      console.log('ecds store')
+      console.log(ecds)
+
+      console.log('filter by')
+      console.log(ec.id)
+
+      ec.decorators = []
+      ec.decorators = ecds.filter(ecd => {
+        return ecd.eventContactId === ec.id
+      })
+
+
+      let ds = this.decoratorStore.activeSnapshot()
+
+      console.log('find1')
+      console.log(ec.decorators)
+      console.log(ds)
+
+      ec.decorators.forEach(d => {
+
+        console.log('find')
+        console.log(d.decoratorId)
+        d.decorator = ds.find(decorator => {
+          return decorator.id === d.decoratorId
+        })
+      });
+
+
+    })
+
+    this.eventContacts.forEach(x => {
+      this.tree.addActive(x);
+    })
+
+
+
+    console.log(this.eventContacts)
+
+  }
+  makeEventContactPrimary(ec: any) {
+
+    let current = this.eventContactDecoratorStore.activeSnapshot().find(x => x.type === 'primary-contact-indicator')
+
+    this.eventContactDecoratorStore.delete(current);
+
+    let eventContact = this.eventContactStore.findOne(ec.gid)
+   
+    let decorator = this.decoratorStore.select(d => d.code === 'PRIMARY')[0]
+
+    let eventContactDecoratorPrimary: EventContactDecorator = {
+      eventContactId: eventContact.id,
+      decoratorId: decorator.id,
       type: 'primary-contact-indicator',
-      
     }
 
-    const eventContact: EventContact = new EventContact() ;
+    this.eventContactDecoratorStore.addActive(eventContactDecoratorPrimary);
 
-    eventContact.id = 1;
-    eventContact.event = event;
-    eventContact.contact = contact;
-    
-    eventContact.decorators = [eventContectDecoratorGroom]
-      
-     
-    const eventContact2: EventContact = new EventContact() ;
 
-    eventContact2.id = 2;
-    eventContact2.event = event;
-    eventContact2.contact = contact2;
-    
-    eventContact2.decorators = [eventContectDecoratorBride]
+    this.buildTree()
 
-    const eventContact3: EventContact = new EventContact() ;
 
-    eventContact3.id = 3;
-    eventContact3.event = event;
-    eventContact3.contact = contact2;
-    
-    eventContact3.decorators = [eventContectDecoratorPlanner,eventContectDecoratorPrimary]
-       
 
-    this.eventContactStore.addActive(eventContact)
-    this.eventContactStore.addActive(eventContact2)
-    this.eventContactStore.addActive(eventContact3)
   }
 
   getAll(): Observable<Contact[]> {
-    return this.http.get<Contact[]>(this.baseUrl);
+    return this.http.get<Contact[]>(this.contactUrl);
   }
 
   get(id: any): Observable<Contact> {
-    return this.http.get<Contact>(`${this.baseUrl}/${id}`);
+    return this.http.get<Contact>(`${this.contactUrl}/${id}`);
   }
 
   create(data: any): Observable<any> {
-    return this.http.post(this.baseUrl, data);
+    return this.http.post(this.contactUrl, data);
   }
 
   update(id: any, data: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${id}`, data);
+    return this.http.put(`${this.contactUrl}/${id}`, data);
   }
 
   delete(id: any): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+    return this.http.delete(`${this.contactUrl}/${id}`);
   }
 
 

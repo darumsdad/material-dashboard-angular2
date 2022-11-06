@@ -19,25 +19,26 @@ import { ContactService } from 'app/services/contact.service';
       <tbody>
         <tr *ngFor="let ec of eventContacts">
           <td>
-          <app-event-contact-list-item [contact]=ec.contact [isPrimary]=ec.isPrimary()>
+          <app-event-contact-list-item [contact]=ec.contact>
           </app-event-contact-list-item>
         </td>
         <td>
-          {{ec.getType()}} 
+        {{getType(ec)}}
         </td> 
         <td>
-        
+        <button *ngIf="!isPrimary(ec)" (click)="onClick(ec)" mat-raised-button color="primary">Primary</button>
         </td> 
         </tr>
       </tbody>
     </table>
   <div>
    
- 
+  
   `,
   styles: [
   ]
 })
+ 
 export class EventContactListComponent implements OnInit {
 
   eventContacts: EventContact[];
@@ -45,14 +46,47 @@ export class EventContactListComponent implements OnInit {
 
   ngOnInit(): void {
   
-    this.s.eventContacts$.subscribe((m: Map<string, EventContact>) => {
+    this.s.tree$.subscribe((m: Map<string, EventContact>) => {
       const eventContacts: EventContact[] = Array.from(m.values());
-      console.log(`OBSERVED ENTITIES`);
-      console.log(eventContacts);
+     
+      //console.log(eventContacts)
       this.eventContacts = eventContacts
     });
 
-    this.s.load()
+    this.s.load(1)
+  }
+
+  public getType(ec: EventContact): string {
+
+    if (!ec.decorators) {
+        return null
+    }
+
+   // console.log(ec.decorators)
+    const found = ec.decorators.find(x => {
+
+        return x.type === "contact-type"
+    })
+
+    return found.decorator.decoratorString
+}
+
+public isPrimary(ec: EventContact): boolean {
+
+  if (!ec.decorators)
+      return false;
+
+  return ec.decorators.some(x => {
+      return x.type === "primary-contact-indicator"
+  })
+
+}
+
+  onClick(eventContct: any)
+  {
+    console.log(eventContct)
+    this.s.makeEventContactPrimary(eventContct)
+
   }
 
 }

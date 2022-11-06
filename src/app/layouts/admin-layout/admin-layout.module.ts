@@ -18,6 +18,7 @@ import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import {MatButtonModule} from '@angular/material/button';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatInputModule} from '@angular/material/input';
 import {MatRippleModule, MAT_DATE_FORMATS} from '@angular/material/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -69,6 +70,7 @@ import { EventContactListItemComponent } from '../../event-contact/event-contact
     NgxMatMomentModule,
     MatStepperModule,
     MatProgressSpinnerModule,
+    MatCheckboxModule
     
     
     

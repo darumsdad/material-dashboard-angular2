@@ -14,7 +14,7 @@ export class GigListComponent implements OnInit {
   constructor(private gigService: GigService) { }
 
   ngOnInit(): void {
-    this.retrieve();
+    //this.retrieve();
   }
 
   retrieve() {
