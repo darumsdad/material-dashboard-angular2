@@ -186,20 +186,27 @@ export class ContactService {
 
     let current = this.eventContactDecoratorStore.activeSnapshot().find(x => x.type === 'primary-contact-indicator')
 
-    this.eventContactDecoratorStore.delete(current);
+    this.eventContactDecoratorService.delete(current.id).subscribe(e => {
+      this.eventContactDecoratorStore.delete(current);
 
-    let eventContact = this.eventContactStore.findOne(ec.gid)
+      let eventContact = this.eventContactStore.findOne(ec.gid)
+  
+      let decorator = this.decoratorStore.select(d => d.code === 'PRIMARY')[0]
+  
+      let eventContactDecoratorPrimary: EventContactDecorator = {
+        eventContactId: eventContact.id,
+        decoratorId: decorator.id,
+        type: 'primary-contact-indicator',
+      }
+  
+      this.eventContactDecoratorService.create(eventContactDecoratorPrimary).subscribe(c => {
+        this.eventContactDecoratorStore.addActive(c);
+        this.buildTree()
+      })
+      
+    })
 
-    let decorator = this.decoratorStore.select(d => d.code === 'PRIMARY')[0]
-
-    let eventContactDecoratorPrimary: EventContactDecorator = {
-      eventContactId: eventContact.id,
-      decoratorId: decorator.id,
-      type: 'primary-contact-indicator',
-    }
-
-    this.eventContactDecoratorStore.addActive(eventContactDecoratorPrimary);
-    this.buildTree()
+    
 
   }
 
