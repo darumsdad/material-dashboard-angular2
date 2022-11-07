@@ -7,9 +7,9 @@ export class Decorator {
 
     public id: any
     public gid?: any
-    public code: any
-    public decoratorString: string
-    public icon: string
+    public code?: any
+    public decoratorString?: string
+    public icon?: string
 
 
 }
