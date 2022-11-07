@@ -44,6 +44,7 @@ import { NewProjectComponent } from '../../project/new-project.component';
 import { WeddingDetailComponent } from '../../wedding/wedding-detail/wedding-detail.component';
 import { EventContactListComponent } from '../../event-contact/event-contact-list.component';
 import { EventContactListItemComponent } from '../../event-contact/event-contact-list-item.component';
+import { EventContactCreateComponent } from '../../event-contact/event-contact-create/event-contact-create.component';
 
 
  
@@ -116,7 +117,8 @@ import { EventContactListItemComponent } from '../../event-contact/event-contact
     NewProjectComponent,
     WeddingDetailComponent,
     EventContactListComponent,
-    EventContactListItemComponent
+    EventContactListItemComponent,
+    EventContactCreateComponent
     
   ]
 })

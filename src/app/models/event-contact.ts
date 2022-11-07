@@ -10,7 +10,7 @@ export class EventContact {
 
     ) { }
 
-    public id: any
+    public id?: any
     public gid?: any
     public event?: Event
     public eventId: any

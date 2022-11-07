@@ -19,7 +19,7 @@ import { ContactService } from 'app/services/contact.service';
       <tbody>
         <tr *ngFor="let ec of eventContacts">
           <td>
-          <app-event-contact-list-item [contact]=ec.contact>
+          <app-event-contact-list-item [contact]=ec.contact [isPrimary]=isPrimary(ec)>
           </app-event-contact-list-item>
         </td>
         <td>
@@ -32,6 +32,9 @@ import { ContactService } from 'app/services/contact.service';
       </tbody>
     </table>
   <div>
+  <app-event-contact-create [eventId]=1>
+  </app-event-contact-create>
+  </div>
    
   
   `,

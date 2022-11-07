@@ -9,6 +9,9 @@ import { EventContact } from 'app/models/event-contact';
 import { Decorator } from 'app/models/decorator';
 import { EventContactDecorator } from 'app/models/event-contact-decorator';
 
+import { EventContactService } from './event-contact.service';
+import { EventContactDecoratorService } from './event-contact-decorator.service';
+
 
 
 @Injectable({
@@ -41,75 +44,108 @@ export class ContactService {
 
   initEventContactDecoratorStore = false;
 
-  constructor(private http: HttpClient) {
-
-   
+  constructor(private http: HttpClient,
+    public eventContactService: EventContactService,
+    public eventContactDecoratorService: EventContactDecoratorService) {
 
   }
+
+  newEventContact(contact: any, type: any, eventId: number): void {
+
+    let isActive = this.eventContactStore.countSnapshot() === 0
+
+    this.create(contact).subscribe(c => {
+
+      this.contactStore.addActive(c)
+
+      let _eventContact: EventContact = {
+        eventId: eventId,
+        contactId: c.id,
+      }
+
+      this.eventContactService.create(_eventContact).subscribe(ec => {
+        this.eventContactStore.addActive(ec);
+
+        let _eventContactDecorator: EventContactDecorator = {
+          eventContactId: ec.id,
+          decoratorId: type.id,
+          type: 'contact-type'
+        }
+
+        this.eventContactDecoratorService.create(_eventContactDecorator).subscribe(ecd => {
+
+          this.eventContactDecoratorStore.addActive(ecd)
+
+          if (isActive) {
+            let _eventContactDecorator: EventContactDecorator = {
+              eventContactId: ec.id,
+              decoratorId: 4,
+              type: 'primary-contact-indicator'
+            }
+
+            this.eventContactDecoratorService.create(_eventContactDecorator).subscribe(ecd => {
+
+              this.eventContactDecoratorStore.addActive(ecd)
+
+              this.buildTree()
+
+
+            })
+          }
+          else
+            [
+              this.buildTree()
+            ]
+
+
+
+
+
+        })
+
+      })
+    })
+  }
+
 
   load(eventId: any) {
 
 
-    this.http.get<any[]>(`${this.eventContactUrl}/forEvent/${eventId}`).subscribe(eventContacts => {
+    this.http.get<any[]>(`${this.decoratorUrl}`).subscribe(ds => {
 
-      eventContacts.forEach(eventContact => {
-        this.eventContactStore.addActive(eventContact)
+      ds.forEach(d => {
+        this.decoratorStore.addActive(d);
       })
 
-      this.http.get<any[]>(`${this.contactUrl}/forEvent/${eventId}`).subscribe(contacts => {
+        this.http.get<any[]>(`${this.eventContactUrl}/forEvent/${eventId}`).subscribe(eventContacts => {
 
-
-        contacts.forEach(contact => {
-
-          this.contactStore.addActive(contact)
-        })
-
-        this.http.get<any[]>(`${this.eventContactDecoratorUrl}/forEvent/${eventId}`).subscribe(ecds => {
-
-          
-          ecds.forEach(ecd => {
-            this.eventContactDecoratorStore.addActive(ecd)
+          eventContacts.forEach(eventContact => {
+            this.eventContactStore.addActive(eventContact)
           })
-          
-          this.http.get<any[]>(`${this.decoratorUrl}`).subscribe(ds => {
 
-            ds.forEach(d => {
-              this.decoratorStore.addActive(d);
+          this.http.get<any[]>(`${this.contactUrl}/forEvent/${eventId}`).subscribe(contacts => {
 
-            });
-            
-            this.buildTree();
-           
-            this.eventContactDecoratorStore.observeDelta().subscribe(ecds => {
-              
-              if (this.initEventContactDecoratorStore)
-              {
-                console.log("delta");
-                console.log(ecds)
-              }
-              else
-              {
-                this.initEventContactDecoratorStore = true
-              }
-             
+            if (!contacts)
+              return
+            contacts.forEach(contact => {
+              this.contactStore.addActive(contact)
             })
 
+            this.http.get<any[]>(`${this.eventContactDecoratorUrl}/forEvent/${eventId}`).subscribe(ecds => {
+              ecds.forEach(ecd => {
+                this.eventContactDecoratorStore.addActive(ecd)
+              })
 
 
+
+              this.buildTree();
+
+
+            })
           })
-
         })
-
-
-      })
-
-
-
-
-
-
-
-    })
+       
+    });
   }
 
 
@@ -123,28 +159,14 @@ export class ContactService {
 
       let ecds = this.eventContactDecoratorStore.activeSnapshot()
 
-      //console.log('ecds store')
-      //console.log(ecds)
-
-      //console.log('filter by')
-      //console.log(ec.id)
-
       ec.decorators = []
       ec.decorators = ecds.filter(ecd => {
         return ecd.eventContactId === ec.id
       })
 
-
       let ds = this.decoratorStore.activeSnapshot()
 
-      //console.log('find1')
-      //console.log(ec.decorators)
-      //console.log(ds)
-
       ec.decorators.forEach(d => {
-
-        //console.log('find')
-        //console.log(d.decoratorId)
         d.decorator = ds.find(decorator => {
           return decorator.id === d.decoratorId
         })
@@ -157,8 +179,6 @@ export class ContactService {
       this.tree.addActive(x);
     })
 
-
-
     console.log(this.eventContacts)
 
   }
@@ -169,7 +189,7 @@ export class ContactService {
     this.eventContactDecoratorStore.delete(current);
 
     let eventContact = this.eventContactStore.findOne(ec.gid)
-   
+
     let decorator = this.decoratorStore.select(d => d.code === 'PRIMARY')[0]
 
     let eventContactDecoratorPrimary: EventContactDecorator = {
@@ -179,11 +199,7 @@ export class ContactService {
     }
 
     this.eventContactDecoratorStore.addActive(eventContactDecoratorPrimary);
-
-
     this.buildTree()
-
-
 
   }
 
