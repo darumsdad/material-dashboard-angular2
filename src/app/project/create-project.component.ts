@@ -88,16 +88,16 @@ export class CreateProjectComponent implements OnInit {
       this.s.setDescription(c);
     });
 
-    console.log('PROJECT YPE   event')
+    console.log('PROJECTYPE   event')
     console.log(this.projectTypeSelected)
   }
 
   create()
   {
-    this.saving.emit(true);
+    //this.saving.emit(true);
     this.isSaving = true;
     this.s.saveProject().subscribe(x => {
-      this.saveComplete.emit(true);
+      //this.saveComplete.emit(true);
       this.newProject.emit(x);
       this.isSaving = false;
     })

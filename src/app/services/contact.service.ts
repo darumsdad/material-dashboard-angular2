@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import { Contact } from '../models/contact';
 import { Event } from '../models/event';
 import { environment } from 'environments/environment';
-import { EStore } from '@fireflysemantics/slice';
+import { EStore, KeyObsValueReset, OStore } from '@fireflysemantics/slice';
 import { EventContact } from 'app/models/event-contact';
 import { Decorator } from 'app/models/decorator';
 import { EventContactDecorator } from 'app/models/event-contact-decorator';
 
 import { EventContactService } from './event-contact.service';
 import { EventContactDecoratorService } from './event-contact-decorator.service';
+import { DecoratorService } from './decorator.service';
 
 
 
@@ -18,6 +19,55 @@ import { EventContactDecoratorService } from './event-contact-decorator.service'
   providedIn: 'root'
 })
 export class ContactService {
+ 
+  
+  
+  decorators: Decorator[];
+
+  types: any[] = [
+    'BRIDE','GROOM','PLANNER'
+  ]
+ 
+  onDelete(eventContact: EventContact) {
+    this.setLoading()
+    let contact = eventContact.contact
+    this.delete(contact.id).subscribe(c => {
+      this.contactStore.delete(contact)
+      this.eventContactService.delete(eventContact.id).subscribe( ec => {
+        this.eventContactStore.delete(eventContact);
+        eventContact.decorators.forEach ( ecd => {
+          this.eventContactDecoratorService.delete(ecd.id).subscribe( d => {
+            this.eventContactDecoratorStore.delete(ecd)
+          })
+          this.buildTree();
+          this.setDoneLoading();
+        })
+      })
+    })
+  }
+
+
+  getEventContactAndType(eventContact: EventContact, callback: Function) {
+
+    console.log(eventContact.contact.id)
+    this.get(eventContact.contact.id).subscribe(c => {
+      this.eventContactService.get(eventContact.id).subscribe(ec => {
+        this.eventContactDecoratorService.forEvent(ec.eventId).subscribe(ecds => {
+          let typeEcd = ecds.find(ecd => ecd.type === 'contact-type')
+          console.log(typeEcd)
+          let decorator = this.decorators.find(d => d.id === typeEcd.decoratorId)
+
+          callback({
+            contact: c,
+            type: decorator
+          })
+          
+        })
+      })
+    })
+  }
+
+
 
 
   contactUrl = environment.baseUrl + '/contacts';
@@ -26,14 +76,12 @@ export class ContactService {
   decoratorUrl = environment.baseUrl + '/decorators';
 
   eventContactStore: EStore<EventContact> = new EStore<EventContact>();
-
   tree: EStore<EventContact> = new EStore<EventContact>();
-
   decoratorStore: EStore<Decorator> = new EStore<Decorator>();
   contactStore: EStore<Contact> = new EStore<Contact>();
   eventStore: EStore<Event> = new EStore<Event>();
-
   eventContactDecoratorStore: EStore<EventContactDecorator> = new EStore<EventContactDecorator>();
+
   eventContacts$: Observable<Map<string, EventContact>> = this.eventContactStore.observeActive();
   contacts$: Observable<Map<string, Contact>> = this.contactStore.observeActive();
   eventContactDecorators$: Observable<Map<string, EventContactDecorator>> = this.eventContactDecoratorStore.observeActive();
@@ -44,13 +92,71 @@ export class ContactService {
 
   initEventContactDecoratorStore = false;
 
+  OS: OStore<KeyObsValueReset> = new OStore({
+    loading: {
+
+      value: false
+
+    },
+  });
+
   constructor(private http: HttpClient,
     public eventContactService: EventContactService,
-    public eventContactDecoratorService: EventContactDecoratorService) {
+    public eventContactDecoratorService: EventContactDecoratorService,
+    public decoratorService: DecoratorService
+  ) 
+  {
+    this.decoratorService.getAll().subscribe( decorators => {
+      console.log(decorators)
+      this.decorators = decorators.filter( d => {
+        return this.types.includes(d.code)
+      })
+    })
+  }
+
+  getContactTypeDecorators(): Decorator[] {
+    return this.decorators
+  }
+
+  subscribeLoading(): Observable<boolean> {
+    return this.OS.S.loading.obs;
+  }
+
+  setLoading() {
+    this.OS.put(this.OS.S.loading, true);
+  }
+
+  setDoneLoading() {
+    this.OS.put(this.OS.S.loading, false);
+  }
+
+  onUpdateEventContact(contact: Contact, type: any, eventContact: EventContact) {
+
+    this.setLoading();
+
+    this.update(contact.id, contact).subscribe(c => {
+      this.contactStore.put(contact)
+      let contactType = eventContact.decorators.find(x => x.type === 'contact-type')
+      contactType.decoratorId = type.id;
+
+      console.log('tyype in ')
+      console.log(type)
+      
+      console.log('update')
+      console.log(contactType)
+
+      this.eventContactDecoratorService.update(contactType.id,contactType).subscribe(ecd => {
+        this.buildTree()
+        this.setDoneLoading();
+      })
+      
+    })
 
   }
 
   newEventContact(contact: any, type: any, eventId: number): void {
+
+    this.setLoading();
 
     let isActive = this.eventContactStore.countSnapshot() === 0
 
@@ -89,69 +195,74 @@ export class ContactService {
 
               this.buildTree()
 
-
             })
           }
           else
             [
               this.buildTree()
             ]
-
-
-
-
+          this.setDoneLoading();
 
         })
 
       })
     })
+
+
   }
 
 
   load(eventId: any) {
 
-
+    this.setLoading();
     this.http.get<any[]>(`${this.decoratorUrl}`).subscribe(ds => {
 
       ds.forEach(d => {
         this.decoratorStore.addActive(d);
       })
 
-        this.http.get<any[]>(`${this.eventContactUrl}/forEvent/${eventId}`).subscribe(eventContacts => {
+      this.http.get<any[]>(`${this.eventContactUrl}/forEvent/${eventId}`).subscribe(eventContacts => {
 
-          eventContacts.forEach(eventContact => {
-            this.eventContactStore.addActive(eventContact)
+        eventContacts.forEach(eventContact => {
+          this.eventContactStore.addActive(eventContact)
+        })
+
+        this.http.get<any[]>(`${this.contactUrl}/forEvent/${eventId}`).subscribe(contacts => {
+
+          if (!contacts)
+            return
+          contacts.forEach(contact => {
+            this.contactStore.addActive(contact)
           })
 
-          this.http.get<any[]>(`${this.contactUrl}/forEvent/${eventId}`).subscribe(contacts => {
-
-            if (!contacts)
-              return
-            contacts.forEach(contact => {
-              this.contactStore.addActive(contact)
+          this.http.get<any[]>(`${this.eventContactDecoratorUrl}/forEvent/${eventId}`).subscribe(ecds => {
+            ecds.forEach(ecd => {
+              this.eventContactDecoratorStore.addActive(ecd)
             })
 
-            this.http.get<any[]>(`${this.eventContactDecoratorUrl}/forEvent/${eventId}`).subscribe(ecds => {
-              ecds.forEach(ecd => {
-                this.eventContactDecoratorStore.addActive(ecd)
-              })
 
 
+            this.buildTree();
+            this.setDoneLoading();
 
-              this.buildTree();
 
-
-            })
           })
         })
-       
+      })
+
     });
+
   }
 
 
   buildTree(): void {
 
+    console.log('buidl tree')
+
+     
+    this.setLoading();
     this.eventContacts = this.eventContactStore.activeSnapshot()
+    console.log(this.eventContacts)
     this.eventContacts.forEach(ec => {
 
       let contact = this.contactStore.select(contact => contact.id === ec.contactId)[0]
@@ -175,38 +286,47 @@ export class ContactService {
 
     })
 
+    this.tree.clearActive();
+    
     this.eventContacts.forEach(x => {
       this.tree.addActive(x);
     })
 
     console.log(this.eventContacts)
+    this.setDoneLoading();
 
   }
   makeEventContactPrimary(ec: any) {
 
+    this.setLoading();
     let current = this.eventContactDecoratorStore.activeSnapshot().find(x => x.type === 'primary-contact-indicator')
 
+    console.log('start delete')
     this.eventContactDecoratorService.delete(current.id).subscribe(e => {
+      console.log('end delete')
+
       this.eventContactDecoratorStore.delete(current);
 
       let eventContact = this.eventContactStore.findOne(ec.gid)
-  
+
       let decorator = this.decoratorStore.select(d => d.code === 'PRIMARY')[0]
-  
+
       let eventContactDecoratorPrimary: EventContactDecorator = {
         eventContactId: eventContact.id,
         decoratorId: decorator.id,
         type: 'primary-contact-indicator',
       }
-  
+
       this.eventContactDecoratorService.create(eventContactDecoratorPrimary).subscribe(c => {
         this.eventContactDecoratorStore.addActive(c);
         this.buildTree()
+        this.setDoneLoading();
       })
-      
+
     })
 
-    
+
+
 
   }
 

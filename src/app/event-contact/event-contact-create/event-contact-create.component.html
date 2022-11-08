@@ -2,12 +2,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header card-header-info">
-                        <h4 class="card-title">Contact</h4>
-                    </div>
-                    <div class="card-body">
+                
                         <form  [formGroup]="form">
+                        
                             <div class="row">
                                 <div class="col-md-6">
 
@@ -69,7 +66,7 @@
                           </div>
                           <div class="row">
                                 
-                              <div class="col-md-4">
+                              <div class="col-md-8">
                                   <mat-form-field class="example-full-width">
                                     <input matInput   class="form-control" placeholder="Email address" formControlName="email" type="email">
                                   </mat-form-field>
@@ -82,11 +79,11 @@
                               
                           </div>
                         </div>
-                          <button mat-button *ngIf="this.addMode" (click)="onSubmit()" cdkFocusInitial class="btn btn-info pull-right">
+                          <button mat-button *ngIf="this.addMode" [mat-dialog-close]="true" (click)="onSubmit()" cdkFocusInitial class="btn btn-info pull-right">
                             <mat-icon>save</mat-icon>
                             Save</button>
                           
-                           <button mat-button *ngIf="!this.addMode" (click)="onUpdate()" cdkFocusInitial class="btn btn-info pull-right">
+                           <button mat-button *ngIf="!this.addMode" [mat-dialog-close]="true" (click)="onUpdate()" cdkFocusInitial class="btn btn-info pull-right">
                                 <mat-icon>edit</mat-icon>
                                  Update</button>
 
@@ -97,8 +94,7 @@
                             Cancel</button>
                           <div class="clearfix"></div>
                         </form>
-                    </div>
-                </div>
+                   
             </div>
            
         </div>

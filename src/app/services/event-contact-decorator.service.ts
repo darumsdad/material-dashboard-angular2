@@ -21,8 +21,8 @@ export class EventContactDecoratorService {
     return this.http.get<EventContactDecorator>(`${this.baseUrl}/${id}`);
   }
 
-  getByGigId(id: any): Observable<EventContactDecorator[]> {
-    return this.http.get<EventContactDecorator[]>(`${this.baseUrl}/byGig/${id}`);
+  forEvent(id: any): Observable<EventContactDecorator[]> {
+    return this.http.get<EventContactDecorator[]>(`${this.baseUrl}/forEvent/${id}`);
   }
 
   create(data: any): Observable<any> {

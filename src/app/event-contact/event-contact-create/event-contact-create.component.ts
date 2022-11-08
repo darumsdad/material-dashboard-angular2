@@ -1,8 +1,13 @@
-import { Component, ComponentFactoryResolver, Input, NgZone, OnInit } from '@angular/core';
+import { Component, Inject, Input, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Decorator } from 'app/models/decorator';
+import { EventContact } from 'app/models/event-contact';
+import { EventContactDecorator } from 'app/models/event-contact-decorator';
 import { ContactService } from 'app/services/contact.service';
-import { DecoratorService } from 'app/services/decorator';
+import { DecoratorService } from 'app/services/decorator.service';
+import { EventContactDecoratorService } from 'app/services/event-contact-decorator.service';
+import { EventContactService } from 'app/services/event-contact.service';
 
 @Component({
   selector: 'app-event-contact-create',
@@ -15,28 +20,29 @@ export class EventContactCreateComponent implements OnInit {
   constructor(public zone: NgZone,
     private formBuilder: FormBuilder,
     private decoratorService: DecoratorService,
-    private contactService: ContactService) { }
+    private eventContactService: EventContactService,
+    private eventContactDecoratorService: EventContactDecoratorService,
+    private contactService: ContactService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    ) { }
 
   form: FormGroup;
-  id: string;
   addMode : boolean;
   decorators: Decorator[];
-  types: any[] = [
-    'BRIDE','GROOM','PLANNER'
-  ]
-
-  @Input()
-  eventId: number
+  
+ 
   
   ngOnInit(): void {
 
-    this.addMode = !this.id;
-
+    this.addMode = !this.data.eventContact;
     
     this.form = this.formBuilder.group({
       type: [''],
+       
+      
       contact: this.formBuilder.group({
         id: [''],
+        gid: [''],
         firstName: [''],
         lastName: [''],
         email: [''],
@@ -49,21 +55,51 @@ export class EventContactCreateComponent implements OnInit {
         
     });
 
-    this.decoratorService.getAll().subscribe( decorators => {
-      console.log(decorators)
-      this.decorators = decorators.filter( d => {
-        return this.types.includes(d.code)
-      })
-    })
+    this.decorators = this.contactService.getContactTypeDecorators();
+
+    if (!this.addMode)
+    {
+      let eventContact: EventContact = this.data.eventContact
+      let contact = eventContact.contact
+
+      console.log('loading from')
+      console.log(eventContact)
+
+      let type = eventContact.decorators.find(d => d.type === 'contact-type').decorator
+
+      let _type = this.decorators.find(x => x.id === type.id)
+
+      let p = {
+        contact: eventContact.contact,
+        type: _type
+      }
+
+      console.log(p)
+      console.log(this.decorators)
+      this.form.patchValue(p)
+
+      
+    }
     
   }
 
   onSubmit()
   {
       let contact =  this.form.value.contact
-      this.contactService.newEventContact(contact,this.form.value.type,this.eventId)
+      this.contactService.newEventContact(contact,this.form.value.type,this.data.eventId)
+      console.log(contact)    
+  }
+
+  onUpdate(eventContact: EventContact)
+  {
+      let contact =  this.form.value.contact
+      let type = this.form.value.type
+      console.log('saving')
       console.log(contact)
-      
+      console.log(type)
+      this.contactService.onUpdateEventContact(contact, type,this.data.eventContact)
+
+         
   }
 
   getEstablishmentAddress(place: object) {

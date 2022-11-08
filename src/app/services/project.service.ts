@@ -16,10 +16,6 @@ export interface Project {
 
 interface ProjectStore extends KeyObsValueReset {
   project: ObsValueReset;
-  // saving: ObsValueReset;
-  // saveComplete: ObsValueReset;
-
-
 }
 
 @Injectable({
@@ -61,22 +57,16 @@ export class ProjectService    {
   });
 
   constructor(private http: HttpClient, private projectTypeService: ProjectTypeService) {
-
-   
-
   }
 
 
   loadTypes(): Observable<ProjectType[]> {
-    console.log("ddddddddd")
-    return this.projectTypeService.getAll();
-   
+    return this.projectTypeService.getAll();   
   }
 
   saveProject() : Observable<Project> {
     console.log('saving')
-    //this.OS.put(this.OS.S.saveComplete, false);
-    //this.OS.put(this.OS.S.saving, true);
+
     let project = this.OS.snapshot(this.OS.S.project)
     console.log(project);
     return this.http.post<Project>(this.baseUrl, {
@@ -84,25 +74,18 @@ export class ProjectService    {
       description: project.description,
       typeId: project.projectType.id
     })
-    //.subscribe( savedProject => {
-     // this.OS.put(this.OS.S.project, savedProject);
-     // console.log('done saving')
-     // this.OS.put(this.OS.S.saving, false);
-     // this.OS.put(this.OS.S.saveComplete, true);
-   // })
   }
 
   reset()
   {
     this.OS.reset();
-    
   }
+
   setProjectType(t: ProjectType) {
     console.log('PUTTING')
     let _project = this.OS.snapshot(this.OS.S.project);
     _project.projectType = t;
     this.OS.put(this.OS.S.project, _project);
-
   }
 
   setDescription(description: string) {

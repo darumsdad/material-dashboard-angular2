@@ -57,6 +57,7 @@ import { Contact } from 'app/models/contact';
 export class EventContactListItemComponent implements OnInit {
 
   constructor() { }
+  
 
   @Input() 
   contact: Contact
@@ -64,7 +65,9 @@ export class EventContactListItemComponent implements OnInit {
   @Input() 
   isPrimary: boolean
   
+   
   ngOnInit(): void {
+    
   }
 
 }

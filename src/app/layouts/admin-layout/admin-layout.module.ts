@@ -72,7 +72,7 @@ import { EventContactCreateComponent } from '../../event-contact/event-contact-c
     MatStepperModule,
     MatProgressSpinnerModule,
     MatCheckboxModule
-    
+
     
     
   ],
@@ -119,7 +119,7 @@ import { EventContactCreateComponent } from '../../event-contact/event-contact-c
     EventContactListComponent,
     EventContactListItemComponent,
     EventContactCreateComponent
-    
+
   ]
 })
 
