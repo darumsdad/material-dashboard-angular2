@@ -221,34 +221,46 @@ export class ContactService {
         this.decoratorStore.addActive(d);
       })
 
-      this.http.get<any[]>(`${this.eventContactUrl}/forEvent/${eventId}`).subscribe(eventContacts => {
+       this.http.get<any[]>(`${this.eventContactUrl}/forEvent/${eventId}`).subscribe({
 
-        eventContacts.forEach(eventContact => {
-          this.eventContactStore.addActive(eventContact)
-        })
+         next: (eventContacts) => {
 
-        this.http.get<any[]>(`${this.contactUrl}/forEvent/${eventId}`).subscribe(contacts => {
+            eventContacts.forEach(eventContact => {
+                this.eventContactStore.addActive(eventContact)
+              })
 
-          if (!contacts)
-            return
-          contacts.forEach(contact => {
-            this.contactStore.addActive(contact)
-          })
+              this.http.get<any[]>(`${this.contactUrl}/forEvent/${eventId}`).subscribe(contacts => {
 
-          this.http.get<any[]>(`${this.eventContactDecoratorUrl}/forEvent/${eventId}`).subscribe(ecds => {
-            ecds.forEach(ecd => {
-              this.eventContactDecoratorStore.addActive(ecd)
-            })
+                if (!contacts)
+                  return
+                
+                  contacts.forEach(contact => {
+                  this.contactStore.addActive(contact)
+                })
 
-
-
-            this.buildTree();
-            this.setDoneLoading();
+                this.http.get<any[]>(`${this.eventContactDecoratorUrl}/forEvent/${eventId}`).subscribe(ecds => {
+                  ecds.forEach(ecd => {
+                    this.eventContactDecoratorStore.addActive(ecd)
+                  })
 
 
-          })
-        })
-      })
+
+                  this.buildTree();
+              })
+              })
+
+         },
+
+         complete: () =>   {
+          this.setDoneLoading();
+         }
+
+       })
+         
+           
+
+
+  
 
     });
 
