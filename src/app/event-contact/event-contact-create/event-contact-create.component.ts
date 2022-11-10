@@ -29,6 +29,7 @@ export class EventContactCreateComponent implements OnInit {
   form: FormGroup;
   addMode : boolean;
   decorators: Decorator[];
+  unlock: boolean = false;
   
  
   
@@ -50,21 +51,19 @@ export class EventContactCreateComponent implements OnInit {
        
         city: [''],
         state: [''],
-        zip: [''],
+        zip: ['',Validators.required],
         phone: ['']})
         
     });
+
+    
 
     this.decorators = this.contactService.getContactTypeDecorators();
 
     if (!this.addMode)
     {
       let eventContact: EventContact = this.data.eventContact
-      let contact = eventContact.contact
-
-      console.log('loading from')
-      console.log(eventContact)
-
+     
       let type = eventContact.decorators.find(d => d.type === 'contact-type').decorator
 
       let _type = this.decorators.find(x => x.id === type.id)

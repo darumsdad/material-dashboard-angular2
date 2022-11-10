@@ -13,14 +13,10 @@ import { EventContactService } from './event-contact.service';
 import { EventContactDecoratorService } from './event-contact-decorator.service';
 import { DecoratorService } from './decorator.service';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
 export class ContactService {
- 
-  
   
   decorators: Decorator[];
 
@@ -28,48 +24,9 @@ export class ContactService {
     'BRIDE','GROOM','PLANNER'
   ]
  
-  onDelete(eventContact: EventContact) {
-    this.setLoading()
-    let contact = eventContact.contact
-    this.delete(contact.id).subscribe(c => {
-      this.contactStore.delete(contact)
-      this.eventContactService.delete(eventContact.id).subscribe( ec => {
-        this.eventContactStore.delete(eventContact);
-        eventContact.decorators.forEach ( ecd => {
-          this.eventContactDecoratorService.delete(ecd.id).subscribe( d => {
-            this.eventContactDecoratorStore.delete(ecd)
-          })
-          this.buildTree();
-          this.setDoneLoading();
-        })
-      })
-    })
-  }
+  
 
-
-  getEventContactAndType(eventContact: EventContact, callback: Function) {
-
-    console.log(eventContact.contact.id)
-    this.get(eventContact.contact.id).subscribe(c => {
-      this.eventContactService.get(eventContact.id).subscribe(ec => {
-        this.eventContactDecoratorService.forEvent(ec.eventId).subscribe(ecds => {
-          let typeEcd = ecds.find(ecd => ecd.type === 'contact-type')
-          console.log(typeEcd)
-          let decorator = this.decorators.find(d => d.id === typeEcd.decoratorId)
-
-          callback({
-            contact: c,
-            type: decorator
-          })
-          
-        })
-      })
-    })
-  }
-
-
-
-
+ 
   contactUrl = environment.baseUrl + '/contacts';
   eventContactUrl = environment.baseUrl + '/event_contact';
   eventContactDecoratorUrl = environment.baseUrl + '/event_contact_decorator';
@@ -268,46 +225,37 @@ export class ContactService {
 
 
   buildTree(): void {
-
-    console.log('buidl tree')
-
      
     this.setLoading();
     this.eventContacts = this.eventContactStore.activeSnapshot()
-    console.log(this.eventContacts)
+    
     this.eventContacts.forEach(ec => {
 
-      let contact = this.contactStore.select(contact => contact.id === ec.contactId)[0]
-      ec.contact = contact
-
-      let ecds = this.eventContactDecoratorStore.activeSnapshot()
+      ec.contact = this.contactStore.select(contact => contact.id === ec.contactId)[0]
 
       ec.decorators = []
-      ec.decorators = ecds.filter(ecd => {
-        return ecd.eventContactId === ec.id
-      })
+
+      ec.decorators = this.eventContactDecoratorStore.select(ecd => ecd.eventContactId === ec.id)
 
       let ds = this.decoratorStore.activeSnapshot()
 
-      ec.decorators.forEach(d => {
-        d.decorator = ds.find(decorator => {
-          return decorator.id === d.decoratorId
-        })
-      });
-
-
+      ec.decorators.forEach(ec_decorator => {
+        ec_decorator.decorator = this.decoratorStore.select(d => ec_decorator.decoratorId ===d.id)[0] 
+      })
+     
     })
 
     this.tree.clearActive();
     
-    this.eventContacts.forEach(x => {
-      this.tree.addActive(x);
+    this.eventContacts.forEach(ec => {
+      this.tree.addActive(ec);
     })
 
-    console.log(this.eventContacts)
     this.setDoneLoading();
 
   }
+  
+  
   makeEventContactPrimary(ec: any) {
 
     this.setLoading();
@@ -320,7 +268,6 @@ export class ContactService {
       this.eventContactDecoratorStore.delete(current);
 
       let eventContact = this.eventContactStore.findOne(ec.gid)
-
       let decorator = this.decoratorStore.select(d => d.code === 'PRIMARY')[0]
 
       let eventContactDecoratorPrimary: EventContactDecorator = {
@@ -340,6 +287,24 @@ export class ContactService {
 
 
 
+  }
+
+  onDelete(eventContact: EventContact) {
+    this.setLoading()
+    let contact = eventContact.contact
+    this.delete(contact.id).subscribe(c => {
+      this.contactStore.delete(contact)
+      this.eventContactService.delete(eventContact.id).subscribe( ec => {
+        this.eventContactStore.delete(eventContact);
+        eventContact.decorators.forEach ( ecd => {
+          this.eventContactDecoratorService.delete(ecd.id).subscribe( d => {
+            this.eventContactDecoratorStore.delete(ecd)
+          })
+          this.buildTree();
+          this.setDoneLoading();
+        })
+      })
+    })
   }
 
   getAll(): Observable<Contact[]> {
