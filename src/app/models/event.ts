@@ -1,9 +1,9 @@
 export class Event {
-
-   constructor(
-        public id: any,
-        
-    ) { }
-
-
+    id: any;
+    projectId: any;
+    venueId: any;
+    date: any;
+    startTime: any;
+    endTime: any;
+    
 }

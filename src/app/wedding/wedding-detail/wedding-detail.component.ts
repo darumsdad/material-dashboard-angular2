@@ -6,8 +6,11 @@ import { Router, ActivatedRoute } from '@angular/router';
   template: `
   <div class="main-content">
     <div class="container-fluid">
-      <app-event-contact-list [eventId]=eventId>
+      <app-event-contact-list [projectId]=projectId>
       </app-event-contact-list>
+      <app-event-details [projectId]=projectId>
+      </app-event-details>
+      
     </div>
   </div>
   `,
@@ -15,7 +18,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   ]
 })
 export class WeddingDetailComponent implements OnInit {
-  eventId: number;
+  projectId: number;
 
   constructor(  
     private route: ActivatedRoute,
@@ -24,7 +27,7 @@ export class WeddingDetailComponent implements OnInit {
      { }
 
   ngOnInit(): void {
-   this.eventId = this.route.snapshot.params['id'];
+   this.projectId = this.route.snapshot.params['id'];
   }
 
 }

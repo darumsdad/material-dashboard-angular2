@@ -29,7 +29,6 @@ export class ProjectService    {
 
   public projectTypes: ProjectType[];
 
-
   OS: OStore<ProjectStore> = new OStore({
 
     project: {
@@ -46,19 +45,11 @@ export class ProjectService    {
         description: null
       }
     },
-    // saving: {
-    //   value: false
-    // },
-    // saveComplete: {
-    //   value: false
-    // }
-
-
+  
   });
 
   constructor(private http: HttpClient, private projectTypeService: ProjectTypeService) {
   }
-
 
   loadTypes(): Observable<ProjectType[]> {
     return this.projectTypeService.getAll();   
@@ -103,14 +94,5 @@ export class ProjectService    {
     })
     return this.OS.S.project.obs;
   }
-
-  // listenForSaving(): Observable<boolean> {
-  //   return this.OS.S.saving.obs;
-  // }
-
-  // listenForSaveComplete(): Observable<boolean> {
-  //   return this.OS.S.saveComplete.obs;
-  // }
-
 
 }

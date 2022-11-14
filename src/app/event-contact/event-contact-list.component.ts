@@ -60,7 +60,7 @@ export class EventContactListComponent implements OnInit {
   constructor(private s: ContactService, public dialog: MatDialog) { }
 
   @Input()
-  eventId: number
+  projectId: number
   
 
 
@@ -84,14 +84,14 @@ export class EventContactListComponent implements OnInit {
     })
 
     //this.isLoading = true;
-    this.s.load(this.eventId)
+    this.s.load(this.projectId)
     //this.isLoading = false;
   }
 
   openDialog(contactId: number): void {
     const dialogRef = this.dialog.open(EventContactCreateComponent, {
       width: '650px',
-      data: {eventId: this.eventId, contactId: contactId},
+      data: {eventId: this.projectId, contactId: contactId},
     });
 
     dialogRef.afterClosed().subscribe(result => {

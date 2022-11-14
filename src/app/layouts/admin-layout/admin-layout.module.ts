@@ -12,7 +12,7 @@ import { TypographyComponent } from '../../typography/typography.component';
 import { VenueListComponent } from '../../venue-list/venue-list.component';
 import { VenueDetailComponent } from '../../venue-detail/venue-detail.component';
 import { GigListComponent } from '../../gig-list/gig-list.component';
-import { GigDetailComponent } from '../../gig-detail/gig-detail.component';
+
 import { IconsComponent } from '../../icons/icons.component';
 import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
@@ -30,14 +30,16 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { VenueAddComponent } from '../../venue-add/venue-add.component';
 import { AutocompleteComponent  } from '../../google-places-autocomplete/google-places-autocomplete.component';
-import { GigContactComponent } from 'app/gig-contact/gig-contact.component';
+
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 import { CreateProjectComponent } from '../../project/create-project.component';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatProgressSpinner, MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 import { ProjectTypeComponent } from 'app/project/project-type/project-type.component';
 import { ProjectViewComponent } from '../../project/project-view.component';
 import { NewProjectComponent } from '../../project/new-project.component';
@@ -45,15 +47,21 @@ import { WeddingDetailComponent } from '../../wedding/wedding-detail/wedding-det
 import { EventContactListComponent } from '../../event-contact/event-contact-list.component';
 import { EventContactListItemComponent } from '../../event-contact/event-contact-list-item.component';
 import { EventContactCreateComponent } from '../../event-contact/event-contact-create/event-contact-create.component';
+import { VenueSelectComponent } from '../../venue/venue-select/venue-select.component';
+import { EventDetailsComponent } from '../../event/event-details/event-details.component';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+
 
 
  
 @NgModule({
   imports: [
+    NgxMaterialTimepickerModule,
     CommonModule,
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
     ReactiveFormsModule,
+    MatNativeDateModule,
     MatButtonModule,
     MatRippleModule,
     MatFormFieldModule,
@@ -102,7 +110,7 @@ import { EventContactCreateComponent } from '../../event-contact/event-contact-c
     VenueListComponent,
     VenueDetailComponent,
     GigListComponent,
-    GigDetailComponent,
+    
     TypographyComponent,
     IconsComponent,
     MapsComponent,
@@ -110,7 +118,7 @@ import { EventContactCreateComponent } from '../../event-contact/event-contact-c
     UpgradeComponent,
     VenueAddComponent,
     AutocompleteComponent,
-    GigContactComponent,
+    
     CreateProjectComponent,
     ProjectTypeComponent,
     ProjectViewComponent,
@@ -118,7 +126,9 @@ import { EventContactCreateComponent } from '../../event-contact/event-contact-c
     WeddingDetailComponent,
     EventContactListComponent,
     EventContactListItemComponent,
-    EventContactCreateComponent
+    EventContactCreateComponent,
+    VenueSelectComponent,
+    EventDetailsComponent
 
   ]
 })

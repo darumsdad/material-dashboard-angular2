@@ -1,0 +1,58 @@
+<div class="main-content">
+
+    <div class="container-fluid" [ngStyle]="{'border-style' : s.isDirty ? 'solid' : 'none', 'border-color' : 'coral'}">
+        <app-venue-select [venueId]="event.venueId" (onVenueSelected)="newVenueIdValue($event)"></app-venue-select>
+
+
+
+        <div class="row">
+            <div class="col-md-4">
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Choose a date</mat-label>
+                    <!-- #docregion toggle -->
+                    <input matInput (dateChange)="onDateChange($event)" [formControl]="serializedDate"
+                        [matDatepicker]="picker">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <!-- #enddocregion toggle -->
+                </mat-form-field>
+
+
+            </div>
+            <div class="col-md-2">
+                <mat-form-field appearance="fill">
+                    <mat-label>Start Time</mat-label>
+                    <input matInput placeholder="please choose a start time" [ngxTimepicker]="tpicker" [disableClick]="true" [formControl]="serializedStartTime" readonly>
+                    <mat-hint>HH:MM AM/PM</mat-hint>
+                    <ngx-material-timepicker-toggle matSuffix [for]="tpicker"></ngx-material-timepicker-toggle>
+                    <ngx-material-timepicker #tpicker (timeChanged)="onStartTimeChanged($event)" ></ngx-material-timepicker>
+                </mat-form-field>
+                
+            </div>
+
+            <div class="col-md-2">
+                <mat-form-field appearance="fill">
+                    <mat-label>End Time</mat-label>
+                    <input matInput placeholder="please choose a end time" [ngxTimepicker]="tepicker" [disableClick]="true" [formControl]="serializedEndTime" readonly>
+                    <mat-hint>HH:MM AM/PM</mat-hint>
+                    <ngx-material-timepicker-toggle matSuffix [for]="tepicker"></ngx-material-timepicker-toggle>
+                    <ngx-material-timepicker #tepicker (timeChanged)="onEndTimeChanged($event)"></ngx-material-timepicker>
+                </mat-form-field>
+                
+            </div>
+
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <button mat-raised-button color="primary" [disabled]="!s.isDirty  || serializedDate.invalid"
+                    class="btn btn-warning pull-right" (click)="onSave($event)"><i class="material-icons">save</i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

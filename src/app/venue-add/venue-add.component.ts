@@ -1,7 +1,7 @@
 import { Component, Inject,NgZone,OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { GigDetailComponent } from 'app/gig-detail/gig-detail.component';
+
 import { Venue } from 'app/models/venue';
 import { VenueService } from 'app/services/venue.service';
 import { first } from 'rxjs/operators';
@@ -21,15 +21,14 @@ export class VenueAddComponent  implements OnInit {
   constructor(public zone: NgZone,
     private formBuilder: FormBuilder,
     private venueService: VenueService,
-    public dialogRef: MatDialogRef<GigDetailComponent>,
+    public dialog: MatDialogRef<VenueAddComponent>,
     @Inject(MAT_DIALOG_DATA) public newVenue: Venue) { }
 
   ngOnInit(): void {
     
     this.form = new FormGroup({
         name: new FormControl(),
-        addressLine1: new FormControl(),
-        addressLine2: new FormControl(),
+        address: new FormControl(),
         city: new FormControl(),
         state: new FormControl(),
         zip: new FormControl(),
@@ -50,11 +49,11 @@ export class VenueAddComponent  implements OnInit {
     this.venueService.create(this.form.value).subscribe({
           next: (data) => {
               console.log(data.id)
-              this.newVenue = data
-              this.dialogRef.close(data);
+              this.dialog.close(data);
           },
           error: error => {
-          }
+          },
+         
       });
 
   }
@@ -65,7 +64,7 @@ export class VenueAddComponent  implements OnInit {
     console.log(place)
     this.form.patchValue({
       name: place['name'],
-      addressLine1 : this.getStreetNumber(place) + ' ' + this.getStreet(place),
+      address : this.getStreetNumber(place) + ' ' + this.getStreet(place),
       city : this.getCity(place),
       state : this.getState(place),
       zip : this.getPostCode(place),
@@ -76,7 +75,7 @@ export class VenueAddComponent  implements OnInit {
 
       this.form.patchValue({
         name: place['name'],
-        addressLine1 : this.getStreetNumber(place) + ' ' + this.getStreet(place),
+        address : this.getStreetNumber(place) + ' ' + this.getStreet(place),
         city : this.getCity(place),
         state : this.getState(place),
         zip : this.getPostCode(place),

@@ -12,7 +12,7 @@ import { EventContactService } from 'app/services/event-contact.service';
 @Component({
   selector: 'app-event-contact-create',
   templateUrl: './event-contact-create.component.html',
-  styles: [
+  styles: ['.center { display: flex; }'
   ]
 })
 export class EventContactCreateComponent implements OnInit {
@@ -31,7 +31,6 @@ export class EventContactCreateComponent implements OnInit {
   decorators: Decorator[];
   unlock: boolean = false;
   
- 
   
   ngOnInit(): void {
 
@@ -57,6 +56,7 @@ export class EventContactCreateComponent implements OnInit {
     });
 
     
+   
 
     this.decorators = this.contactService.getContactTypeDecorators();
 
@@ -79,6 +79,11 @@ export class EventContactCreateComponent implements OnInit {
 
       
     }
+    
+  }
+
+  setChecked(completed: boolean) {
+    this.unlock = completed;
     
   }
 

@@ -35,19 +35,19 @@ import { Project, ProjectService } from 'app/services/project.service';
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Create</ng-template>
-    <p>Create This Project ?</p>
+    <h1>Create This Project ?</h1>
       <div class="row">
         <div class="col-md-12">
-          <b>Type</b> {{project.projectType.name}}
+          <h1>{{project.projectType.name}} </h1>
         </div>
         <div class="col-md-12">
-          <b>Description</b> {{project.description}}
+          <h3>{{project.description}}</h3>
         </div>
       </div>
       <br>
     <div>
       <button mat-button class="btn btn-info" matStepperPrevious>Back</button>
-      <button mat-button class="btn btn-info" [class.spinner]="isSaving" (click)="create()">Create</button>
+      <button mat-button class="btn btn-info" [class.spinner]="isSaving" (click)="create()">Continue</button>
     </div>
   </mat-step>
 </mat-stepper>
