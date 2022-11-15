@@ -11,11 +11,7 @@ export interface Task {
 }
 
 const ELEMENT_DATA: Task[] = [
-  {  description: 'Send Contract', date: 'Tue Nov 15 2022 00:00:00 GMT-0500 (Eastern Standard Time)', status: 1, note: '' },
-  {   description: 'Helium', date: 'Tue Nov 15 2022 00:00:00 GMT-0500 (Eastern Standard Time)', status: 2 , note: ''},
-  {   description: 'Lithium', date: 'Tue Nov 15 2022 00:00:00 GMT-0500 (Eastern Standard Time)', status: 2 , note: ''},
-  {   description: 'Beryllium', date: 'Tue Nov 15 2022 00:00:00 GMT-0500 (Eastern Standard Time)', status: 3 , note: ''},
-   
+  
 ];
 
 
