@@ -8,46 +8,7 @@ import { EventContactCreateComponent } from './event-contact-create/event-contac
 
 @Component({
   selector: 'app-event-contact-list',
-  template: `
-  <div class="row" *ngIf="isSaving" >
-  <mat-spinner style="margin:0 auto;" mode="indeterminate" ></mat-spinner>
-  </div>
-  <div *ngIf="!isSaving" class="table-responsive">
-  
-    <table class="table align-middle bg-white">
-      <thead class="bg-light">
-          <tr>
-              
-              <th>Contact</th>
-              <th>Type</th>
-              <th>Actions</th>
-               
-          </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let ec of eventContacts">
-          <td>
-          <app-event-contact-list-item [contact]=ec.contact [isPrimary]=isPrimary(ec)>
-          </app-event-contact-list-item>
-        </td>
-        <td>
-        {{getType(ec)}}
-        </td> 
-        <td>
-        <div class="example-button-row">
-          <button [disabled]="isPrimary(ec)" (click)="makePrimary(ec)" mat-raised-button color="basic"><i class="material-icons">star</i></button>
-          <button (click)="onUpdate(ec)" mat-raised-button color="warning"><i class="material-icons">edit</i></button>
-          <button (click)="onDelete(ec)" mat-raised-button color="error"><i class="material-icons">delete</i></button>
-        </div>
-        </td> 
-        </tr>
-      </tbody>
-    </table>
-  <div>
-  <button (click)="openDialog(null)" mat-raised-button color="primary">Add Contact</button>
-  </div>
-   
-  `,
+  templateUrl: './event-contact-list.component.html',
   styles: [
     '.example-button-row { display: flex; }'
    ]

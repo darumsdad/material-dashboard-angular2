@@ -1,0 +1,53 @@
+<div class="row" *ngIf="isSaving">
+    <mat-spinner style="margin:0 auto;" mode="indeterminate"></mat-spinner>
+</div>
+
+<div class="row" *ngIf="!isSaving">
+    <div class="col">
+        <div class="table-responsive">
+
+            <table class="table align-middle bg-white">
+                <thead class="bg-light">
+                    <tr>
+
+                        <th>Contact</th>
+                        <th>Type</th>
+                        <th>Actions</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let ec of eventContacts">
+                        <td>
+                            <app-event-contact-list-item [contact]=ec.contact [isPrimary]=isPrimary(ec)>
+                            </app-event-contact-list-item>
+                        </td>
+                        <td>
+                            {{getType(ec)}}
+                        </td>
+                        <td>
+                            <div class="example-button-row">
+
+                                <!-- <button mat-icon-button class="material-icons app-toolbar-menu cancel-button"
+                                matTooltip="Cancel Changes" color="warn" (click)="CancelSVO(VOForm,i)"
+                                *ngIf="!VOForm.get('VORows').value[i].isEditable">
+                                <mat-icon>cancel</mat-icon>
+                            </button> -->
+
+
+                                <button [disabled]="isPrimary(ec)" (click)="makePrimary(ec)" mat-icon-button color="basic" class="material-icons app-toolbar-menu star-button" matTooltip="Make Primary"><mat-icon>star</mat-icon></button>
+                                <button (click)="onUpdate(ec)" mat-icon-button color="warning" class="material-icons app-toolbar-menu" matTooltip="Edit"><mat-icon>edit</mat-icon></button>
+                                <button (click)="onDelete(ec)" mat-icon-button color="error" class="material-icons app-toolbar-menu" matTooltip="Delete"><mat-icon>delete</mat-icon></button>
+                                
+                               
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <button (click)="openDialog(null)" mat-raised-button color="primary">Add Contact</button>
+            </div>
+        </div>
+    </div>
+</div>

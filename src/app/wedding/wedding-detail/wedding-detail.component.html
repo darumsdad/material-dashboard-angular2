@@ -1,0 +1,65 @@
+<div class="main-content">
+    <mat-tab-group dynamicHeight animationDuration="0ms">
+       
+        <mat-tab label="Details">
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <app-event-details [projectId]=projectId>
+                    </app-event-details>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Contacts">
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <app-event-contact-list [projectId]=projectId>
+                    </app-event-contact-list>
+                </div>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Status and Tasks">
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <app-status-and-tasks-details>
+                    </app-status-and-tasks-details>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Files">
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <app-file-upload [projectId]=projectId></app-file-upload>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+
+   
+
+
+    <!-- <div class="row mt-5">
+
+        <div class="col-md-12">
+            <app-event-contact-list [projectId]=projectId>
+            </app-event-contact-list>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-12">
+
+            <app-event-details [projectId]=projectId>
+            </app-event-details>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <app-status-and-tasks-details>
+            </app-status-and-tasks-details>
+        </div>
+    </div> -->
+
+
+</div>

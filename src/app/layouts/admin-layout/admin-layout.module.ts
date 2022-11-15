@@ -50,6 +50,12 @@ import { EventContactCreateComponent } from '../../event-contact/event-contact-c
 import { VenueSelectComponent } from '../../venue/venue-select/venue-select.component';
 import { EventDetailsComponent } from '../../event/event-details/event-details.component';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { StatusAndTasksDetailsComponent } from '../../project/status-and-tasks-details/status-and-tasks-details.component';
+import {MatTableModule} from '@angular/material/table';
+import {MatTabsModule} from '@angular/material/tabs';
+import { FileUploadComponent } from '../../file-upload/file-upload.component';
+import { NgxMatFileInputModule } from '@angular-material-components/file-input';
+
 
 
 
@@ -57,6 +63,9 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 @NgModule({
   imports: [
     NgxMaterialTimepickerModule,
+    NgxMatFileInputModule,
+    MatTabsModule,
+    MatTableModule,
     CommonModule,
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
@@ -128,7 +137,9 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
     EventContactListItemComponent,
     EventContactCreateComponent,
     VenueSelectComponent,
-    EventDetailsComponent
+    EventDetailsComponent,
+    StatusAndTasksDetailsComponent,
+    FileUploadComponent
 
   ]
 })

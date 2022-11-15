@@ -15,7 +15,7 @@ export class EventDetailsComponent implements OnInit {
   projectId: number
   event: Event = new Event;
 
-  serializedDate = new FormControl(new Date().toISOString());
+  serializedDate = new FormControl();
   serializedStartTime = new FormControl('');
   serializedEndTime = new FormControl('');
   
@@ -62,7 +62,8 @@ export class EventDetailsComponent implements OnInit {
     console.log('onLoaded')
     console.log(e)
     this.event = e;
-    this.serializedDate.patchValue(new Date(e.date).toISOString())
+    if (e.date)
+      this.serializedDate.patchValue(new Date(e.date).toISOString())
     this.serializedStartTime.patchValue(e.startTime)
     this.serializedEndTime.patchValue(e.endTime)
   }

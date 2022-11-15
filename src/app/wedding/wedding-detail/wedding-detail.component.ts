@@ -3,16 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-wedding-detail',
+  templateUrl: './wedding-detail.component.html',
   template: `
-  <div class="main-content">
-    <div class="container-fluid">
-      <app-event-contact-list [projectId]=projectId>
-      </app-event-contact-list>
-      <app-event-details [projectId]=projectId>
-      </app-event-details>
-      
-    </div>
-  </div>
+  
   `,
   styles: [
   ]
