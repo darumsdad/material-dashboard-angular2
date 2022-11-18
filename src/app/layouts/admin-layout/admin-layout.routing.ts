@@ -16,6 +16,7 @@ import { GigListComponent } from 'app/gig-list/gig-list.component';
 
 import { NewProjectComponent } from 'app/project/new-project.component';
 import { WeddingDetailComponent } from 'app/wedding/wedding-detail/wedding-detail.component';
+import { EventMainComponent } from 'app/event/event-main/event-main.component';
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -72,6 +73,8 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'gig-list',   component: GigListComponent },
     { path: 'new-project',   component: NewProjectComponent },
     { path: 'wedding-detail/:id',   component: WeddingDetailComponent },
+    { path: 'event/:id',   component: EventMainComponent },
+    { path: 'event',   component: EventMainComponent },
     
     { path: 'venue-list',     component: VenueListComponent },
     { path: 'typography',     component: TypographyComponent },

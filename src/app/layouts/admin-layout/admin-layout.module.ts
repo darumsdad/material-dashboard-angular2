@@ -53,9 +53,12 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { StatusAndTasksDetailsComponent } from '../../project/status-and-tasks-details/status-and-tasks-details.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatDividerModule} from '@angular/material/divider';
 import { FileUploadComponent } from '../../file-upload/file-upload.component';
 import { NgxMatFileInputModule } from '@angular-material-components/file-input';
-
+import { EventMainComponent } from '../../event/event-main/event-main.component';
+import { EventTypeComponent } from '../../event/event-type/event-type.component';
+import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 
 
 
@@ -63,6 +66,8 @@ import { NgxMatFileInputModule } from '@angular-material-components/file-input';
 @NgModule({
   imports: [
     NgxMaterialTimepickerModule,
+    MatDividerModule,
+    NgxIntlTelInputModule,
     NgxMatFileInputModule,
     MatTabsModule,
     MatTableModule,
@@ -139,7 +144,9 @@ import { NgxMatFileInputModule } from '@angular-material-components/file-input';
     VenueSelectComponent,
     EventDetailsComponent,
     StatusAndTasksDetailsComponent,
-    FileUploadComponent
+    FileUploadComponent,
+    EventMainComponent,
+    EventTypeComponent
 
   ]
 })
