@@ -105,8 +105,11 @@
             </div>
 
             <div class="col-md-2">
-                <ngx-intl-tel-input matInput appearance="fill" [searchCountryFlag]="true"
-                    [preferredCountries]="preferredCountries" [maxLength]="15" [phoneValidation]="true"
+                <ngx-intl-tel-input matInput appearance="fill" [searchCountryFlag]="false"
+                    [preferredCountries]="preferredCountries" [maxLength]="10" [phoneValidation]="true"
+                    [maxLength]="10"
+                    [phoneValidation]="true"
+                    [enablePlaceholder]="false"
                     formControlName="bride_phone" name="phone" >
                 </ngx-intl-tel-input>
             </div>
@@ -144,7 +147,7 @@
 
             <div class="col-md-2">
                 <ngx-intl-tel-input matInput appearance="fill" [searchCountryFlag]="true"
-                    [preferredCountries]="preferredCountries" [maxLength]="15" [phoneValidation]="true"
+                    [preferredCountries]="preferredCountries" [maxLength]="10" [phoneValidation]="true"
                     formControlName="bride_mom_phone">
                 </ngx-intl-tel-input>
             </div>
@@ -174,7 +177,7 @@
 
             <div class="col-md-2">
                 <ngx-intl-tel-input matInput appearance="fill" [searchCountryFlag]="true"
-                    [preferredCountries]="preferredCountries" [maxLength]="15" [phoneValidation]="true"
+                    [preferredCountries]="preferredCountries" [maxLength]="10" [phoneValidation]="true"
                     formControlName="bride_dad_phone">
                 </ngx-intl-tel-input>
             </div>
@@ -202,7 +205,7 @@
 
             <div class="col-md-2">
                 <ngx-intl-tel-input matInput appearance="fill" [searchCountryFlag]="true"
-                    [preferredCountries]="preferredCountries" [maxLength]="15" [phoneValidation]="true"
+                    [preferredCountries]="preferredCountries" [maxLength]="10" [phoneValidation]="true"
                     formControlName="groom_phone">
                 </ngx-intl-tel-input>
             </div>
@@ -240,7 +243,7 @@
 
             <div class="col-md-2">
                 <ngx-intl-tel-input matInput appearance="fill" [searchCountryFlag]="true"
-                    [preferredCountries]="preferredCountries" [maxLength]="15" [phoneValidation]="true"
+                    [preferredCountries]="preferredCountries" [maxLength]="10" [phoneValidation]="true"
                     formControlName="groom_mom_phone">
                 </ngx-intl-tel-input>
             </div>
@@ -270,7 +273,7 @@
 
             <div class="col-md-2">
                 <ngx-intl-tel-input matInput appearance="fill" [searchCountryFlag]="true"
-                    [preferredCountries]="preferredCountries" [maxLength]="15" [phoneValidation]="true"
+                    [preferredCountries]="preferredCountries" [maxLength]="10" [phoneValidation]="true"
                     formControlName="groom_dad_phone">
                 </ngx-intl-tel-input>
             </div>
@@ -299,7 +302,7 @@
 
             <div class="col-md-2">
                 <ngx-intl-tel-input matInput appearance="fill" [searchCountryFlag]="true"
-                    [preferredCountries]="preferredCountries" [maxLength]="15" [phoneValidation]="true"
+                    [preferredCountries]="preferredCountries" [maxLength]="10" [phoneValidation]="true"
                     formControlName="planner_phone">
                 </ngx-intl-tel-input>
             </div>
@@ -375,6 +378,20 @@
         <code>{{jotLink}}</code>
         </div>
      
+    </div>
+   
+    <div class="row">
+        <div class="col-md-12">
+            <mat-card *ngIf="this.data.get('webhook_last_error').value" matCard>
+                <mat-card-header>
+                    <mat-card-title>JotForm Parse Error</mat-card-title>
+                  </mat-card-header>
+                <mat-card-content>{{this.data.get('last_submission_id').value}} {{this.data.get('webhook_last_error').value }}</mat-card-content>
+                <mat-card-actions>
+                    <button (click)="onRetrySubmission(this.data.get('last_submission_id').value)" mat-button-warn>Retry</button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
     </div>
 
 

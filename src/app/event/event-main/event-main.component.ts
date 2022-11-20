@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EventMainService } from 'app/services/event-main.service';
  
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input';
@@ -12,12 +12,15 @@ import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-
 })
 export class EventMainComponent implements OnInit {
   eventId: any;
+ 
 
   constructor(public fb: FormBuilder, public s: EventMainService,
     private route: ActivatedRoute,
+    private router: Router,
     ) { }
 
   form: FormGroup;
+  data: FormGroup;
   eventTypes: any[] = ['Wedding', 'Mitzvah', 'Other']
   venueId: any
 
@@ -54,15 +57,18 @@ export class EventMainComponent implements OnInit {
     { jotName: 'brideMomName', formName: 'bride_mom_name' },
     { jotName: 'brideMomPhone', formName: 'bride_mom_phone' },
     { jotName: 'brideMomEmail', formName: 'bride_mom_email' },
+    { jotName: 'brideSocial', formName: 'bride_social' },
 
     { jotName: 'brideDadName', formName: 'bride_dad_name' },
     { jotName: 'brideDadPhone', formName: 'bride_dad_phone' },
     { jotName: 'brideDadEmail', formName: 'bride_dad_email' },
     { jotName: 'brideCanText', formName: 'bride_phone_text' },
+    { jotName: 'cid', formName: 'id' },
 
     { jotName: 'groomName', formName: 'groom_name' },
     { jotName: 'groomPhone', formName: 'groom_phone' },
     { jotName: 'groomEmail', formName: 'groom_email' },
+    { jotName: 'groomSocial', formName: 'groom_social' },
 
     { jotName: 'groomMomName', formName: 'groom_mom_name' },
     { jotName: 'groomMomPhone', formName: 'groom_mom_phone' },
@@ -91,19 +97,25 @@ export class EventMainComponent implements OnInit {
     let url: any = "https://www.jotform.com/223214405057143?"
 
     let maps = this.jotFormMapping.map(e => {
-      if (this.form.get('data').get(e.formName).value)
+      
+      if (e.jotName === 'cid')
       {
+        return e.jotName + '=' + this.eventId
+      }
+      else if (this.form.get('data').get(e.formName).value)
+      {
+
         
         if (e.formName.endsWith('phone'))
         {
-          return e.jotName + '=' + this.form.get('data').get(e.formName).value.nationalNumber
+          console.log(this.form.get('data').get(e.formName).value)
+          return e.jotName + '[full]=' + this.form.get('data').get(e.formName).value
+          
         }
         else if (e.formName.endsWith('phone_text'))
         {
           return e.jotName + '=' + (this.form.get('data').get(e.formName) ? "Yes" : "No")
         }
-
-        
         else if (e.formName === 'date')
         {
 
@@ -157,56 +169,62 @@ export class EventMainComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.data = this.fb.group({
+      
+      status: [''],
+      event_type: [''],
+      description: [''],
+      date: [''],
+      start: [''],
+      end: [''],
+      status_update_date: [''],
+
+      bride_name: [''],
+      bride_phone: new FormControl(''),
+      bride_phone_text: new FormControl(''),
+      bride_email: new FormControl('', Validators.email),
+      bride_social: new FormControl(''),
+
+      bride_mom_name: [''],
+      bride_mom_phone: new FormControl(''),
+      bride_mom_email: new FormControl('', Validators.email),
+
+      bride_dad_name: [''],
+      bride_dad_phone: new FormControl(''),
+      bride_dad_email: new FormControl('', Validators.email),
+
+      groom_name: [''],
+      groom_phone: new FormControl(''),
+      groom_email: new FormControl('', Validators.email),
+      groom_phone_text: new FormControl(''),
+      groom_social: new FormControl(''),
+
+      groom_mom_name: [''],
+      groom_mom_phone: new FormControl(''),
+      groom_mom_email: new FormControl('', Validators.email),
+
+      groom_dad_name: [''],
+      groom_dad_phone: new FormControl(''),
+      groom_dad_email: new FormControl('', Validators.email),
+
+      planner_name: [''],
+      planner_phone: new FormControl(''),
+      planner_email: new FormControl('', Validators.email),
+      other_contact: [''],
+
+      jotform_venue: [''],
+      venueId: [''],
+      other_location: [''],
+      webhook_last_error: [''],
+      last_submission_id: new FormControl()
+
+    })
     this.form = this.fb.group({
       id: [''],
-      data: this.fb.group({
-        status: [''],
-        event_type: [''],
-        description: [''],
-        date: [''],
-        start: [''],
-        end: [''],
-        status_update_date: [''],
-
-        bride_name: [''],
-        bride_phone: new FormControl(''),
-        bride_phone_text: new FormControl(''),
-        bride_email: new FormControl('', Validators.email),
-        bride_social: new FormControl(''),
-
-        bride_mom_name: [''],
-        bride_mom_phone: new FormControl(''),
-        bride_mom_email: new FormControl('', Validators.email),
-
-        bride_dad_name: [''],
-        bride_dad_phone: new FormControl(''),
-        bride_dad_email: new FormControl('', Validators.email),
-
-        groom_name: [''],
-        groom_phone: new FormControl(''),
-        groom_email: new FormControl('', Validators.email),
-        groom_phone_text: new FormControl(''),
-        groom_social: new FormControl(''),
-
-        groom_mom_name: [''],
-        groom_mom_phone: new FormControl(''),
-        groom_mom_email: new FormControl('', Validators.email),
-
-        groom_dad_name: [''],
-        groom_dad_phone: new FormControl(''),
-        groom_dad_email: new FormControl('', Validators.email),
-
-        planner_name: [''],
-        planner_phone: new FormControl(''),
-        planner_email: new FormControl('', Validators.email),
-        other_contact: [''],
-
-        jotform_venue: [''],
-        venueId: [''],
-        other_location: ['']
-
-      })
+      data: this.data
     })
+
     this.form.markAsPristine()
     this.eventId = this.route.snapshot.params['id'];
 
@@ -243,24 +261,36 @@ export class EventMainComponent implements OnInit {
     {
       this.s.update(this.eventId,this.form.value).subscribe(result => {
         this.form.markAsUntouched()
+        this.router.navigate(["event",{ id: this.eventId}])
       })
     }
     else
     {
       this.s.create(this.form.value).subscribe(result => {
+        console.log(result)
         this.form.markAsUntouched()
+        this.eventId = result.id
+        this.router.navigate(["event",{ id: this.eventId}])
+        
+        
       })
     }
 
-    this.jotLink = this.onJotUrl(null)
     
    
-
   }
 
   onChangeStatus(event: any) {
     console.log(event);
     this.form.get('data').get('status_update_date').patchValue(new Date().toISOString())
+  }
+
+  onRetrySubmission(id: any)
+  {
+    this.s.submission(id).subscribe( e => {
+      this.router.navigate(["event",this.eventId])
+    });
+
   }
 
   onVenueSelected(event: any) {

@@ -11,6 +11,7 @@ export class EventMainService {
 
 
   baseUrl = environment.baseUrl + '/events';
+  webhookUrl = environment.baseUrl + '/webhook';
 
   constructor(private http: HttpClient) { }
 
@@ -21,6 +22,10 @@ export class EventMainService {
 
   create(data: any): Observable<any> {
     return this.http.post(this.baseUrl, data);
+  }
+
+  submission(id: any): Observable<any> {
+    return this.http.put(`${this.webhookUrl}/${id}`, { id: id});
   }
 
   update(id: any, data: any): Observable<any> {

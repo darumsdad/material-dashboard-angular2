@@ -35,6 +35,7 @@ import { EditorModule } from '@tinymce/tinymce-angular';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatCardModule } from '@angular/material/card';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 import { CreateProjectComponent } from '../../project/create-project.component';
 import {MatStepperModule} from '@angular/material/stepper';
@@ -65,6 +66,7 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
  
 @NgModule({
   imports: [
+    MatCardModule,
     NgxMaterialTimepickerModule,
     MatDividerModule,
     NgxIntlTelInputModule,
