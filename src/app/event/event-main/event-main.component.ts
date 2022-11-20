@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EventMainService } from 'app/services/event-main.service';
  
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input';
+import {Clipboard} from '@angular/cdk/clipboard';
+
 
 @Component({
   selector: 'app-event-main',
@@ -12,15 +14,20 @@ import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-
 })
 export class EventMainComponent implements OnInit {
   eventId: any;
+  e: any;
  
 
   constructor(public fb: FormBuilder, public s: EventMainService,
     private route: ActivatedRoute,
     private router: Router,
+    private clipboard: Clipboard
     ) { }
 
   form: FormGroup;
   data: FormGroup;
+
+  dataModel: any;
+
   eventTypes: any[] = ['Wedding', 'Mitzvah', 'Other']
   venueId: any
 
@@ -88,9 +95,49 @@ export class EventMainComponent implements OnInit {
 
   ]
 
-  
+  copyJotForm() {
+    const pending = this.clipboard.beginCopy(this.dataModel.value);
+    let remainingAttempts = 3;
+    const attempt = () => {
+      const result = pending.copy();
+      if (!result && --remainingAttempts) {
+        setTimeout(attempt);
+      } else {
+        // Remember to destroy when you're done!
+        pending.destroy();
+      }
+    };
+    attempt();
+  }
+
+  handleEditorInit(event: any)
+  {
+    console.log("load")
+    console.log(event)
+    this.e = event;
+    
+
+  }
 
   jotLink: any
+
+  copyJotHtml(event: any)
+  {
+    
+    console.log(this.e)
+    this.jotLink = this.onJotUrl(null);
+    this.dataModel.patchValue("<h4> Thanks for your interest</h4> <p> Please <a href='" + this.jotLink + "'>click here</a> to fill out the form </h4>")
+    this.copyJotForm();
+    //this.router.navigateByUrl("https://mail.google.com/mail/u/0/?fs=1&to=email@domain.example&tf=cm")
+
+
+  }
+
+
+  emailRedirect(event: any)
+  {
+    this.router.navigateByUrl("https://mail.google.com/mail/u/0/?fs=1&to=email@domain.example&tf=cm")
+  }
 
   onJotUrl(event: any) : any
   {
@@ -170,6 +217,8 @@ export class EventMainComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.dataModel = new FormControl();
+
     this.data = this.fb.group({
       
       status: [''],
@@ -234,11 +283,12 @@ export class EventMainComponent implements OnInit {
         console.log(e)
         this.form.get('data').patchValue(e.data);
 
-        this.jotLink = this.onJotUrl(null);
+        //this.jotLink = this.onJotUrl(null);
       })
     }
   }
 
+ 
   onSave(event: any) {
     
     console.log(this.form.value)
