@@ -1,5 +1,5 @@
-import { Component, EventEmitter, OnChanges, Input, OnInit, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Venue } from 'app/models/venue';
 import { VenueService } from 'app/services/venue.service';
@@ -12,42 +12,45 @@ import { map, Observable, startWith } from 'rxjs';
   styles: [' .mat-option { height: 100px; line-height: 20px; }'
   ]
 })
-export class VenueSelectComponent implements OnInit,OnChanges {
+export class VenueSelectComponent implements OnInit {
+  
+  form: FormGroup;
 
-  constructor(public venueService: VenueService, public dialog: MatDialog) { }
+  constructor(public venueService: VenueService, 
+    public dialog: MatDialog,
+    public rootFormGroup: FormGroupDirective) { }
 
   venues: Venue[] = [];
   filteredVenues: Observable<Venue[]>;
   
-  venueFormControl: FormControl = new FormControl('');
-
-  @Input('venueId')
-  venueId: number;
   
-  ngOnChanges () {
-    console.log('change detected')
-    // Check if the data exists before using it
-    if (this.venueId) {
-      this.venueFormControl.patchValue(this.venueId);
-    }
-  }
+  // ngOnChanges () {
+  //   console.log('venue change detected')
+  //   console.log(this.venueId)
+  //   // Check if the data exists before using it
+  //   if (this.venueId) {
+  //     this.venueFormControl.patchValue(this.venueId);
+  //   }
+  // }
 
-  @Output() onVenueSelected = new EventEmitter<string>();
+  //@Output() onVenueSelected = new EventEmitter<string>();
 
   ngOnInit(): void {
-
+    console.log('starting  detected')
+    this.form = this.rootFormGroup.control;
+    //console.log(this.rootFormGroup.control)
     this.venueService.getAll().subscribe(x => { 
       console.log(x)
       this.venues = x;
-      this.filteredVenues = this.venueFormControl.valueChanges.pipe(
+      this.filteredVenues = this.form.get('venueId').valueChanges.pipe(
         startWith(''),
         map(venue => venue ? this._filterVenue(venue || '') : this.venues.slice()),
       );
-      if (this.venueId)
-      {
-        console.log('setting venue')
-        this.venueFormControl.patchValue(this.venueId);
-      }
+      // if (this.venueId)
+      // {
+      //   console.log('setting venue')
+      //   this.venueFormControl.patchValue(this.venueId);
+      // }
     })
   }
 
@@ -65,17 +68,17 @@ export class VenueSelectComponent implements OnInit,OnChanges {
 
       console.log(result);
       this.venues.push(result)
-      this.venueFormControl.patchValue(result.id)
-      this.onVenueSelected.emit(result.id);
+      this.form.get('venueId').patchValue(result.id)
+     // this.onVenueSelected.emit(result.id);
     });
   }
 
-  onSelectionChange(value: any)
-  {
-    console.log('onChange')
-    console.log(value.option.value)
-    this.onVenueSelected.emit(value.option.value);
-  }
+  // onSelectionChange(value: any)
+  // {
+  //   console.log('onChange')
+  //   console.log(value.option.value)
+  //   this.onVenueSelected.emit(value.option.value);
+  // }
 
 
   displayVenue(venue: Venue): string {

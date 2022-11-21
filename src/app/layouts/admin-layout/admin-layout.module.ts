@@ -1,22 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminLayoutRoutes } from './admin-layout.routing';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
-import { UserProfileComponent } from '../../user-profile/user-profile.component';
-import { ContactDetailComponent } from '../../contact-detail/contact-detail.component';
-import { TableListComponent } from '../../table-list/table-list.component';
-import { ContactListComponent } from '../../contact-list/contact-list.component';
-import { TypographyComponent } from '../../typography/typography.component';
-import { VenueListComponent } from '../../venue-list/venue-list.component';
-import { VenueDetailComponent } from '../../venue-detail/venue-detail.component';
-import { GigListComponent } from '../../gig-list/gig-list.component';
 
-import { IconsComponent } from '../../icons/icons.component';
+import { TableListComponent } from '../../table-list/table-list.component';
+
+import { TypographyComponent } from '../../typography/typography.component';
+
+import { VenueDetailComponent } from '../../venue-detail/venue-detail.component';
+
+
+
 import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
-import { UpgradeComponent } from '../../upgrade/upgrade.component';
+
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatInputModule} from '@angular/material/input';
@@ -37,17 +36,15 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
-import { CreateProjectComponent } from '../../project/create-project.component';
+
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatProgressSpinner, MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
-import { ProjectTypeComponent } from 'app/project/project-type/project-type.component';
-import { ProjectViewComponent } from '../../project/project-view.component';
-import { NewProjectComponent } from '../../project/new-project.component';
+
 import { WeddingDetailComponent } from '../../wedding/wedding-detail/wedding-detail.component';
-import { EventContactListComponent } from '../../event-contact/event-contact-list.component';
-import { EventContactListItemComponent } from '../../event-contact/event-contact-list-item.component';
-import { EventContactCreateComponent } from '../../event-contact/event-contact-create/event-contact-create.component';
+
+
+
 import { VenueSelectComponent } from '../../venue/venue-select/venue-select.component';
 import { EventDetailsComponent } from '../../event/event-details/event-details.component';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
@@ -58,14 +55,16 @@ import {MatDividerModule} from '@angular/material/divider';
 import { FileUploadComponent } from '../../file-upload/file-upload.component';
 import { NgxMatFileInputModule } from '@angular-material-components/file-input';
 import { EventMainComponent } from '../../event/event-main/event-main.component';
-import { EventTypeComponent } from '../../event/event-type/event-type.component';
+
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
+import { EventStatusComponent } from '../../event/event-status/event-status.component';
 
 
 
  
 @NgModule({
   imports: [
+    CommonModule, ReactiveFormsModule, FormsModule,
     MatCardModule,
     NgxMaterialTimepickerModule,
     MatDividerModule,
@@ -95,7 +94,8 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
     NgxMatMomentModule,
     MatStepperModule,
     MatProgressSpinnerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    FormsModule
 
     
     
@@ -119,37 +119,20 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
   ],
   declarations: [
     DashboardComponent,
-    UserProfileComponent,
-    ContactDetailComponent,
-    ContactListComponent,
     TableListComponent,
-    VenueListComponent,
     VenueDetailComponent,
-    GigListComponent,
-    
     TypographyComponent,
-    IconsComponent,
     MapsComponent,
     NotificationsComponent,
-    UpgradeComponent,
     VenueAddComponent,
     AutocompleteComponent,
-    
-    CreateProjectComponent,
-    ProjectTypeComponent,
-    ProjectViewComponent,
-    NewProjectComponent,
     WeddingDetailComponent,
-    EventContactListComponent,
-    EventContactListItemComponent,
-    EventContactCreateComponent,
     VenueSelectComponent,
     EventDetailsComponent,
     StatusAndTasksDetailsComponent,
     FileUploadComponent,
     EventMainComponent,
-    EventTypeComponent
-
+    EventStatusComponent,
   ]
 })
 

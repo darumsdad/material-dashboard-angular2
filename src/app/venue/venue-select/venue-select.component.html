@@ -1,16 +1,18 @@
  
-
+<form [formGroup]="form">
 <div class="row">
    
+    
     <div class="col-md-10">
 
         <mat-form-field class="example-full-width" appearance="fill">
 
             <mat-label>Choose a venue</mat-label>
-            <input matInput placeholder="Search (name)" [matAutocomplete]="auto3" [formControl]="venueFormControl" />
+            <input matInput placeholder="Search (name)" [matAutocomplete]="auto3" formControlName="venueId" />
 
             <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displayVenue.bind(this)"
-                (optionSelected)="onSelectionChange($event)">
+
+                >
                 <mat-option *ngFor="let venue of filteredVenues | async" [value]="venue.id">
                     <span>{{venue.name}}</span><br>
                     <small>{{venue.addressLine1}} {{venue.addressLine2}}</small><br>
@@ -34,3 +36,10 @@
     </div>
 
 </div>
+<div class="row">
+    <div class="col-md">
+        <!-- <app-venue-add></app-venue-add> -->
+    </div>
+
+</div>
+</form>

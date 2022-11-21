@@ -1,5 +1,5 @@
 import { Component, Inject,NgZone,OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 import { Venue } from 'app/models/venue';
@@ -10,7 +10,6 @@ import { VenueService } from 'app/services/venue.service';
   templateUrl: './venue-add.component.html',
   styleUrls: ['./venue-add.component.scss']
 })
-
 
 export class VenueAddComponent  implements OnInit {
   
@@ -24,7 +23,7 @@ export class VenueAddComponent  implements OnInit {
   ngOnInit(): void {
     
     this.form = new FormGroup({
-        name: new FormControl(),
+        name: new FormControl('',Validators.required),
         address: new FormControl(),
         city: new FormControl(),
         state: new FormControl(),
@@ -35,9 +34,7 @@ export class VenueAddComponent  implements OnInit {
   }
 
   onSubmit() {
-    
     console.log('onSubmit')
-   
     // stop here if form is invalid
     if (this.form.invalid) {
         return;
@@ -85,6 +82,7 @@ export class VenueAddComponent  implements OnInit {
   }
 
   getAddrComponent(place, componentTemplate) {
+    
     let result;
 
     for (let i = 0; i < place.address_components.length; i++) {

@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app.routing';
@@ -10,18 +10,12 @@ import { AppComponent } from './app.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
 
-
-
-
-
-
-
 @NgModule({
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
     FormsModule,
-    ReactiveFormsModule,
+    //ReactiveFormsModule,
     HttpClientModule,
     ComponentsModule,
     RouterModule,
@@ -31,13 +25,8 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    
-    
-   
-  
-   
   ],
-  providers: [],
+  providers: [FormGroupDirective],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

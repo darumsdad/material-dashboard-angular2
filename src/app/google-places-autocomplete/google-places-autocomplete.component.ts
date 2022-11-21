@@ -24,9 +24,11 @@ export class AutocompleteComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
+        console.log("autocomplete iti")
     }
 
     ngAfterViewInit() {
+        console.log("getPlaceAutocomplete iti")
         this.getPlaceAutocomplete();
     }
 
