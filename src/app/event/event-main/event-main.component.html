@@ -1,8 +1,23 @@
 <div class="main-content">
 
-    <h1 >{{form.get('data').get('description').value}}</h1>
+    
 
     <ng-container [formGroup]="form">
+
+         
+
+        <div class="row mb-3 mt-1">
+            <div class="col-10" >
+                <h1 [ngStyle]="{'color' : !form.untouched ? 'red' : 'black' }">{{form.get('data').get('description').value}}</h1>
+            </div>
+            <div class="col-md-1" [ngStyle]="{'border-style' : !form.untouched ? 'solid' : 'none', 'border-color' : 'coral'}">
+                <button mat-icon-button (click)="onSave($event)" color="primary" class="pull-right"
+                    aria-label="Example icon button with a home icon">
+                    <mat-icon>save</mat-icon>
+                </button>
+            </div>
+
+        </div>
 
 
         <div class="row">
@@ -11,15 +26,7 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12"
-                [ngStyle]="{'border-style' : !form.untouched ? 'solid' : 'none', 'border-color' : 'coral'}">
-                <button mat-icon-button (click)="onSave($event)" color="primary" class="pull-right"
-                    aria-label="Example icon button with a home icon">
-                    <mat-icon>save</mat-icon>
-                </button>
-            </div>
-        </div>
+       
 
         <mat-tab-group dynamicHeight animationDuration="0ms">
             <mat-tab label="Details">
