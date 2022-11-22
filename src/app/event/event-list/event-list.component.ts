@@ -3,7 +3,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { EventMainService } from 'app/services/event-main.service';
+import { STATUS_CODES } from 'http';
 import { map, Observable } from 'rxjs';
+import { STATUS_MAP } from '../event-status/event-status.component';
 
 @Component({
   selector: 'app-event-list',
@@ -21,7 +23,7 @@ export class EventListComponent implements OnInit, AfterViewInit {
     this.s.updateThings()
 
     this.dataSource.sortingDataAccessor = (item, property) => {
-      switch(property) {
+      switch (property) {
         case 'description': return item.data.description;
         case 'date': return item.data.date;
         case 'status': return item.data.status;
@@ -30,10 +32,9 @@ export class EventListComponent implements OnInit, AfterViewInit {
     };
   }
 
-  clickRow(row: any)
-  {
+  clickRow(row: any) {
     console.log(row)
-    this.router.navigate(['detail',row])
+    this.router.navigate(['detail', row])
   }
 
   onClick(event: any) {
@@ -60,6 +61,24 @@ export class EventListComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
+  dereference(id: any) {
+    return STATUS_MAP.find(x => x.id === id).name
+  }
+
+  formatDate(dateIn: any) {
+
+    if (!dateIn)
+      return "No Date Yet"
+    
+    var date = new Date(Date.parse(dateIn));
+    var year = date.toLocaleString("default", { year: "numeric" });
+    var month = date.toLocaleString("default", { month: "2-digit" });
+    var day = date.toLocaleString("default", { day: "2-digit" });
+
+    // Generate yyyy-mm-dd date string
+    return month + "/" + day + "/" + year;
+
+  }
 
   update() {
     this.s.updateThings();
@@ -68,8 +87,9 @@ export class EventListComponent implements OnInit, AfterViewInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filterPredicate = ((data, filter) => {
-      let d = data.data.description
-      return (d) ? d.includes(filter) : false;
+      let d = data.data.description.toLowerCase()
+      var res = (d) ? d.includes(filter) : false;
+      return res
     })
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
