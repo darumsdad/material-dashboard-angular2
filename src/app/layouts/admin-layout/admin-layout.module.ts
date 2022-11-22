@@ -36,6 +36,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
+
+import { MatChipsModule } from '@angular/material/chips';
+
+import { MatListModule } from '@angular/material/list';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 
 import {MatStepperModule} from '@angular/material/stepper';
@@ -68,14 +72,14 @@ import { DocumentsComponent } from '../../documents/documents/documents.componen
  
 @NgModule({
   imports: [
-    CommonModule, ReactiveFormsModule, FormsModule,MatSortModule,
+    CommonModule, ReactiveFormsModule, FormsModule,MatSortModule,MatChipsModule,
     MatCardModule,
     NgxMaterialTimepickerModule,
     MatDividerModule,
     NgxIntlTelInputModule,
     NgxMatFileInputModule,
     MatTabsModule,
-    MatTableModule,
+    MatTableModule,MatListModule,
     CommonModule,
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,

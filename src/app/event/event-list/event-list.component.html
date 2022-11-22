@@ -28,9 +28,18 @@
       The actual rendered columns are set as a property on the row definition" -->
 
                 <!-- Position Column -->
+
+                
                 <ng-container matColumnDef="id">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>id</th>
                     <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="alert">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Alert</th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-icon *ngIf="element.data.status_error" matTooltip="{{element.data.status_error}}" color="warn" aria-hidden="false">error</mat-icon>
+                    </td>
                 </ng-container>
 
                 <!-- Name Column -->
@@ -52,14 +61,19 @@
 
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef>Actions</th>
-                    <td mat-cell *matCellDef="let element"> <button (click)="clickRow(element.id)" mat-icon-button color="primary"><mat-icon>edit</mat-icon></button></td>
+                    <td mat-cell *matCellDef="let element">
+                         <button (click)="clickRow(element.id)" mat-icon-button color="primary">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        
+                    </td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
             </table>
 
-            <button (click)="update()">Update Things</button>
+           
         <!-- </div> -->
     <!-- </div>-->
 

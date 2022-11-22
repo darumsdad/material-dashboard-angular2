@@ -3,7 +3,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { EventMainService } from 'app/services/event-main.service';
-import { STATUS_CODES } from 'http';
 import { map, Observable } from 'rxjs';
 import { STATUS_MAP } from '../event-status/event-status.component';
 
@@ -45,7 +44,7 @@ export class EventListComponent implements OnInit, AfterViewInit {
   private dataSource = new MatTableDataSource<any>();
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns: string[] = ['id', 'description', 'date', 'status', 'actions'];
+  displayedColumns: string[] = ['id', 'alert','description', 'date', 'status', 'actions'];
 
   eventsAsMatTableDataSource$: Observable<MatTableDataSource<any>> =
     this.s.events.pipe(
@@ -62,6 +61,10 @@ export class EventListComponent implements OnInit, AfterViewInit {
   }
 
   dereference(id: any) {
+
+    if (!id)
+    return ''
+    
     return STATUS_MAP.find(x => x.id === id).name
   }
 
