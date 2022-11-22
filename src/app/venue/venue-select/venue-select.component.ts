@@ -41,18 +41,16 @@ export class VenueSelectComponent implements OnInit {
     console.log(this.rootFormGroup.control)
     this.venueService.getAll().subscribe(x => { 
       console.log(x)
-      if (!x)
-      this.venues = [];
-      console.log(x)
+      this.venues = x;
       this.filteredVenues = this.form.get('venueId').valueChanges.pipe(
         startWith(''),
         map(venue => venue ? this._filterVenue(venue || '') : this.venues.slice()),
       );
-      // if (this.venueId)
-      // {
-      //   console.log('setting venue')
-      //   this.venueFormControl.patchValue(this.venueId);
-      // }
+      console.log(this.form)
+
+      // hack to get it to repaint after we have the list of venues
+      this.form.get('venueId').patchValue(this.form.get('venueId').value)
+      
     })
   }
 
@@ -71,26 +69,23 @@ export class VenueSelectComponent implements OnInit {
       console.log(result);
       this.venues.push(result)
       this.form.get('venueId').patchValue(result.id)
-     // this.onVenueSelected.emit(result.id);
+     
     });
   }
 
-  // onSelectionChange(value: any)
-  // {
-  //   console.log('onChange')
-  //   console.log(value.option.value)
-  //   this.onVenueSelected.emit(value.option.value);
-  // }
-
+   
 
   displayVenue(venue: Venue): string {
 
     console.log('Venue: displayVenue' + venue);
 
     if (!this.venues) {
+      console.log('no venues')
       return ''
     }
     else if (typeof venue === 'number' || venue instanceof Number) {
+      console.log('number')
+      console.log(this.venues)
       return this.venues.filter(v => v.id === venue).length === 1 ? this.venues.find(v => v.id === venue).name : '';
     }
 
@@ -102,16 +97,21 @@ export class VenueSelectComponent implements OnInit {
   private _filterVenue(value: any): Venue[] {
     console.log('_filterVenue ' + value)
 
-    if (typeof value === 'string' || value instanceof String) {
+    if ((typeof value === 'string' || value instanceof String) && value != "") {
       const filterValue = value.toLowerCase()
+      
       return this.venues.filter(venue => venue.name.toLowerCase().includes(filterValue) || venue.id.toString() === value);
     }
+    
     else if (typeof value === 'number') {
       return this.venues.filter(venue => venue.id === value);
     }
     else
    {
+    console.log(this.venues.slice())
+
       return this.venues.slice();
+      
     }
 
   }
