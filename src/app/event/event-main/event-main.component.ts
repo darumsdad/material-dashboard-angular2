@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } f
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { EventMainService } from 'app/services/event-main.service';
 
+
 @Component({
   selector: 'app-event-main',
   templateUrl: './event-main.component.html',
@@ -98,6 +99,20 @@ export class EventMainComponent implements OnInit {
   }
 
   onSave(event: any) {
+
+
+     const invalid = [];
+     const controls = this.form.get('data');
+    // for (const name in controls) {
+    //     if (controls[name].invalid) {
+    //         invalid.push(name);
+    //     }
+    // }
+    console.log(this.form);
+
+
+    if (this.form.invalid)
+      return;
     
     console.log(this.form.value)
 
