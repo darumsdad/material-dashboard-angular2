@@ -72,6 +72,9 @@ export class EventMainComponent implements OnInit {
       other_contact: [''],
 
       jotform_venue: [''],
+      jotform_venue_name: [''],
+      jotform_venue_phone: [''],
+      
       venueId: [''],
       other_location: [''],
       webhook_last_error: [''],

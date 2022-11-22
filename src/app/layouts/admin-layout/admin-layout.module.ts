@@ -61,6 +61,7 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { EventStatusComponent } from '../../event/event-status/event-status.component';
 import { JotFormComponent } from '../../documents/jot-form/jot-form.component';
 import { EventListComponent } from 'app/event/event-list/event-list.component';
+import { DocumentsComponent } from '../../documents/documents/documents.component';
 
 
 
@@ -138,6 +139,7 @@ import { EventListComponent } from 'app/event/event-list/event-list.component';
     EventStatusComponent,
     EventListComponent,
     JotFormComponent,
+    DocumentsComponent,
   ]
 })
 

@@ -1,6 +1,16 @@
 <form [formGroup]="form">
     
      
+    <div class="row" *ngIf="form.get('webhook_last_error').value">
+    <div class="col-md-8">
+        <mat-form-field appearance="fill">
+            <mat-label>Webhook Last Error</mat-label>
+            <input matInput type="text" formControlName="webhook_last_error" 
+                autocomplete="off">
+        </mat-form-field>
+    </div>
+    </div>
+
     <div class="row">
         <div class="col-md-4">
             <mat-form-field appearance="fill">
