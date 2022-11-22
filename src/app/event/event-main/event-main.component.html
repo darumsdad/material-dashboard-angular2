@@ -1,6 +1,6 @@
 <div class="main-content">
-    <ng-container  [formGroup]="form">
-     
+    <ng-container [formGroup]="form">
+
 
         <div class="row">
             <div class="col-12">
@@ -26,12 +26,14 @@
                     </div>
                 </div>
             </mat-tab>
-            <mat-tab label="Contacts">
-                <div class="row mt-5">
-                    <div class="col-md-12">
-
+            <mat-tab label="Documents">
+                <ng-template matTabContent>
+                    <div class="row mt-5">
+                        <div class="col-md-12">
+                            <app-jot-form [eventId]="eventId"></app-jot-form>
+                        </div>
                     </div>
-                </div>
+                </ng-template>
             </mat-tab>
 
             <mat-tab label="Status and Tasks">
@@ -51,7 +53,7 @@
 
         </mat-tab-group>
 
-    </ng-container >
+    </ng-container>
 
 
 

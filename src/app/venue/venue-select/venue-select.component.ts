@@ -38,10 +38,12 @@ export class VenueSelectComponent implements OnInit {
   ngOnInit(): void {
     console.log('starting  detected')
     this.form = this.rootFormGroup.control;
-    //console.log(this.rootFormGroup.control)
+    console.log(this.rootFormGroup.control)
     this.venueService.getAll().subscribe(x => { 
       console.log(x)
-      this.venues = x;
+      if (!x)
+      this.venues = [];
+      console.log(x)
       this.filteredVenues = this.form.get('venueId').valueChanges.pipe(
         startWith(''),
         map(venue => venue ? this._filterVenue(venue || '') : this.venues.slice()),
