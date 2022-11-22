@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EmailService } from 'app/services/email-service';
 import { JotFormService } from 'app/services/jot-form-service';
 import * as e from 'express';
@@ -12,46 +13,49 @@ import * as e from 'express';
 export class JotFormComponent implements OnInit {
   ref: any;
   form: FormGroup;
+  emailList: any;
 
   constructor(public s: JotFormService,
-    private rootFormGroup: FormGroupDirective,
-    private e: EmailService) { }
+    
+    private e: EmailService,
+    public dialog: MatDialogRef<JotFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+    ) { }
 
   dataModel: any
   email_address: any
-  emails: any = ['bride_email','bride_mom_email','bride_dad_email','groom_email','groom_mom_email','groom_dad_email'];
-  @Input()
+  
   eventId: any
 
-  emailList: any [] = [];
+  //emailList: any [] = [];
 
   ngOnInit(): void {
     this.dataModel = new FormControl();
-    this.email_address = new FormControl();
-    this.form = this.rootFormGroup.control.get('data') as FormGroup;
+    this.email_address = new FormControl(Validators.required);
+    
+    console.log(this.data)
+    this.eventId = this.data.eventId;
+    this.emailList = this.data.emailList;
 
-    this.emails.forEach(e => {
-      if (this.form.get(e).value)
-      {
-        this.emailList.push({
-          name: e,
-          email: this.form.get(e).value
-        })
-      }
+    this.s.get(this.eventId).subscribe(e => {
+      let value = atob(e.link);
+        this.dataModel.patchValue(value)
     })
-    console.log(this.emailList)
   }
 
   onSend($event)
   {
+    console.log(this.email_address);
+    console.log(this.email_address.valid);
     console.log(this.email_address.value)
     this.e.post({
       email: this.email_address.value,
       html: btoa(this.dataModel.value)
     }).subscribe( { next: (e) => {
       console.log(e);
-      this.dataModel.reset();
-      this.email_address.reset();
+      //this.dataModel.reset();
+      //this.email_address.reset();
+      this.dialog.close(e);
 
     }, error: (e) => {
       console.log(e)
@@ -60,13 +64,13 @@ export class JotFormComponent implements OnInit {
     }})
   }
 
-  createJotFormEmail(event: any) 
-  {
-    this.s.get(this.eventId).subscribe(e => {
-      let value = atob(e.link);
-        this.dataModel.patchValue(value)
-    })
-  }
+  // createJotFormEmail(event: any) 
+  // {
+  //   this.s.get(this.eventId).subscribe(e => {
+  //     let value = atob(e.link);
+  //       this.dataModel.patchValue(value)
+  //   })
+  // }
 
   
 
