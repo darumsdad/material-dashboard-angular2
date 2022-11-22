@@ -20,7 +20,7 @@
                     formControlName="start" readonly>
                 <mat-hint>HH:MM AM/PM</mat-hint>
                 <ngx-material-timepicker-toggle matSuffix [for]="tpicker"></ngx-material-timepicker-toggle>
-                <ngx-material-timepicker #tpicker>
+                <ngx-material-timepicker [minutesGap]="10" #tpicker>
                 </ngx-material-timepicker>
             </mat-form-field>
 
@@ -33,7 +33,7 @@
                     formControlName="end" readonly>
                 <mat-hint>HH:MM AM/PM</mat-hint>
                 <ngx-material-timepicker-toggle matSuffix [for]="tepicker"></ngx-material-timepicker-toggle>
-                <ngx-material-timepicker #tepicker>
+                <ngx-material-timepicker [minutesGap]="10" #tepicker>
                 </ngx-material-timepicker>
             </mat-form-field>
 
