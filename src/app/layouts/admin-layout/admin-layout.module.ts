@@ -35,6 +35,7 @@ import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NGX_MAT_DATE_FORMAT
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
+import { MatSortModule } from '@angular/material/sort';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 
 import {MatStepperModule} from '@angular/material/stepper';
@@ -59,13 +60,14 @@ import { EventMainComponent } from '../../event/event-main/event-main.component'
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { EventStatusComponent } from '../../event/event-status/event-status.component';
 import { JotFormComponent } from '../../documents/jot-form/jot-form.component';
+import { EventListComponent } from 'app/event/event-list/event-list.component';
 
 
 
  
 @NgModule({
   imports: [
-    CommonModule, ReactiveFormsModule, FormsModule,
+    CommonModule, ReactiveFormsModule, FormsModule,MatSortModule,
     MatCardModule,
     NgxMaterialTimepickerModule,
     MatDividerModule,
@@ -134,6 +136,7 @@ import { JotFormComponent } from '../../documents/jot-form/jot-form.component';
     FileUploadComponent,
     EventMainComponent,
     EventStatusComponent,
+    EventListComponent,
     JotFormComponent,
   ]
 })

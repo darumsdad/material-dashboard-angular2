@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
  
 import { environment } from 'environments/environment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +10,39 @@ import { Observable } from 'rxjs';
 export class EventMainService {
 
 
+  private _events = new BehaviorSubject([])
+
+  get events() {
+    return this._events.asObservable()
+  }
+
+  updateThings() {
+    this.all().subscribe(e => {
+      console.log(e)
+      this._events.next(e)
+    })
+    // this._events.next([
+    //   { a: this.getRandom(), b: this.getRandom(), c: this.getRandom() },
+    //   { a: this.getRandom(), b: this.getRandom(), c: this.getRandom() },
+    //   { a: this.getRandom(), b: this.getRandom(), c: this.getRandom() },
+    //   { a: this.getRandom(), b: this.getRandom(), c: this.getRandom() },
+    //   { a: this.getRandom(), b: this.getRandom(), c: this.getRandom() },
+    // ])
+  }
+
+  private getRandom() {
+    return Math.floor(Math.random() * 100)
+  }
+
+  
   baseUrl = environment.baseUrl + '/events';
   webhookUrl = environment.baseUrl + '/webhook';
 
   constructor(private http: HttpClient) { }
 
+  all(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}`);
+  }
 
   get(id: any): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/${id}`);

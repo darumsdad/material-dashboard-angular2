@@ -13,11 +13,10 @@
 
 <div class="row">
     <div class="col-md-12">
+        
         <form [formGroup]="VOForm" autocomplete="off" appearance="fill">
             <ng-container formArrayName="VORows">
                 <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
-
                     
                     <ng-container matColumnDef="description">
                         <th mat-header-cell *matHeaderCellDef> Description </th>
@@ -28,7 +27,6 @@
                             </mat-form-field>
                         </td>
                     </ng-container>
-
                      
                     <ng-container matColumnDef="date">
                         <th mat-header-cell *matHeaderCellDef> Due Date </th>
@@ -47,9 +45,6 @@
                     <ng-container matColumnDef="status">
                         <th mat-header-cell *matHeaderCellDef> Status </th>
                         <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
-
-                          
-
                             <mat-form-field [appearance]="VOForm.get('VORows').value[i].isEditable? 'none' : 'legacy'">
                                 <mat-select formControlName="status"
                                     [disabled]="VOForm.get('VORows').value[i].isEditable">
@@ -58,10 +53,8 @@
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
-
                         </td>
                     </ng-container>
-
 
                     <ng-container matColumnDef="note">
                         <th mat-header-cell *matHeaderCellDef> Note </th>
