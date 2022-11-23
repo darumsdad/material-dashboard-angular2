@@ -40,20 +40,20 @@
                 <ng-template matTabContent>
                     <div class="row mt-5">
                         <div class="col-md-12">
-                            <app-documents [emails]="emails" [eventId]="eventId" ></app-documents>
+                            <app-documents [eventId]="eventId" ></app-documents>
                         </div>
                     </div>
                 </ng-template>
             </mat-tab>
 
-            <!-- <mat-tab label="Status and Tasks">
+            <mat-tab label="Jot Form">
                 <div class="row mt-5">
                     <div class="col-md-12">
-
+                        <app-jotform [eventId]="eventId"></app-jotform>
                     </div>
                 </div>
             </mat-tab>
-            <mat-tab label="Files">
+            <!-- <mat-tab label="Files">
                 <div class="row mt-5">
                     <div class="col-md-12">
                         <app-file-upload [projectId]=projectId></app-file-upload>

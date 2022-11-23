@@ -52,8 +52,8 @@ export class EventMainService {
     return this.http.post(this.baseUrl, data);
   }
 
-  submission(id: any): Observable<any> {
-    return this.http.put(`${this.webhookUrl}/${id}`, { id: id});
+  submission(id: any, submissionId: any): Observable<any> {
+    return this.http.put(`${this.webhookUrl}/${id}/${submissionId}`, {});
   }
 
   update(id: any, data: any): Observable<any> {

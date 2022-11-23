@@ -35,6 +35,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatListModule } from '@angular/material/list';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatProgressSpinner, MatProgressSpinnerModule} from '@angular/material/progress-spinner';
@@ -53,13 +54,14 @@ import { EventStatusComponent } from '../../event/event-status/event-status.comp
 import { JotFormComponent } from '../../documents/jot-form/jot-form.component';
 import { EventListComponent } from 'app/event/event-list/event-list.component';
 import { DocumentsComponent } from '../../documents/documents/documents.component';
+import { JotformComponent } from '../../documents/jotform/jotform.component';
 
 
 
  
 @NgModule({
   imports: [
-    CommonModule, ReactiveFormsModule, FormsModule,MatSortModule,MatChipsModule,
+    CommonModule, ReactiveFormsModule, FormsModule,MatSortModule,MatChipsModule,MatSnackBarModule,
     MatCardModule,
     NgxMaterialTimepickerModule,
     MatDividerModule,
@@ -113,6 +115,7 @@ import { DocumentsComponent } from '../../documents/documents/documents.componen
     EventListComponent,
     JotFormComponent,
     DocumentsComponent,
+    JotformComponent,
   ]
 })
 

@@ -70,14 +70,6 @@ export class EventDetailsComponent implements OnInit {
     this.form.get('data').get('status_update_date').patchValue(new Date().toISOString())
   }
 
-  onRetrySubmission(id: any)
-  {
-    this.s.submission(id).subscribe( e => {
-      this.router.navigate(["event",this.eventId])
-    });
-
-  }
-
   onVenueSelected(event: any) {
     console.log(event);
     this.form.get('data').get('venueId').patchValue(event);
