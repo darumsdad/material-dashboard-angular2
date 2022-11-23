@@ -14,6 +14,8 @@ export class JotFormComponent implements OnInit {
   ref: any;
   form: FormGroup;
   emailList: any;
+  html: any;
+  origLink: any;
 
   constructor(public s: JotFormService,
     
@@ -38,19 +40,21 @@ export class JotFormComponent implements OnInit {
     this.emailList = this.data.emailList;
 
     this.s.get(this.eventId).subscribe(e => {
-      let value = atob(e.link);
-        this.dataModel.patchValue(value)
+      this.origLink = e.link
+      let value = atob(e.templateHtml);
+      this.dataModel.patchValue(value)
     })
   }
 
   onSend($event)
   {
     console.log(this.email_address);
-    console.log(this.email_address.valid);
     console.log(this.email_address.value)
+
     this.e.post({
-      email: this.email_address.value,
-      html: btoa(this.dataModel.value)
+      to: this.email_address.value.email,
+      name: this.email_address.value.name,
+      link: this.origLink
     }).subscribe( { next: (e) => {
       console.log(e);
       //this.dataModel.reset();

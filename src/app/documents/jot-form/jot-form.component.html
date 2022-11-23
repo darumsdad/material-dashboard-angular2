@@ -5,8 +5,8 @@
         <mat-form-field appearance="fill">
             <mat-label>Email Address</mat-label>
             <mat-select [formControl]="email_address" required>
-                <mat-option *ngFor="let email of emailList" [value]="email.email">
-                    {{email.name}} | {{email.email}}
+                <mat-option *ngFor="let email of emailList" [value]="email">
+                    {{email.type}} : {{email.name}} | {{email.email}}
                 </mat-option>
             </mat-select>
            
@@ -29,6 +29,8 @@
         <editor [formControl]="dataModel" apiKey="p9ejaukcdifecl6fhwowyud2bjuqzwbyfiyhtktmxtvbx0nq"></editor>
     </div>
 </div>
+
+
 
 <button mat-raised-button [mat-dialog-close]="false" class="btn btn-info pull-right">Cancel</button>
 

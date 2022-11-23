@@ -10,7 +10,7 @@ import { JotFormComponent } from '../jot-form/jot-form.component';
 })
 export class DocumentsComponent implements OnInit {
   form: FormGroup;
-  emails: any = ['bride_email','bride_mom_email','bride_dad_email','groom_email','groom_mom_email','groom_dad_email'];
+  emails: any = ['bride','bride_mom','bride_dad','groom','groom_mom','groom_dad'];
   emailList: any = [];
 
   @Input()
@@ -24,11 +24,15 @@ export class DocumentsComponent implements OnInit {
     this.form = this.rootFormGroup.control.get('data') as FormGroup;
 
     this.emails.forEach(e => {
-      if (this.form.get(e).value)
+      let email_tag = e + '_email'
+      let name_tag = e + '_name'
+
+      if (this.form.get(email_tag).value && this.form.get(name_tag).value)
       {
         this.emailList.push({
-          name: e,
-          email: this.form.get(e).value
+          type: e,
+          name: this.form.get(name_tag).value,
+          email: this.form.get(email_tag).value
         })
       }
     })
