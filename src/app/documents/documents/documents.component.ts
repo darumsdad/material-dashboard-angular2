@@ -12,7 +12,7 @@ import { JotFormComponent } from '../jot-form/jot-form.component';
 })
 export class DocumentsComponent implements OnInit {
   form: FormGroup;
-  emails_types: any = ['bride','bride_mom','bride_dad','groom','groom_mom','groom_dad'];
+  emails_types: any = ['bride','bride_mom','bride_dad','groom','groom_mom','groom_dad','planner'];
   emailList: any = [];
 
   @Input()

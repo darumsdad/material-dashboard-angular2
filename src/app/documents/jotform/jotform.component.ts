@@ -34,9 +34,14 @@ export class JotformComponent implements OnInit {
     });
   }
 
-  applySubmission(id: any)
+  applySubmission(submissionId: any, formId: any)
   {
-      this.s.submission(this.eventId,id).subscribe(
+      this.s.submission(this.eventId,
+        {
+          submissionId: submissionId,
+          formId: formId
+        }
+        ).subscribe(
         {
           next: (e) => {
             this.reload();
