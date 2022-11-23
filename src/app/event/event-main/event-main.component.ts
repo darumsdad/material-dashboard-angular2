@@ -74,7 +74,7 @@ export class EventMainComponent implements OnInit {
       jotform_venue: [''],
       jotform_venue_name: [''],
       jotform_venue_phone: [''],
-      
+
       venueId: [''],
       other_location: [''],
       webhook_last_error: [''],
@@ -88,13 +88,15 @@ export class EventMainComponent implements OnInit {
 
     this.form.markAsPristine()
    
-
     if (this.eventId)
     {
       this.s.get(this.eventId).subscribe(e => {
         console.log(e)
         this.form.get('data').patchValue(e.data);
         this.venueId = e.data.venueId
+
+        console.log(e.data.emails)
+        
       })
     }
 
