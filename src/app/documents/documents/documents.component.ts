@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormGroupDirective } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { EventMainService } from 'app/services/event-main.service';
 import { JotFormComponent } from '../jot-form/jot-form.component';
 
 @Component({
@@ -10,20 +12,27 @@ import { JotFormComponent } from '../jot-form/jot-form.component';
 })
 export class DocumentsComponent implements OnInit {
   form: FormGroup;
-  emails: any = ['bride','bride_mom','bride_dad','groom','groom_mom','groom_dad'];
+  emails_types: any = ['bride','bride_mom','bride_dad','groom','groom_mom','groom_dad'];
   emailList: any = [];
 
   @Input()
   eventId: any
 
+  @Input()
+  emails: any
+
   constructor(public dialog: MatDialog,
-    private rootFormGroup: FormGroupDirective) { }
+    private rootFormGroup: FormGroupDirective,
+    private s: EventMainService) { }
+
+  displayedColumns: string[] = ['id', 'to','status'];
+  dataSource = new MatTableDataSource<any>();
 
   ngOnInit(): void {
 
     this.form = this.rootFormGroup.control.get('data') as FormGroup;
 
-    this.emails.forEach(e => {
+    this.emails_types.forEach(e => {
       let email_tag = e + '_email'
       let name_tag = e + '_name'
 
@@ -36,7 +45,16 @@ export class DocumentsComponent implements OnInit {
         })
       }
     })
-    console.log(this.emailList)
+    console.log(this.emails)
+    
+    this.s.get(this.eventId).subscribe({
+      next: (e) => {
+        console.log(e.data.emails)
+        this.dataSource.data = e.data.emails
+      },
+      error: (e) => {}
+    })
+    
   }
 
   openJotForm(event: any): void {
@@ -50,6 +68,8 @@ export class DocumentsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
+      this.dataSource.data.push(result)
+      this.dataSource.data = this.dataSource.data.slice();
     });
   }
 

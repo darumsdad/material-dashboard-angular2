@@ -54,11 +54,10 @@ export class JotFormComponent implements OnInit {
     this.e.post({
       to: this.email_address.value.email,
       name: this.email_address.value.name,
-      link: this.origLink
+      link: this.origLink,
+      id: this.eventId
     }).subscribe( { next: (e) => {
       console.log(e);
-      //this.dataModel.reset();
-      //this.email_address.reset();
       this.dialog.close(e);
 
     }, error: (e) => {
