@@ -29,27 +29,16 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { VenueAddComponent } from '../../venue-add/venue-add.component';
 import { AutocompleteComponent  } from '../../google-places-autocomplete/google-places-autocomplete.component';
-
 import { EditorModule } from '@tinymce/tinymce-angular';
-import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
-
 import { MatChipsModule } from '@angular/material/chips';
-
 import { MatListModule } from '@angular/material/list';
-import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
-
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatProgressSpinner, MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-
-
 import { WeddingDetailComponent } from '../../wedding/wedding-detail/wedding-detail.component';
-
-
-
 import { VenueSelectComponent } from '../../venue/venue-select/venue-select.component';
 import { EventDetailsComponent } from '../../event/event-details/event-details.component';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
@@ -58,9 +47,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatDividerModule} from '@angular/material/divider';
 import { FileUploadComponent } from '../../file-upload/file-upload.component';
-import { NgxMatFileInputModule } from '@angular-material-components/file-input';
 import { EventMainComponent } from '../../event/event-main/event-main.component';
-
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { EventStatusComponent } from '../../event/event-status/event-status.component';
 import { JotFormComponent } from '../../documents/jot-form/jot-form.component';
@@ -77,7 +64,6 @@ import { DocumentsComponent } from '../../documents/documents/documents.componen
     NgxMaterialTimepickerModule,
     MatDividerModule,
     NgxIntlTelInputModule,
-    NgxMatFileInputModule,
     MatTabsModule,
     MatTableModule,MatListModule,
     CommonModule,
@@ -96,10 +82,7 @@ import { DocumentsComponent } from '../../documents/documents/documents.componen
     MatDialogModule,
     MatIconModule,
     EditorModule,
-    NgxMatDatetimePickerModule,
-    NgxMatTimepickerModule,
     MatDatepickerModule,
-    NgxMatMomentModule,
     MatStepperModule,
     MatProgressSpinnerModule,
     MatCheckboxModule,
@@ -109,21 +92,7 @@ import { DocumentsComponent } from '../../documents/documents/documents.componen
     
   ],
   providers: [
-    {
-      provide: NGX_MAT_DATE_FORMATS,
-      useValue: {
-        parse: {
-          dateInput: ['x'],
-        },
-        display: {
-          dateInput: 'LL hh:mm A',
-          monthYearLabel: 'MMM YYYY',
-          dateA11yLabel: 'LL',
-          monthYearA11yLabel: 'MMMM YYYY',
-
-        },
-      },
-    },
+    
   ],
   declarations: [
     DashboardComponent,
